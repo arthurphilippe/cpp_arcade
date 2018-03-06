@@ -21,7 +21,7 @@ OBJS		=	$(SRCS:.cpp=.o)
 
 TEST		=	unit_tests.out
 
-SRCS_TEST	=	tests/test-LogicGates.cpp	\
+SRCS_TEST	=	tests/TestSpriteClass.cpp
 
 SRCS_TEST	+=	$(OBJS)
 
@@ -45,7 +45,7 @@ tests: $(TEST) $(NAME)
 tests_run: CXX=g++ --coverage
 tests_run: tests
 	@./$(TEST)
-	@bash ./tests/functionals_tests.sh
+#	@bash ./tests/functionals_tests.sh
 
 $(NAME): $(OBJ_MAIN) $(OBJS)
 	@printf "[\033[0;36mlinking\033[0m]% 41s\r" $(NAME) | tr " " "."
