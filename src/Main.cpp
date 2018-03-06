@@ -6,8 +6,16 @@
 */
 
 #include <iostream>
+#include "SpriteParser.hpp"
+#include "Error.hpp"
 
-int main()
+int main(int ac, char **av)
 {
-	std::cout << "Don't Blame Me" << std::endl;
+	try {
+		SpriteParser::Parser(av[1]);
+	}
+	catch (const ParserError &error)
+	{
+		error.printError();
+	};
 }

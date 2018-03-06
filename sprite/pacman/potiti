@@ -1,0 +1,10 @@
+#.classSprite
+Name:Pacman
+Substitute:a
+Path:sprite/pacman/potiti
+Substitute:b
+Path:sprite/pacman/potitia
+Substitute:c
+Path:sprite/pacman/potitib
+Substitute:d
+Path:sprite/pacman/potitic

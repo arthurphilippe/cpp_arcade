@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-CXX		=	g++
+CXX		=	g++ -ggdb
 
 NAME		=	arcade
 
@@ -13,7 +13,7 @@ RM		=	rm -vf
 
 MAIN		=	src/Main.cpp
 
-SRCS		=
+SRCS		=	src/SpriteParser.cpp
 
 OBJ_MAIN	=	$(MAIN:.cpp=.o)
 
