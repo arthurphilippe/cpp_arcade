@@ -11,6 +11,8 @@
 
 int main(int ac, char **av)
 {
+	if (ac < 2)
+		return 84;
 	try {
 		SpriteParser::Parser(av[1]);
 	}
@@ -18,4 +20,5 @@ int main(int ac, char **av)
 	{
 		error.printError();
 	};
+	return 0;
 }

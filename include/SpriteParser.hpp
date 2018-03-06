@@ -13,10 +13,12 @@ public:
 	SpriteParser() = delete;
 	~SpriteParser() = delete;
 	static std::vector<Sprite> Parser(const std::string &folder);
-	void ReadFile(const std::string &name, std::vector<Sprite> &_vector);
-	Sprite &createSprite(const std::string &name, const std::string &path,
-			     const char substitute);
+	static Sprite &createSprite(const std::string &name, const std::string &path,
+				    const char &substitute);
 private:
+	static std::string findType(const std::string &line) noexcept;
+		static std::string findValue(const std::string &line) noexcept;
+	static void readFile(const std::string &name, std::vector<Sprite> &_vector);
 	static void setName(const std::string &line) noexcept;
 	static void setPath(const std::string &line) noexcept;
 	static void setSubstitute(const std::string &line) noexcept;
