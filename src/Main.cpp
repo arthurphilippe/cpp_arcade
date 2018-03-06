@@ -9,5 +9,5 @@
 
 int main()
 {
-	std::cout << "Hi :3" << std::endl;
+	std::cout << "Don't Blame Me" << std::endl;
 }
