@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2017
-** nanotekspice
+** Arcade
 ** File description:
-** tests
+** Tests
 */
 
 #include <criterion/criterion.h>
