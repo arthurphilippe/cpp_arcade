@@ -13,11 +13,11 @@ class SpriteParser {
 public:
 	SpriteParser() = delete;
 	~SpriteParser() = delete;
-	static std::vector<Sprite> Parser(const std::string &folder);
-	static Sprite createSprite(const std::string &name, const std::string &path,
-				   const char &substitute,
-				   std::vector<Sprite> &_vector) noexcept;
+	static std::vector<Sprite> parser(const std::string &folder);
 private:
+	static Sprite createSprite(const std::string &name, const std::string &path,
+					const char &substitute,
+					std::vector<Sprite> &_vector) noexcept;
 	static std::string modifyFolder(std::string foldername);
 	static std::string findType(const std::string &line) noexcept;
 	static std::string findValue(const std::string &line) noexcept;

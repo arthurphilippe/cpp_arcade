@@ -21,7 +21,8 @@ OBJS		=	$(SRCS:.cpp=.o)
 
 TEST		=	unit_tests.out
 
-SRCS_TEST	=	tests/TestSpriteClass.cpp
+SRCS_TEST	=	tests/TestSpriteClass.cpp	\
+			tests/TestSpriteParser.cpp
 
 SRCS_TEST	+=	$(OBJS)
 

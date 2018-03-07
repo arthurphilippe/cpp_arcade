@@ -81,41 +81,9 @@ void SpriteParser::readFile(const std::string &filename, std::vector<Sprite> &_v
 	}
 }
 
-// std::string SpriteParser::modifyFolder(std::string foldername)
-// {
-// 	if (foldername.length() > 1 && (foldername[foldername.length() - 1] != '/' ||
-// 					foldername[foldername.length() - 1] != '\\'))
-// 		foldername += '/';
-// 	return foldername;
-// }
-
-std::vector<Sprite> SpriteParser::Parser(const std::string &filename)
+std::vector<Sprite> SpriteParser::parser(const std::string &filename)
 {
 	std::vector<Sprite> _vector;
 	readFile(filename, _vector);
 	return _vector;
 }
-
-// std::vector<Sprite> SpriteParser::Parser(const std::string &folder)
-// {
-//	struct dirent *s;
-//	std::string tmp;
-//	std::vector<Sprite> _vector;
-
-//	std::string foldername = modifyFolder(folder);
-//	DIR *dirptr = opendir(foldername.c_str());
-//	if (dirptr == NULL) {
-//		std::string _s("Error: Directory '");
-//		_s += foldername;
-//		_s += "' does not exist";
-//		throw ParserError(_s);
-//	}
-//	while ((s = readdir(dirptr)) != NULL) {
-//		if (s->d_name[0] != '.') {
-//			tmp = foldername + s->d_name;
-//			readFile(tmp, _vector);
-//		}
-//	}
-//	closedir(dirptr);
-//	return (_vector);
-// }
