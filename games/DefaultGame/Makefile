@@ -11,7 +11,8 @@ NAME		=	libDefaultGame.so
 
 RM		=	rm -vf
 
-SRCS		=	Entry.cpp
+SRCS		=	Entry.cpp	\
+			DefaultGame.cpp
 
 OBJ_MAIN	=	$(MAIN:.cpp=.o)
 
@@ -19,13 +20,13 @@ OBJS		=	$(SRCS:.cpp=.o)
 
 TEST		=	unit_tests.out
 
-SRCS_TEST	=	tests/test-LogicGates.cpp	\
+SRCS_TEST	=
 
 SRCS_TEST	+=	$(OBJS)
 
 OBJS_TEST	=	$(SRCS_TEST:.cpp=.o)
 
-CPPFLAGS	=	-fPIC -W -Wextra -Wall -Iinclude/ -std=c++17
+CPPFLAGS	=	-fPIC -W -Wextra -Wall -I../../include/ -Iinclude/ -std=c++17
 
 LDFLAGS		=	-shared
 
