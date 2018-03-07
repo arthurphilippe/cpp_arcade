@@ -26,7 +26,6 @@ private:
 	char _substitute;
 	std::string _name;
 	std::string _path;
-	void *_ptr;
 };
 
 #endif /* !SPRITE_HPP_ */
