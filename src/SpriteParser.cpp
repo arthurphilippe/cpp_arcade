@@ -25,7 +25,7 @@ Sprite SpriteParser::createSprite(const std::string &name, const std::string &pa
 std::string SpriteParser::setName(const std::string &line)
 {
 	std::string tmp = line;
-        size_t tokenplace;
+	size_t tokenplace;
 
 	if ((tokenplace = tmp.find(":")) == std::string::npos)
 		throw ParserError(
@@ -65,7 +65,6 @@ void SpriteParser::readFile(const std::string &filename, std::vector<Sprite> &_v
 	std::ifstream s(filename);
 	std::string tmp;
 
-	std::cout << "File: " << filename << std::endl;
 	if (s.is_open()) {
 		while (getline(s, tmp)) {
 			if (tmp.length() > 0 && tmp[0] != '#')
@@ -84,6 +83,7 @@ void SpriteParser::readFile(const std::string &filename, std::vector<Sprite> &_v
 std::vector<Sprite> SpriteParser::parser(const std::string &filename)
 {
 	std::vector<Sprite> _vector;
+
 	readFile(filename, _vector);
 	return _vector;
 }

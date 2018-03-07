@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-CXX		=	g++ -ggdb
+CXX		=	g++
 
 NAME		=	arcade
 
@@ -46,7 +46,6 @@ tests: $(TEST) $(NAME)
 tests_run: CXX=g++ --coverage
 tests_run: tests
 	@./$(TEST)
-#	@bash ./tests/functionals_tests.sh
 
 $(NAME): $(OBJ_MAIN) $(OBJS)
 	@printf "[\033[0;36mlinking\033[0m]% 41s\r" $(NAME) | tr " " "."
