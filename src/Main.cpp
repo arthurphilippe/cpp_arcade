@@ -12,34 +12,11 @@
 #include "IGame.hpp"
 #include "DynamicFunc.hpp"
 
-void toto(int tata)
-{
-	std::cout << "I am toto " << tata << std::endl;
-}
-
 int main()
 {
 	std::cout << "Hi :3" << std::endl;
-	// void *handle = dlopen("./games/DefaultGame/libDefaultGame.so", RTLD_LAZY);
-
-	// if (!handle) {
-	// 	std::cerr << "Cannot open library: " << dlerror() << std::endl;
-	// 	return 1;
-	// }
-
-	// using entry_t = arc::IGame *(*)();
-	// dlerror();
-	// entry_t entry = (entry_t) dlsym(handle, "Construct");
-	// const char *dlsym_error = dlerror();
-	// if (dlsym_error || !entry) {
-	// 	std::cerr << "Cannot load symbol: " << dlsym_error << '\n';
-	// 	dlclose(handle);
-	// 	return 2;
-	// }
-	// auto test = entry();
-	// test->dump();
-	// dlclose(handle);
-	arc::DynamicFunc<arc::IGame *(*)()> entry("./games/DefaultGame/libDefaultGame.so");
+	arc::DynamicFunc<arc::IGame *(*)()>
+		entry("./games/DefaultGame/libDefaultGame.so");
 
 	arc::IGame *test = entry.get()();
 	test->dump();
