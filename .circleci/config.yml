@@ -31,7 +31,7 @@ jobs:
       - checkout
       - run:
           name: Build Project Using clang
-          command: make CXX=clang++ CPPFLAGS=-W\ -Wextra\ -Wall\ -Werror\ -Iinclude/\ -std=c++17 -j 4
+          command: make CXX=clang++ CPPFLAGS=-W\ -Wextra\ -Wall\ -Werror\ -Iinclude/\ -I../../include\ -std=c++17\ -fPIC re
 
   epitest:
     docker:
