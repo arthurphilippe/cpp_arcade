@@ -41,7 +41,7 @@ int main()
 	// dlclose(handle);
 	arc::DynamicFunc<arc::IGame *(*)()> entry("./games/DefaultGame/libDefaultGame.so");
 
-	arc::IGame *test = entry.call();
+	arc::IGame *test = entry.get()();
 	test->dump();
 	delete test;
 }

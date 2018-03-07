@@ -30,6 +30,10 @@ namespace arc {
 		{
 			dlclose(_handle);
 		}
+		T &get() noexcept
+		{
+			return call;
+		}
 		T	call;
 	private:
 		void	*_handle;
