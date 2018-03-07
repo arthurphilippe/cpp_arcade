@@ -13,7 +13,11 @@
 
 class ParserError : public std::exception {
 public:
-	const char *what() const noexcept {std::cerr << _what << std::endl;}
+	const char *what() const noexcept
+		{
+			std::cerr << _what << std::endl;
+			return _what.c_str();
+		}
 	ParserError(const std::string &what) : _what(what) {}
 	ParserError(
 		const std::string &ch1, const std::string &ch2,
