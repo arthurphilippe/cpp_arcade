@@ -13,10 +13,16 @@
 
 class ParserError : public std::exception {
 public:
-//	const char *what() const noexcept;
+	const char *what() const noexcept {std::cerr << _what << std::endl;}
 	ParserError(const std::string &what) : _what(what) {}
-	const std::string &printError() const noexcept {std::cerr << _what << std::endl;}
+	ParserError(
+		const std::string &ch1, const std::string &ch2,
+		const std::string &ch3)
+		{
+			_what = ch1 + ch2 + ch3;
+		}
 	const std::string &getError() const {return _what;}
+private:
 	std::string _what;
 };
 

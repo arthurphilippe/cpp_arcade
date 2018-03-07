@@ -18,7 +18,7 @@ int main(int ac, char **av)
 	}
 	catch (const ParserError &error)
 	{
-		error.printError();
+		error.what();
 	};
 	return 0;
 }
