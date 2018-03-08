@@ -81,6 +81,7 @@ fclean: clean
 	@$(RM) $(NAME) $(TEST) > /dev/null
 	@printf "[\033[0;31mdeletion\033[0m][binary]% 32s\n" $(NAME) | tr " " "."
 	@$(MAKE) fclean -C games/DefaultGame/
+	@$(MAKE) fclean -C lib/CacaDisplay/
 
 artifacts_clean:
 	@printf "[\033[0;31mdeletion\033[0m][artifacts]% 29s\n" `find -type f \( -name "*.gcno" -o -name "*.gc*" -o -name "*.html" \) -delete -print | wc -l | tr -d '\n'` | tr " " "."

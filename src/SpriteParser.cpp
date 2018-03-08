@@ -24,16 +24,15 @@ const std::string &arc::SpriteParser::getErrorLine()
 
 const int &arc::SpriteParser::getErrorLineNb()
 {
-	return (_nbrline);	
+	return (_nbrline);
 }
 
 Sprite arc::SpriteParser::createSprite(
 	const std::string &path, const char &substitute,
-	const std::string &name, std::vector<Sprite> &_vector) noexcept
+	const std::string &name) noexcept
 {
 	Sprite tmp(name, path, substitute);
 
-	_vector.push_back(tmp);
 	return tmp;
 }
 
@@ -69,20 +68,24 @@ char arc::SpriteParser::setSubstitute()
 	return tmp[0];
 }
 
-void arc::SpriteParser::readFile(
-	const std::string &filename)
+void arc::SpriteParser::parseLine()
+{
+	if (_line.length() > 0 && _line[0] != '#')
+		_vector.push_back(createSprite(setPath(),
+						setSubstitute(),
+						setName()));
+	_nbrline += 1;
+
+}
+
+void arc::SpriteParser::readFile(const std::string &filename)
 {
 	std::ifstream s(filename);
 	std::string tmp;
 
 	if (s.is_open()) {
 		while (getline(s, _line)) {
-			if (_line.length() > 0 && _line[0] != '#')
-				createSprite(
-					setPath(),
-					setSubstitute(), setName(),
-					_vector);
-			_nbrline += 1;
+			parseLine();
 		}
 	} else {
 		std::string _s("Error: can't open '");

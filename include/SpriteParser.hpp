@@ -21,12 +21,10 @@ public:
 	static const int &getErrorLineNb();
 private:
 	static Sprite createSprite(const std::string &path,
-				   const char &substitute,
-				   const std::string &name,
-					std::vector<Sprite> &_vector) noexcept;
+					const char &substitute,
+					const std::string &name) noexcept;
 	static std::string modifyFolder(std::string foldername);
-	static std::string findType(const std::string &line) noexcept;
-	static std::string findValue(const std::string &line) noexcept;
+	static void parseLine();
 	static void readFile(const std::string &name);
 
 	static std::string setName();
