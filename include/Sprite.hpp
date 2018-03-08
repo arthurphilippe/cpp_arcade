@@ -6,11 +6,16 @@
 //
 
 #ifndef SPRITE_HPP_
-	# define SPRITE_HPP_
+	#define SPRITE_HPP_
 
-#include <iostream>
+	#include <iostream>
 
-class Sprite {
+namespace arc {
+	class Sprite;
+	using SpriteList = std::vector<Sprite>;
+}
+
+class arc::Sprite {
 public:
 	Sprite(const std::string &name, const std::string &path,
 		const char &substitute)

@@ -16,7 +16,7 @@ class arc::SpriteParser {
 public:
 	SpriteParser() = delete;
 	~SpriteParser() = delete;
-	static std::vector<Sprite> parser(const std::string &folder);
+	static arc::SpriteList parser(const std::string &folder);
 	static const std::string &getErrorLine();
 	static const int &getErrorLineNb();
 private:
@@ -31,7 +31,7 @@ private:
 	static std::string setPath();
 	static char setSubstitute();
 
-	static std::vector<Sprite> _vector;
+	static arc::SpriteList _vector;
 	static std::string _line;
 	static int _nbrline;
 };
