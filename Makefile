@@ -13,7 +13,8 @@ RM		=	rm -vf
 
 MAIN		=	src/Main.cpp
 
-SRCS		=	src/SpriteParser.cpp
+SRCS		=	src/SpriteParser.cpp	\
+			src/Error.cpp
 
 OBJ_MAIN	=	$(MAIN:.cpp=.o)
 

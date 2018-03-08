@@ -14,9 +14,9 @@ int main(int ac, char **av)
 	if (ac < 2)
 		return 84;
 	try {
-		SpriteParser::parser(av[1]);
+		arc::SpriteParser::parser(av[1]);
 	}
-	catch (const ParserError &error)
+	catch (const arc::ParserError &error)
 	{
 		error.what();
 	};

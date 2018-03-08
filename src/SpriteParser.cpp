@@ -13,8 +13,23 @@
 #include "Error.hpp"
 #include "SpriteParser.hpp"
 
-Sprite SpriteParser::createSprite(const std::string &name, const std::string &path,
-		     const char &substitute, std::vector<Sprite> &_vector) noexcept
+std::string arc::SpriteParser::_line;
+std::vector<Sprite> arc::SpriteParser::_vector;
+int arc::SpriteParser::_nbrline;
+
+const std::string &arc::SpriteParser::getErrorLine()
+{
+	return (_line);
+}
+
+const int &arc::SpriteParser::getErrorLineNb()
+{
+	return (_nbrline);	
+}
+
+Sprite arc::SpriteParser::createSprite(
+	const std::string &path, const char &substitute,
+	const std::string &name, std::vector<Sprite> &_vector) noexcept
 {
 	Sprite tmp(name, path, substitute);
 
@@ -22,55 +37,52 @@ Sprite SpriteParser::createSprite(const std::string &name, const std::string &pa
 	return tmp;
 }
 
-std::string SpriteParser::setName(const std::string &line)
+std::string arc::SpriteParser::setName()
 {
-	std::string tmp = line;
+	std::string tmp = _line;
 	size_t tokenplace;
 
-	if ((tokenplace = tmp.find(":")) == std::string::npos)
-		throw ParserError(
-			"Error: Configuration File Have a Error On This Line: '",
-			line, "'");
+	if ((tokenplace = tmp.find(':')) == std::string::npos)
+		throw ParserError(arc::ERR_NAME);
 	tmp = tmp.substr(0, tokenplace);
 	return tmp;
 }
 
-std::string SpriteParser::setPath(const std::string &line)
+std::string arc::SpriteParser::setPath()
 {
-	std::string tmp = line;
+	std::string tmp = _line;
 
 	tmp = tmp.substr(tmp.find_last_of(":", tmp.length()) + 1, tmp.length());
-	if (access(tmp.c_str(), R_OK) == -1 || tmp == line)
-		throw ParserError(
-			"Error: Configuration File have a Error On This Line: '",
-			line, "', can't access to the indicated path");
+	if (access(tmp.c_str(), R_OK) == -1 || tmp == _line)
+		throw ParserError(arc::ERR_PATH);
 	return tmp;
 }
 
-char SpriteParser::setSubstitute(const std::string &line)
+char arc::SpriteParser::setSubstitute()
 {
-	std::string tmp = line;
+	std::string tmp = _line;
 
 	tmp = tmp.substr(tmp.find(":") + 1, tmp.length());
 	tmp = tmp.substr(0, tmp.find(":"));
 	if (tmp.length() > 1)
-		throw ParserError(
-			"Error: Configuration File have a Error On This Line: '",
-			line, "', the substitute character must contain a single char");
+		throw ParserError(arc::ERR_SUB);
 	return tmp[0];
 }
 
-void SpriteParser::readFile(const std::string &filename, std::vector<Sprite> &_vector)
+void arc::SpriteParser::readFile(
+	const std::string &filename)
 {
 	std::ifstream s(filename);
 	std::string tmp;
 
 	if (s.is_open()) {
-		while (getline(s, tmp)) {
-			if (tmp.length() > 0 && tmp[0] != '#')
+		while (getline(s, _line)) {
+			if (_line.length() > 0 && _line[0] != '#')
 				createSprite(
-					setName(tmp), setPath(tmp),
-					setSubstitute(tmp), _vector);
+					setPath(),
+					setSubstitute(), setName(),
+					_vector);
+			_nbrline += 1;
 		}
 	} else {
 		std::string _s("Error: can't open '");
@@ -80,10 +92,11 @@ void SpriteParser::readFile(const std::string &filename, std::vector<Sprite> &_v
 	}
 }
 
-std::vector<Sprite> SpriteParser::parser(const std::string &filename)
+std::vector<Sprite> arc::SpriteParser::parser(const std::string &filename)
 {
-	std::vector<Sprite> _vector;
-
-	readFile(filename, _vector);
+	_line.clear();
+	_vector.clear();
+	_nbrline = 1;
+	readFile(filename);
 	return _vector;
 }
