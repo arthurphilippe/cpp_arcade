@@ -11,6 +11,7 @@
 #include <memory>
 #include "IGame.hpp"
 #include "DynamicFunc.hpp"
+#include "IDisplay.hpp"
 
 int main()
 {
@@ -21,4 +22,9 @@ int main()
 	arc::IGame *test = entry.get()();
 	test->dump();
 	delete test;
+
+	arc::DynamicFunc<arc::IDisplay *(*)()>
+		gfx("./lib/CacaDisplay/libcaca.so");
+	auto caca = gfx.get()();
+	delete caca;
 }
