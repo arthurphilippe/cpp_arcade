@@ -26,9 +26,18 @@ int main(int ac, char **av)
 	delete test;
 
 	arc::DynamicFunc<arc::IDisplay *(*)()>
-		gfx("./lib/CacaDisplay/libcaca.so");
-	auto caca = gfx.get()();
+		gfxcaca("./lib/CacaDisplay/libcaca.so");
+	auto caca = gfxcaca.get()();
+	caca->putstr("kaka");
+	caca->waitEvent();
 	delete caca;
+	
+	arc::DynamicFunc<arc::IDisplay *(*)()>
+		gfx("./lib/SfmlDisplay/libsfml.so");
+	auto sfml = gfx.get()();
+	sfml->putstr("kaka");
+	sfml->waitEvent();
+	delete sfml;
 
 	if (ac < 2)
 		return 84;
