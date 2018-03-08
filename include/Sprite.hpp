@@ -8,11 +8,13 @@
 #ifndef SPRITE_HPP_
 	# define SPRITE_HPP_
 
+#include <iostream>
+
 class Sprite {
 public:
 	Sprite(const std::string &name, const std::string &path,
 		const char &substitute)
-		: _substitute(substitute), _name(name), _path(path) {}
+		: _substitute(substitute), _name(name), _path(path) {};
 		  ~Sprite(){};
 	void setName(const std::string &name) noexcept {_name = name;}
 	void setPath(const std::string &path) noexcept {_path = path;}

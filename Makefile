@@ -15,7 +15,9 @@ NAME		=	arcade
 
 MAIN		=	src/Main.cpp
 
-SRCS		=	src/DynamicFunc.cpp
+SRCS		=	src/SpriteParser.cpp	\
+			src/Error.cpp		\
+			src/DynamicFunc.cpp
 
 OBJ_MAIN	=	$(MAIN:.cpp=.o)
 
@@ -24,7 +26,8 @@ OBJS		=	$(SRCS:.cpp=.o)
 # Tests
 TEST		=	unit_tests.out
 
-SRCS_TEST	=	tests/TestSpriteClass.cpp
+SRCS_TEST	=	tests/TestSpriteClass.cpp	\
+			tests/TestSpriteParser.cpp
 
 SRCS_TEST	+=	$(OBJS)
 
@@ -55,7 +58,6 @@ tests: $(TEST) $(NAME)
 tests_run: CXX=g++ --coverage
 tests_run: tests
 	@./$(TEST)
-#	@bash ./tests/functionals_tests.sh
 
 $(NAME): $(OBJ_MAIN) $(OBJS)
 	@printf "[\033[0;36mlinking\033[0m]% 41s\r" $(NAME) | tr " " "."

@@ -12,8 +12,10 @@
 #include "IGame.hpp"
 #include "DynamicFunc.hpp"
 #include "IDisplay.hpp"
+#include "SpriteParser.hpp"
+#include "Error.hpp"
 
-int main()
+int main(int ac, char **av)
 {
 	std::cout << "Hi :3" << std::endl;
 	arc::DynamicFunc<arc::IGame *(*)()>
@@ -27,4 +29,15 @@ int main()
 		gfx("./lib/CacaDisplay/libcaca.so");
 	auto caca = gfx.get()();
 	delete caca;
+
+	if (ac < 2)
+		return 84;
+	try {
+		arc::SpriteParser::parser(av[1]);
+	}
+	catch (const arc::ParserError &error)
+	{
+		error.what();
+	};
+	return 0;
 }
