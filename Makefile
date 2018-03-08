@@ -82,6 +82,7 @@ fclean: clean
 	@$(RM) $(NAME) $(TEST) > /dev/null
 	@printf "[\033[0;31mdeletion\033[0m][binary]% 32s\n" $(NAME) | tr " " "."
 	@$(MAKE) fclean -C games/DefaultGame/
+	@$(MAKE) fclean -C lib/CacaDisplay/
 	@$(MAKE) fclean -C lib/SfmlDisplay/
 
 artifacts_clean:
