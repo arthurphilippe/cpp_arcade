@@ -31,11 +31,12 @@ int main(int ac, char **av)
 	caca->putstr("kaka");
 	caca->waitEvent();
 	delete caca;
-	
+
 	arc::DynamicFunc<arc::IDisplay *(*)()>
 		gfx("./lib/SfmlDisplay/libsfml.so");
 	auto sfml = gfx.get()();
 	sfml->putstr("kaka");
+	sfml->refresh();
 	sfml->waitEvent();
 	delete sfml;
 

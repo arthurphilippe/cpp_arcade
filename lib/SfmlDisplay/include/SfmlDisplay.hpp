@@ -23,6 +23,7 @@ public:
 	~SfmlDisplay();
 
 	void clear();
+	void refresh();
 	void putstr(const std::string &str, int x = 0, int y = 0);
 	void waitEvent();
 private:

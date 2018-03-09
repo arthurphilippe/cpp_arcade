@@ -20,6 +20,11 @@ arc::SfmlDisplay::~SfmlDisplay()
 {
 }
 
+void arc::SfmlDisplay::refresh()
+{
+	_window.display();
+}
+
 void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 {
 	sf::Text text;
@@ -30,7 +35,6 @@ void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 	text.setFillColor(sf::Color::White);
 	text.setPosition(x, y);
 	_window.draw(text);
-	_window.display();
 }
 
 void arc::SfmlDisplay::clear()
@@ -42,8 +46,7 @@ void arc::SfmlDisplay::waitEvent()
 {
 	sf::Event event;
 	while (_window.isOpen()) {
-		while (_window.pollEvent(event))
-		{
+		while (_window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed
 				|| sf::Keyboard::isKeyPressed(
 					sf::Keyboard::Escape))
