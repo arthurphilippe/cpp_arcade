@@ -22,7 +22,7 @@ arc::SfmlDisplay::~SfmlDisplay()
 
 void arc::SfmlDisplay::refresh()
 {
-	_window.refresh();
+	_window.display();
 }
 
 void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
