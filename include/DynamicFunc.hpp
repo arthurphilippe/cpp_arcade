@@ -9,6 +9,7 @@
 	#define SYMLOAD_HPP_
 
 	#include <string>
+	#include <stdexcept>
 
 namespace arc {
 	template <class T>
@@ -19,12 +20,12 @@ namespace arc {
 		{
 			_handle = dlopen(dl.c_str(), RTLD_LAZY);
 			if (!_handle)
-				throw std::exception();
+				throw std::runtime_error(dlerror());
 			dlerror();
 			call = (T) dlsym(_handle, sym.c_str());
 			const char *dlsym_error(dlerror());
 			if (dlsym_error)
-				throw std::exception();
+				throw std::runtime_error(dlsym_error);
 		}
 		~DynamicFunc()
 		{

@@ -14,7 +14,7 @@
 #include "SpriteParser.hpp"
 
 std::string arc::SpriteParser::_line;
-std::vector<Sprite> arc::SpriteParser::_vector;
+arc::SpriteList arc::SpriteParser::_vector;
 int arc::SpriteParser::_nbrline;
 
 const std::string &arc::SpriteParser::getErrorLine()
@@ -27,7 +27,7 @@ const int &arc::SpriteParser::getErrorLineNb()
 	return (_nbrline);
 }
 
-Sprite arc::SpriteParser::createSprite(
+arc::Sprite arc::SpriteParser::createSprite(
 	const std::string &path, const char &substitute,
 	const std::string &name) noexcept
 {
@@ -75,7 +75,6 @@ void arc::SpriteParser::parseLine()
 						setSubstitute(),
 						setName()));
 	_nbrline += 1;
-
 }
 
 void arc::SpriteParser::readFile(const std::string &filename)
@@ -95,7 +94,7 @@ void arc::SpriteParser::readFile(const std::string &filename)
 	}
 }
 
-std::vector<Sprite> arc::SpriteParser::parser(const std::string &filename)
+arc::SpriteList arc::SpriteParser::parser(const std::string &filename)
 {
 	_line.clear();
 	_vector.clear();

@@ -36,5 +36,4 @@ Test(ErrorSub, SpriteParser) {
 
 Test(ErrorPath, SpriteParser) {
 	cr_assert_throw(arc::SpriteParser::parser(CONF_FILE_ERR_PATH), arc::ParserError);
-
 }

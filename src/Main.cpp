@@ -15,22 +15,22 @@
 #include "SpriteParser.hpp"
 #include "Error.hpp"
 
-int main(int ac, char **av)
+int main()
 {
 	std::cout << "Hi :3" << std::endl;
 	arc::DynamicFunc<arc::IGame *(*)()>
-		entry("./games/DefaultGame/libDefaultGame.so");
+		entry("./games/Pacman/libPacman.so");
 
 	arc::IGame *test = entry.get()();
 	test->dump();
 	delete test;
 
-	arc::DynamicFunc<arc::IDisplay *(*)()>
-		gfxcaca("./lib/CacaDisplay/libcaca.so");
-	auto caca = gfxcaca.get()();
-	caca->putstr("kaka");
-	caca->waitEvent();
-	delete caca;
+	// arc::DynamicFunc<arc::IDisplay *(*)()>
+	// 	gfxcaca("./lib/CacaDisplay/libcaca.so");
+	// auto caca = gfxcaca.get()();
+	// caca->putstr("kaka");
+	// caca->waitEvent();
+	// delete caca;
 
 	arc::DynamicFunc<arc::IDisplay *(*)()>
 		gfx("./lib/SfmlDisplay/libsfml.so");
@@ -39,15 +39,4 @@ int main(int ac, char **av)
 	sfml->refresh();
 	sfml->waitEvent();
 	delete sfml;
-
-	if (ac < 2)
-		return 84;
-	try {
-		arc::SpriteParser::parser(av[1]);
-	}
-	catch (const arc::ParserError &error)
-	{
-		error.what();
-	};
-	return 0;
 }

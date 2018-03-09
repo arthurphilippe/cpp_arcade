@@ -1,9 +1,12 @@
-//
-// EPITECH PROJECT, 2018
-// Arcade
-// File description:
-// SpriteParser
-//
+/*
+** EPITECH PROJECT, 2018
+** cpp_arcade
+** File description:
+** SpriteParser
+*/
+
+#ifndef SRPITE_PARSER_H_
+	#define SRPITE_PARSER_H_
 
 #include <vector>
 #include "Sprite.hpp"
@@ -16,7 +19,7 @@ class arc::SpriteParser {
 public:
 	SpriteParser() = delete;
 	~SpriteParser() = delete;
-	static std::vector<Sprite> parser(const std::string &folder);
+	static arc::SpriteList parser(const std::string &folder);
 	static const std::string &getErrorLine();
 	static const int &getErrorLineNb();
 private:
@@ -31,7 +34,9 @@ private:
 	static std::string setPath();
 	static char setSubstitute();
 
-	static std::vector<Sprite> _vector;
+	static arc::SpriteList _vector;
 	static std::string _line;
 	static int _nbrline;
 };
+
+#endif /* SRPITE_PARSER_H_ */
