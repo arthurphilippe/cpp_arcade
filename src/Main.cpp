@@ -26,7 +26,17 @@ int main()
 	delete test;
 
 	// arc::DynamicFunc<arc::IDisplay *(*)()>
-	// 	gfx("./lib/CacaDisplay/libcaca.so");
-	// auto caca = gfx.get()();
+	// 	gfxcaca("./lib/CacaDisplay/libcaca.so");
+	// auto caca = gfxcaca.get()();
+	// caca->putstr("kaka");
+	// caca->waitEvent();
 	// delete caca;
+
+	arc::DynamicFunc<arc::IDisplay *(*)()>
+		gfx("./lib/SfmlDisplay/libsfml.so");
+	auto sfml = gfx.get()();
+	sfml->putstr("kaka");
+	sfml->refresh();
+	sfml->waitEvent();
+	delete sfml;
 }
