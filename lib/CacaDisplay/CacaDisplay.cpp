@@ -31,7 +31,7 @@ void arc::CacaDisplay::clear()
 	caca_clear_canvas(_cv);
 }
 
-void arc::CacaDisplay::display()
+void arc::CacaDisplay::refresh()
 {
 	caca_refresh_display(_dp);
 }
