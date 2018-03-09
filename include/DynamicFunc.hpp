@@ -10,6 +10,7 @@
 
 	#include <string>
 	#include <stdexcept>
+	#include <dlfcn.h>
 
 namespace arc {
 	template <class T>

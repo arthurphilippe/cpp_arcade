@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Build Project
-          command: make -j 4
+          command: make
       - run:
           name: Build Unit Tests Suites
           command: make tests -j 4

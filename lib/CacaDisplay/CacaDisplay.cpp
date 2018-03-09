@@ -22,13 +22,13 @@ arc::CacaDisplay::CacaDisplay()
 
 arc::CacaDisplay::~CacaDisplay()
 {
-	caca_get_event(_dp, CACA_EVENT_KEY_PRESS, &_ev, -1);
 	caca_free_display(_dp);
 }
 
 void arc::CacaDisplay::clear()
 {
 	caca_clear_canvas(_cv);
+	caca_set_color_ansi(_cv, CACA_BLACK, CACA_WHITE);
 }
 
 void arc::CacaDisplay::refresh()

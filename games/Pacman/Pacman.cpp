@@ -9,7 +9,9 @@
 #include "Pacman.hpp"
 
 static const arc::Pacman::Item
-DEF_PACMAN = {"pacman", "", arc::SpriteList(), 20, 20};
+DEF_PACMAN = {"pacman",
+		"tests/SpriteConfigurationFiles/RealConfigurationFile.conf",
+		arc::SpriteList(), 20, 20};
 static const arc::Pacman::Item
 DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 30, 30};
 static const arc::Pacman::Item
