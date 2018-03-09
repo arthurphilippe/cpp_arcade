@@ -46,8 +46,7 @@ void arc::SfmlDisplay::waitEvent()
 {
 	sf::Event event;
 	while (_window.isOpen()) {
-		while (_window.pollEvent(event))
-		{
+		while (_window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed
 				|| sf::Keyboard::isKeyPressed(
 					sf::Keyboard::Escape))
