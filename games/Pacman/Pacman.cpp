@@ -6,7 +6,6 @@
 */
 
 #include <iostream>
-#include <algorithm>
 #include "Pacman.hpp"
 
 static const arc::Pacman::Item
