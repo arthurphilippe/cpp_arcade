@@ -70,18 +70,15 @@ $(TEST): $(OBJS_TEST)
 	@printf "[\033[0;36mlinked\033[0m]% 42s\n" $(TEST) | tr " " "."
 
 lib:
-	@$(MAKE) -C games/DefaultGame/
 	@$(MAKE) -C games/Pacman/
 	@$(MAKE) -C lib/CacaDisplay
 
 clean: artifacts_clean
 	@printf "[\033[0;31mdeletion\033[0m][objects]% 31s\n" `$(RM) $(OBJ_MAIN) $(OBJS) $(OBJS_TEST) | wc -l | tr -d '\n'` | tr " " "."
-	@$(MAKE) clean -C games/DefaultGame/
 
 fclean: clean
 	@$(RM) $(NAME) $(TEST) > /dev/null
 	@printf "[\033[0;31mdeletion\033[0m][binary]% 32s\n" $(NAME) | tr " " "."
-	@$(MAKE) fclean -C games/DefaultGame/
 	@$(MAKE) fclean -C lib/CacaDisplay/
 	@$(MAKE) fclean -C games/Pacman/
 

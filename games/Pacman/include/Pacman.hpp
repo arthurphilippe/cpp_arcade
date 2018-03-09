@@ -23,15 +23,22 @@ public:
 	Pacman();
 	~Pacman() {};
 	void dump() const noexcept override;
-	const GridSize &getGridSize() const noexcept;
+	ItemList &getItems() noexcept override
+	{
+		return _items;
+	}
+	const GridSize &getGridSize() const noexcept override
+	{
+		return _gridSize;
+	}
 private:
 	std::string	_name;
 	ItemList	_items;
 	GridSize	_gridSize;
 
-	void _dumpItems() const noexcept;
-	void _setDefault() noexcept;
 	static ItemList defaultItems;
+
+	void _dumpItems() const noexcept;
 };
 
 #endif /* !DEFAULTGAME_HPP_ */

@@ -32,13 +32,13 @@ public:
 		int		x;
 		int		y;
 	};
+	using ItemList = std::vector<IGame::Item>;
 
 	virtual ~IGame() = default;
 	virtual void dump() const noexcept = 0;
+	virtual ItemList &getItems() noexcept = 0;
+	virtual const GridSize &getGridSize() const noexcept = 0;
 };
 
-namespace arc {
-	using ItemList = std::vector<IGame::Item>;
-}
 
 #endif /* !IGAME_HPP_ */

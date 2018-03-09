@@ -9,11 +9,16 @@
 #include <algorithm>
 #include "Pacman.hpp"
 
-arc::Pacman::Item DEF_PACMAN = {"pacman", "", arc::SpriteList(), 20, 20};
-arc::Pacman::Item DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 30, 30};
-arc::Pacman::Item DEF_GHOSTB = {"ghost b", "", arc::SpriteList(), 40, 30};
-arc::Pacman::Item DEF_GHOSTC = {"ghost c", "", arc::SpriteList(), 50, 30};
-arc::Pacman::Item DEF_GHOSTD = {"ghost d", "", arc::SpriteList(), 60, 30};
+static const arc::Pacman::Item
+DEF_PACMAN = {"pacman", "", arc::SpriteList(), 20, 20};
+static const arc::Pacman::Item
+DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 30, 30};
+static const arc::Pacman::Item
+DEF_GHOSTB = {"ghost b", "", arc::SpriteList(), 40, 30};
+static const arc::Pacman::Item
+DEF_GHOSTC = {"ghost c", "", arc::SpriteList(), 50, 30};
+static const arc::Pacman::Item
+DEF_GHOSTD = {"ghost d", "", arc::SpriteList(), 60, 30};
 
 arc::Pacman::Pacman()
 	: _name("Pacman"), _gridSize({GRID_H, GRID_L, GRID_STEP})
@@ -40,8 +45,4 @@ void arc::Pacman::_dumpItems() const noexcept
 		std::cout << it->sprites.size() << " -- Pos: " << it->x;
 		std::cout << ", " << it->y << std::endl;
 	}
-}
-
-void arc::Pacman::_setDefault() noexcept
-{
 }
