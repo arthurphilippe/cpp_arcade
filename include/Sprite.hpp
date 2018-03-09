@@ -9,6 +9,7 @@
 	#define SPRITE_HPP_
 
 	#include <iostream>
+	#include <vector>
 
 namespace arc {
 	class Sprite;
