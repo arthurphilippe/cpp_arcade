@@ -21,6 +21,7 @@ public:
 	~CacaDisplay();
 
 	void clear();
+	void display();
 	void putstr(const std::string &, int x = 0, int y = 0);
 	void waitEvent();
 private:

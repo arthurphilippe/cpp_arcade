@@ -31,6 +31,11 @@ void arc::CacaDisplay::clear()
 	caca_clear_canvas(_cv);
 }
 
+void arc::CacaDisplay::display()
+{
+	caca_refresh_display(_dp);
+}
+
 void arc::CacaDisplay::waitEvent()
 {
 	caca_get_event(_dp, CACA_EVENT_KEY_PRESS, &_ev, -1);
