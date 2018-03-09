@@ -2,12 +2,12 @@ version: 2
 jobs:
   full_test:
     docker:
-      - image: arthurphilippe/epitech-c-cpp-plain
+      - image: arthurphilippe/arcade
     steps:
       - checkout
       - run:
           name: Build Project
-          command: make arcade -j 4
+          command: make -j 4
       - run:
           name: Build Unit Tests Suites
           command: make tests -j 4
