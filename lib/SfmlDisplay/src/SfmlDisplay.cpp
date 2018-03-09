@@ -20,6 +20,11 @@ arc::SfmlDisplay::~SfmlDisplay()
 {
 }
 
+void arc::SfmlDisplay::display()
+{
+	_window.display();
+}
+
 void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 {
 	sf::Text text;
@@ -30,7 +35,6 @@ void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 	text.setFillColor(sf::Color::White);
 	text.setPosition(x, y);
 	_window.draw(text);
-	_window.display();
 }
 
 void arc::SfmlDisplay::clear()

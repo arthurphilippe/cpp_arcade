@@ -36,6 +36,7 @@ int main(int ac, char **av)
 		gfx("./lib/SfmlDisplay/libsfml.so");
 	auto sfml = gfx.get()();
 	sfml->putstr("kaka");
+	sfml->display();
 	sfml->waitEvent();
 	delete sfml;
 

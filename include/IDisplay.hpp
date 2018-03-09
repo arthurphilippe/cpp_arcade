@@ -20,6 +20,7 @@ public:
 	virtual void clear() = 0;
 	virtual void putstr(const std::string &, int x = 0, int y = 0) = 0;
 	virtual void waitEvent() = 0;
+	virtual void display() = 0;
 protected:
 private:
 };
