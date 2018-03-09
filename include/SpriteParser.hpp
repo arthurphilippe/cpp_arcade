@@ -1,9 +1,12 @@
-//
-// EPITECH PROJECT, 2018
-// Arcade
-// File description:
-// SpriteParser
-//
+/*
+** EPITECH PROJECT, 2018
+** cpp_arcade
+** File description:
+** SpriteParser
+*/
+
+#ifndef SRPITE_PARSER_H_
+	#define SRPITE_PARSER_H_
 
 #include <vector>
 #include "Sprite.hpp"
@@ -35,3 +38,5 @@ private:
 	static std::string _line;
 	static int _nbrline;
 };
+
+#endif /* SRPITE_PARSER_H_ */

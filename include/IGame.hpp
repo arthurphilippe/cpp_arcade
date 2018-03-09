@@ -8,17 +8,37 @@
 #ifndef IGAME_HPP_
 	#define IGAME_HPP_
 
+	#include <vector>
+	#include "Sprite.hpp"
+	#include "SpriteParser.hpp"
+
+
 namespace arc {
 	class IGame;
 }
 
 class arc::IGame {
 public:
-	virtual ~IGame() = default;
+	struct GridSize {
+		int x;
+		int y;
+		int pixelStep;
+	};
 
+	struct Item {
+		std::string	name;
+		std::string	spritesPath;
+		SpriteList	sprites;
+		int		x;
+		int		y;
+	};
+
+	virtual ~IGame() = default;
 	virtual void dump() const noexcept = 0;
-protected:
-private:
 };
+
+namespace arc {
+	using ItemList = std::vector<IGame::Item>;
+}
 
 #endif /* !IGAME_HPP_ */
