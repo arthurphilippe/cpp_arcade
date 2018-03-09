@@ -15,7 +15,7 @@
 #include "SpriteParser.hpp"
 #include "Error.hpp"
 
-int main(int ac, char **av)
+int main()
 {
 	std::cout << "Hi :3" << std::endl;
 	arc::DynamicFunc<arc::IGame *(*)()>
