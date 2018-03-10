@@ -9,6 +9,7 @@
 	#define CACA_HPP_
 
 	#include <caca.h>
+	#include <unordered_map>
 	#include "IDisplay.hpp"
 
 namespace arc {
@@ -24,6 +25,9 @@ public:
 	void refresh();
 	void putstr(const std::string &, int x = 0, int y = 0);
 	void waitEvent();
+	InteractionList getInteractions();
+
+	using KeyMap = std::unordered_map<int, Interaction>;
 private:
 	caca_display_t	*_dp;
 	caca_canvas_t	*_cv;
