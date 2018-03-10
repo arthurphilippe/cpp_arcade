@@ -5,6 +5,7 @@
 ** CacaDisplay
 */
 
+#include <iostream>
 #include "CacaDisplay.hpp"
 #include "GfxException.hpp"
 
@@ -17,6 +18,7 @@ static const arc::CacaDisplay::KeyMap KEYMAP = {
 	{CACA_KEY_PAGEDOWN, arc::CacaDisplay::GAME_PREV},
 	{'p', arc::CacaDisplay::LIB_NEXT,},
 	{'o', arc::CacaDisplay::LIB_PREV},
+	{CACA_KEY_ESCAPE, arc::CacaDisplay::QUIT},
 };
 
 arc::CacaDisplay::CacaDisplay()
@@ -60,9 +62,10 @@ void arc::CacaDisplay::waitEvent()
 arc::IDisplay::InteractionList arc::CacaDisplay::getInteractions()
 {
 	InteractionList input;
-	while (auto key = caca_get_event(_dp, CACA_EVENT_KEY_PRESS, &_ev, 0)) {
-		if (KEYMAP.find(key) != KEYMAP.end())
-			input.push(KEYMAP.find(key)->second);
+
+	while (caca_get_event(_dp, CACA_EVENT_KEY_PRESS, &_ev, 50)) {
+		if (KEYMAP.find(_ev.data.key.ch) != KEYMAP.end())
+			input.push(KEYMAP.find(_ev.data.key.ch)->second);
 	}
 	return input;
 }
