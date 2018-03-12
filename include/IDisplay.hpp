@@ -5,8 +5,8 @@
 ** IDisplay
 */
 
-#ifndef IDisplay_HPP_
-	#define IDisplay_HPP_
+#ifndef IDISPLAY_HPP_
+	#define IDISPLAY_HPP_
 
 	#include <string>
 	#include <queue>
@@ -38,4 +38,4 @@ public:
 	virtual InteractionList getInteractions() = 0;
 };
 
-#endif /* !IDisplay_HPP_ */
+#endif /* !IDISPLAY_HPP_ */
