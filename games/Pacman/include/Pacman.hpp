@@ -31,6 +31,7 @@ public:
 	{
 		return _gridSize;
 	}
+	void proccessIteraction(IDisplay::Interaction &) noexcept;
 private:
 	std::string	_name;
 	ItemList	_items;

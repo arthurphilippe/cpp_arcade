@@ -19,7 +19,7 @@ class arc::SpriteParser {
 public:
 	SpriteParser() = delete;
 	~SpriteParser() = delete;
-	static arc::SpriteList parser(const std::string &folder);
+	static arc::SpriteList parser(const std::string &filename);
 	static const std::string &getErrorLine();
 	static const int &getErrorLineNb();
 private:

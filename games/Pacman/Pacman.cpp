@@ -9,7 +9,9 @@
 #include "Pacman.hpp"
 
 static const arc::Pacman::Item
-DEF_PACMAN = {"pacman", "", arc::SpriteList(), 20, 20};
+DEF_PACMAN = {"pacman",
+		"tests/SpriteConfigurationFiles/RealConfigurationFile.conf",
+		arc::SpriteList(), 20, 20};
 static const arc::Pacman::Item
 DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 30, 30};
 static const arc::Pacman::Item
@@ -43,5 +45,25 @@ void arc::Pacman::_dumpItems() const noexcept
 		std::cout << "Item: " << it->name << " -- Sprite count:";
 		std::cout << it->sprites.size() << " -- Pos: " << it->x;
 		std::cout << ", " << it->y << std::endl;
+	}
+}
+
+void arc::Pacman::proccessIteraction(IDisplay::Interaction &interact) noexcept
+{
+	switch (interact) {
+		case IDisplay::MOVE_UP:
+			_items[0].x -= 1;
+			break;
+		case IDisplay::MOVE_DOWN:
+			_items[0].x += 1;
+			break;
+		case IDisplay::MOVE_LEFT:
+			_items[0].y -= 1;
+			break;
+		case IDisplay::MOVE_RIGHT:
+			_items[0].y += 1;
+			break;
+		default:
+			break;
 	}
 }
