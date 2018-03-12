@@ -28,6 +28,7 @@ static const arc::SpriteParser::MapColor _mapColor = {
 	{"MAGENTA", arc::Color::MAGENTA},
 	{"WHITE", arc::Color::WHITE},
 	{"BLACK", arc::Color::BLACK},
+	{"UNDEFINED", arc::Color::UNDEFINED},
 };
 
 
