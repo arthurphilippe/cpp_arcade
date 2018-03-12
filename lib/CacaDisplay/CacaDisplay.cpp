@@ -29,9 +29,6 @@ arc::CacaDisplay::CacaDisplay()
 		throw GfxException(GFX_ERR_INIT);
 	_cv = caca_get_canvas(_dp);
 	caca_set_display_title(_dp, "Arcade");
-	caca_set_color_ansi(_cv, CACA_BLACK, CACA_WHITE);
-	caca_put_str(_cv, 0, 0, "Welcome to arcade!");
-	caca_refresh_display(_dp);
 }
 
 arc::CacaDisplay::~CacaDisplay()
@@ -42,7 +39,7 @@ arc::CacaDisplay::~CacaDisplay()
 void arc::CacaDisplay::clear()
 {
 	caca_clear_canvas(_cv);
-	caca_set_color_ansi(_cv, CACA_BLACK, CACA_WHITE);
+	caca_set_color_ansi(_cv, CACA_WHITE, CACA_BLACK);
 }
 
 void arc::CacaDisplay::refresh()

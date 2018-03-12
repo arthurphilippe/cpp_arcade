@@ -18,6 +18,7 @@
 int main()
 {
 	arc::GameWarper toto;
+	toto.loop();
 	// std::cout << "Hi :3" << std::endl;
 	// arc::DynamicFunc<arc::IGame *(*)()>
 	// 	entry("./games/Pacman/libPacman.so");

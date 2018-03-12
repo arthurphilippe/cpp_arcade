@@ -23,6 +23,8 @@ class arc::GameWarper {
 public:
 	GameWarper();
 	~GameWarper();
+
+	int loop();
 protected:
 private:
 	DynamicFunc<IGame *(*)()>	_gameEntry;
@@ -30,7 +32,12 @@ private:
 	std::unique_ptr<IGame>		_currGame;
 	std::unique_ptr<IDisplay>	_currDisplay;
 
+	void _processWarperInter(Interaction &iter);
+	void _processInteractions();
+	static const std::vector<Interaction> _sysInteractions;
 	static void _setItemSprites(Item &item);
+
+	bool _running;
 };
 
 #endif /* !GAMEWARPER_HPP_ */
