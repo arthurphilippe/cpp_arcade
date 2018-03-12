@@ -24,6 +24,7 @@ public:
 	void clear();
 	void refresh();
 	void putstr(const std::string &, int x = 0, int y = 0);
+	void putItem(const Item &);
 	void waitEvent();
 	InteractionList getInteractions();
 

@@ -10,15 +10,15 @@
 #include "SfmlDisplay.hpp"
 
 static const arc::SfmlDisplay::KeyMap KEYMAP = {
-	{sf::Keyboard::Z, arc::SfmlDisplay::MOVE_UP},
-	{sf::Keyboard::Q, arc::SfmlDisplay::MOVE_LEFT},
-	{sf::Keyboard::S, arc::SfmlDisplay::MOVE_DOWN},
-	{sf::Keyboard::D, arc::SfmlDisplay::MOVE_RIGHT},
-	{sf::Keyboard::PageUp, arc::SfmlDisplay::GAME_NEXT},
-	{sf::Keyboard::PageDown, arc::SfmlDisplay::GAME_PREV},
-	{sf::Keyboard::P, arc::SfmlDisplay::LIB_NEXT,},
-	{sf::Keyboard::O, arc::SfmlDisplay::LIB_PREV},
-	{sf::Keyboard::Escape, arc::SfmlDisplay::QUIT},
+	{sf::Keyboard::Z, arc::MOVE_UP},
+	{sf::Keyboard::Q, arc::MOVE_LEFT},
+	{sf::Keyboard::S, arc::MOVE_DOWN},
+	{sf::Keyboard::D, arc::MOVE_RIGHT},
+	{sf::Keyboard::PageUp, arc::GAME_NEXT},
+	{sf::Keyboard::PageDown, arc::GAME_PREV},
+	{sf::Keyboard::P, arc::LIB_NEXT,},
+	{sf::Keyboard::O, arc::LIB_PREV},
+	{sf::Keyboard::Escape, arc::QUIT},
 };
 
 
@@ -68,7 +68,7 @@ void arc::SfmlDisplay::waitEvent()
 	}
 }
 
-arc::IDisplay::InteractionList arc::SfmlDisplay::getInteractions()
+arc::InteractionList arc::SfmlDisplay::getInteractions()
 {
 	InteractionList input;
 

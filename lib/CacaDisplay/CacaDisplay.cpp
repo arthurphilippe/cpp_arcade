@@ -6,19 +6,20 @@
 */
 
 #include <iostream>
+#include "Arc.hpp"
 #include "CacaDisplay.hpp"
 #include "GfxException.hpp"
 
 static const arc::CacaDisplay::KeyMap KEYMAP = {
-	{'z', arc::CacaDisplay::MOVE_UP},
-	{'q', arc::CacaDisplay::MOVE_LEFT},
-	{'s', arc::CacaDisplay::MOVE_DOWN},
-	{'d', arc::CacaDisplay::MOVE_RIGHT},
-	{CACA_KEY_PAGEUP, arc::CacaDisplay::GAME_NEXT},
-	{CACA_KEY_PAGEDOWN, arc::CacaDisplay::GAME_PREV},
-	{'p', arc::CacaDisplay::LIB_NEXT},
-	{'o', arc::CacaDisplay::LIB_PREV},
-	{CACA_KEY_ESCAPE, arc::CacaDisplay::QUIT},
+	{'z', arc::MOVE_UP},
+	{'q', arc::MOVE_LEFT},
+	{'s', arc::MOVE_DOWN},
+	{'d', arc::MOVE_RIGHT},
+	{CACA_KEY_PAGEUP, arc::GAME_NEXT},
+	{CACA_KEY_PAGEDOWN, arc::GAME_PREV},
+	{'p', arc::LIB_NEXT},
+	{'o', arc::LIB_PREV},
+	{CACA_KEY_ESCAPE, arc::QUIT},
 };
 
 arc::CacaDisplay::CacaDisplay()
@@ -54,12 +55,23 @@ void arc::CacaDisplay::putstr(const std::string &str, int x, int y)
 	caca_put_str(_cv, x, y, str.c_str());
 }
 
+void arc::CacaDisplay::putItem(const Item &item)
+{
+	auto &currSprite = item.sprites[item.currSpriteIdx];
+
+	if (currSprite.getSubstitute())
+		caca_put_char(_cv, item.x, item.y, currSprite.getSubstitute());
+	else
+		caca_put_char(_cv, item.x, item.y, '?');
+}
+
+
 void arc::CacaDisplay::waitEvent()
 {
 	caca_get_event(_dp, CACA_EVENT_KEY_PRESS, &_ev, -1);
 }
 
-arc::IDisplay::InteractionList arc::CacaDisplay::getInteractions()
+arc::InteractionList arc::CacaDisplay::getInteractions()
 {
 	InteractionList input;
 

@@ -19,8 +19,8 @@ arc::GameWarper::GameWarper()
 			 _setItemSprites);
 	_currGame->dump();
 	_currDisplay->clear();
-	_currDisplay->putstr("kapa", 0, 0);
-	_currDisplay->refresh();
+	// _currDisplay->putstr("kapa", 0, 0);
+	// _currDisplay->refresh();
 }
 
 arc::GameWarper::~GameWarper()
@@ -29,7 +29,7 @@ arc::GameWarper::~GameWarper()
 	while (!hasExited) {
 		auto inter = _currDisplay->getInteractions();
 		while (inter.size() != 0) {
-			if (inter.front() == IDisplay::Interaction::QUIT) {
+			if (inter.front() == Interaction::QUIT) {
 				std::cout << "recived quit" << std::endl;
 				hasExited = true;
 			} else {
@@ -41,7 +41,7 @@ arc::GameWarper::~GameWarper()
 	}
 }
 
-void arc::GameWarper::_setItemSprites(IGame::Item &item)
+void arc::GameWarper::_setItemSprites(Item &item)
 {
 	if (item.spritesPath.length())
 		item.sprites = SpriteParser::parser(item.spritesPath);

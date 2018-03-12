@@ -10,6 +10,8 @@
 
 	#include <string>
 	#include <queue>
+	#include "Arc.hpp"
+	#include "IGame.hpp"
 
 namespace arc {
 	class IDisplay;
@@ -17,22 +19,10 @@ namespace arc {
 
 class arc::IDisplay {
 public:
-	enum Interaction {
-		MOVE_UP,
-		MOVE_DOWN,
-		MOVE_LEFT,
-		MOVE_RIGHT,
-		LIB_NEXT,
-		LIB_PREV,
-		GAME_NEXT,
-		GAME_PREV,
-		QUIT,
-	};
-	using InteractionList = std::queue<Interaction>;
-
 	virtual ~IDisplay() = default;
 	virtual void clear() = 0;
 	virtual void putstr(const std::string &, int x = 0, int y = 0) = 0;
+	virtual void putItem(const Item &);
 	virtual void waitEvent() = 0;
 	virtual void refresh() = 0;
 	virtual InteractionList getInteractions() = 0;

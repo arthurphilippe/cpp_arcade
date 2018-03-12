@@ -29,7 +29,7 @@ private:
 	std::unique_ptr<IGame>		_currGame;
 	std::unique_ptr<IDisplay>	_currDisplay;
 
-	static void _setItemSprites(IGame::Item &item);
+	static void _setItemSprites(Item &item);
 };
 
 #endif /* !GAMEWARPER_HPP_ */

@@ -25,20 +25,11 @@ public:
 		int pixelStep;
 	};
 
-	struct Item {
-		std::string	name;
-		std::string	spritesPath;
-		SpriteList	sprites;
-		int		x;
-		int		y;
-	};
-	using ItemList = std::vector<IGame::Item>;
-
 	virtual ~IGame() = default;
 	virtual void dump() const noexcept = 0;
 	virtual ItemList &getItems() noexcept = 0;
 	virtual const GridSize &getGridSize() const noexcept = 0;
-	virtual void proccessIteraction(IDisplay::Interaction &) noexcept = 0;
+	virtual void proccessIteraction(Interaction &) noexcept = 0;
 };
 
 #endif /* !IGAME_HPP_ */

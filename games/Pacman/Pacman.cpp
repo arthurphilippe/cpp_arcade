@@ -6,20 +6,21 @@
 */
 
 #include <iostream>
+#include "Arc.hpp"
 #include "Pacman.hpp"
 
-static const arc::Pacman::Item
+static const arc::Item
 DEF_PACMAN = {"pacman",
 		"tests/SpriteConfigurationFiles/RealConfigurationFile.conf",
-		arc::SpriteList(), 20, 20};
-static const arc::Pacman::Item
-DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 30, 30};
-static const arc::Pacman::Item
-DEF_GHOSTB = {"ghost b", "", arc::SpriteList(), 40, 30};
-static const arc::Pacman::Item
-DEF_GHOSTC = {"ghost c", "", arc::SpriteList(), 50, 30};
-static const arc::Pacman::Item
-DEF_GHOSTD = {"ghost d", "", arc::SpriteList(), 60, 30};
+		arc::SpriteList(), 0, 20, 20};
+static const arc::Item
+DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 30, 30};
+static const arc::Item
+DEF_GHOSTB = {"ghost b", "", arc::SpriteList(), 0, 40, 30};
+static const arc::Item
+DEF_GHOSTC = {"ghost c", "", arc::SpriteList(), 0, 50, 30};
+static const arc::Item
+DEF_GHOSTD = {"ghost d", "", arc::SpriteList(), 0, 60, 30};
 
 arc::Pacman::Pacman()
 	: _name("Pacman"), _gridSize({GRID_H, GRID_L, GRID_STEP})
@@ -48,19 +49,19 @@ void arc::Pacman::_dumpItems() const noexcept
 	}
 }
 
-void arc::Pacman::proccessIteraction(IDisplay::Interaction &interact) noexcept
+void arc::Pacman::proccessIteraction(Interaction &interact) noexcept
 {
 	switch (interact) {
-		case IDisplay::MOVE_UP:
+		case MOVE_UP:
 			_items[0].x -= 1;
 			break;
-		case IDisplay::MOVE_DOWN:
+		case MOVE_DOWN:
 			_items[0].x += 1;
 			break;
-		case IDisplay::MOVE_LEFT:
+		case MOVE_LEFT:
 			_items[0].y -= 1;
 			break;
-		case IDisplay::MOVE_RIGHT:
+		case MOVE_RIGHT:
 			_items[0].y += 1;
 			break;
 		default:
