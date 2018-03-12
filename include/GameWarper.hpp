@@ -13,6 +13,7 @@
 	#include "IGame.hpp"
 	#include "IDisplay.hpp"
 	#include "DynamicFunc.hpp"
+	#include "Arc.hpp"
 
 namespace arc {
 	class GameWarper;

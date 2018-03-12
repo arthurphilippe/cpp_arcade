@@ -26,6 +26,7 @@ public:
 	void clear();
 	void refresh();
 	void putstr(const std::string &str, int x = 0, int y = 0);
+	void putItem(const Item &);
 	void waitEvent();
 	InteractionList getInteractions();
 	using KeyMap = std::unordered_map<sf::Keyboard::Key, Interaction>;

@@ -50,6 +50,11 @@ void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 	_window.draw(text);
 }
 
+void arc::SfmlDisplay::putItem(const Item &item)
+{
+	(void) item;
+}
+
 void arc::SfmlDisplay::clear()
 {
 	_window.clear();
