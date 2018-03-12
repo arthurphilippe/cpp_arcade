@@ -18,6 +18,7 @@ namespace arc {
 	constexpr auto ERR_SUB("\n  sub char cannot be multiple char long");
 	constexpr auto ERR_PATH("\n  can't access to the indicated path");
 	constexpr auto ERR_NAME("\n  separator not found");
+	constexpr auto ERR_COLOR("\n  can't find a color");
 };
 class arc::ParserError : public std::exception {
 public:

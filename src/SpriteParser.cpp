@@ -16,6 +16,21 @@
 std::string arc::SpriteParser::_line;
 arc::SpriteList arc::SpriteParser::_vector;
 int arc::SpriteParser::_nbrline;
+arc::Color _color;
+
+static const arc::SpriteParser::MapColor _mapColor = {
+	{"BLUE", arc::Color::BLUE},
+	{"RED", arc::Color::RED},
+	{"GREEN", arc::Color::GREEN},
+	{"BLACK", arc::Color::BLACK},
+	{"YELLOW", arc::Color::YELLOW},
+	{"CYAN", arc::Color::CYAN},
+	{"MAGENTA", arc::Color::MAGENTA},
+	{"WHITE", arc::Color::WHITE},
+	{"BLACK", arc::Color::BLACK},
+	{"UNDEFINED", arc::Color::UNDEFINED},
+};
+
 
 const std::string &arc::SpriteParser::getErrorLine()
 {
@@ -29,10 +44,11 @@ const int &arc::SpriteParser::getErrorLineNb()
 
 arc::Sprite arc::SpriteParser::createSprite(
 	const std::string &path, const char &substitute,
-	const std::string &name) noexcept
+	const std::string &name)
 {
 	Sprite tmp(name, path, substitute);
 
+	tmp.setColor(setColor());
 	return tmp;
 }
 
@@ -45,6 +61,23 @@ std::string arc::SpriteParser::setName()
 		throw ParserError(arc::ERR_NAME);
 	tmp = tmp.substr(0, tokenplace);
 	return tmp;
+}
+
+arc::Color arc::SpriteParser::setColor()
+{
+	std::string tmp = _line;
+	arc::Color color = arc::Color::DFT_COLOR_RET_ERROR;
+
+	for (int i = 0; i != 2; i++)
+		tmp = tmp.substr(tmp.find_first_of(":") + 1, tmp.find_last_of(":"));
+	tmp = tmp.substr(0, tmp.find(":"));
+	for (auto i = _mapColor.begin(); i != _mapColor.end(); i++) {
+		if (i->first == tmp)
+			color = i->second;
+	}
+	if (color == arc::Color::DFT_COLOR_RET_ERROR)
+		throw ParserError(ERR_COLOR);
+	return color;
 }
 
 std::string arc::SpriteParser::setPath()
