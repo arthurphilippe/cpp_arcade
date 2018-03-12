@@ -46,4 +46,3 @@ void arc::GameWarper::_setItemSprites(IGame::Item &item)
 	if (item.spritesPath.length())
 		item.sprites = SpriteParser::parser(item.spritesPath);
 }
-
