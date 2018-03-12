@@ -71,12 +71,10 @@ void arc::SfmlDisplay::waitEvent()
 arc::IDisplay::InteractionList arc::SfmlDisplay::getInteractions()
 {
 	InteractionList input;
- 
+
 	for (auto i = KEYMAP.begin(); i != KEYMAP.end(); i++) {
-		if (sf::Keyboard::isKeyPressed(i->first)) {
-			std::cout << i->second << std::endl;
+		if (sf::Keyboard::isKeyPressed(i->first))
 			input.push(i->second);
-		}
 	}
 	return input;
 }
