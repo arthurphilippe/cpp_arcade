@@ -47,3 +47,23 @@ void arc::Pacman::_dumpItems() const noexcept
 		std::cout << ", " << it->y << std::endl;
 	}
 }
+
+void arc::Pacman::proccessIteraction(IDisplay::Interaction &interact) noexcept
+{
+	switch (interact) {
+		case IDisplay::MOVE_UP:
+			_items[0].x -= 1;
+			break;
+		case IDisplay::MOVE_DOWN:
+			_items[0].x += 1;
+			break;
+		case IDisplay::MOVE_LEFT:
+			_items[0].y -= 1;
+			break;
+		case IDisplay::MOVE_RIGHT:
+			_items[0].y += 1;
+			break;
+		default:
+			break;
+	}
+}

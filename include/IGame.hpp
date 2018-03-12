@@ -11,7 +11,7 @@
 	#include <vector>
 	#include "Sprite.hpp"
 	#include "SpriteParser.hpp"
-
+	#include "IDisplay.hpp"
 
 namespace arc {
 	class IGame;
@@ -38,6 +38,7 @@ public:
 	virtual void dump() const noexcept = 0;
 	virtual ItemList &getItems() noexcept = 0;
 	virtual const GridSize &getGridSize() const noexcept = 0;
+	virtual void proccessIteraction(IDisplay::Interaction &) noexcept = 0;
 };
 
 

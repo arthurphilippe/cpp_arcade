@@ -21,7 +21,7 @@ namespace arc {
 class arc::GameWarper {
 public:
 	GameWarper();
-	~GameWarper() = default;
+	~GameWarper();
 protected:
 private:
 	DynamicFunc<IGame *(*)()>	_gameEntry;
