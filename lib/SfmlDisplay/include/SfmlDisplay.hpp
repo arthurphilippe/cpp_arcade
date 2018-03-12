@@ -8,6 +8,7 @@
 #ifndef SFMLDISPLAY_HPP_
 	#define SFMLDISPLAY_HPP_
 
+#include <unordered_map>
 #include <SFML/Graphics.hpp>
 #include "IDisplay.hpp"
 
@@ -26,6 +27,9 @@ public:
 	void refresh();
 	void putstr(const std::string &str, int x = 0, int y = 0);
 	void waitEvent();
+	InteractionList getInteractions();
+	using KeyMap = std::unordered_map<sf::Keyboard::Key, Interaction>;
+
 private:
 	sf::RenderWindow _window;
 	sf::Font _font;
