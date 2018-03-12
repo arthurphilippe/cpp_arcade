@@ -8,8 +8,8 @@
 #ifndef ARC_HPP_
 	#define ARC_HPP_
 
-	#include "Sprite.hpp"
 	#include <queue>
+	#include "Sprite.hpp"
 
 namespace arc {
 	struct Item {

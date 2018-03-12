@@ -13,7 +13,7 @@ RM		=	rm -vf
 # Arcade
 NAME		=	arcade
 
-MAIN		=	src/Main.cpp
+MAIN		=	tests/Main_SpriteParser.cpp
 
 SRCS		=	src/SpriteParser.cpp	\
 			src/Error.cpp		\
@@ -35,7 +35,7 @@ SRCS_TEST	+=	$(OBJS)
 OBJS_TEST	=	$(SRCS_TEST:.cpp=.o)
 
 # Global Flags
-CPPFLAGS	=	-W -Wextra -Wall -Iinclude/ -std=c++17
+CPPFLAGS	=	-W -Wextra -Wall -Iinclude/ #-std=c++17
 
 LDFLAGS		=	-ldl
 
