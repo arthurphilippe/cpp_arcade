@@ -7,10 +7,11 @@
 
 #ifndef SRPITE_PARSER_H_
 	#define SRPITE_PARSER_H_
-#include <unordered_map>
-#include <vector>
-#include "Sprite.hpp"
-#include "Arc.hpp"
+
+	#include <unordered_map>
+	#include <vector>
+	#include "Sprite.hpp"
+	#include "Arc.hpp"
 
 namespace arc {
 	class SpriteParser;
