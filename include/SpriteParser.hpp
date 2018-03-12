@@ -38,7 +38,7 @@ private:
 	static char setSubstitute();
 	static Color setColor();
 
-	static std::vector<Sprite> _vector;
+	static SpriteList _vector;
 	static std::string _line;
 	static int _nbrline;
 	static Color _color;
