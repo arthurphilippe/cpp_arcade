@@ -34,7 +34,9 @@ arc::GameWarper::~GameWarper()
 				hasExited = true;
 			} else {
 				_currGame->proccessIteraction(inter.front());
-				_currGame->dump();
+				// _currGame->dump();
+				_currDisplay->putItem(_currGame->getItems()[0]);
+				_currDisplay->refresh();
 			}
 			inter.pop();
 		}

@@ -53,16 +53,16 @@ void arc::Pacman::proccessIteraction(Interaction &interact) noexcept
 {
 	switch (interact) {
 		case MOVE_UP:
-			_items[0].x -= 1;
-			break;
-		case MOVE_DOWN:
-			_items[0].x += 1;
-			break;
-		case MOVE_LEFT:
 			_items[0].y -= 1;
 			break;
-		case MOVE_RIGHT:
+		case MOVE_DOWN:
 			_items[0].y += 1;
+			break;
+		case MOVE_LEFT:
+			_items[0].x -= 1;
+			break;
+		case MOVE_RIGHT:
+			_items[0].x += 1;
 			break;
 		default:
 			break;
