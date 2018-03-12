@@ -36,8 +36,6 @@ public:
 	virtual void waitEvent() = 0;
 	virtual void refresh() = 0;
 	virtual InteractionList getInteractions() = 0;
-protected:
-private:
 };
 
 #endif /* !IDisplay_HPP_ */

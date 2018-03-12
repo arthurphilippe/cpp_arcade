@@ -41,5 +41,4 @@ public:
 	virtual void proccessIteraction(IDisplay::Interaction &) noexcept = 0;
 };
 
-
 #endif /* !IGAME_HPP_ */

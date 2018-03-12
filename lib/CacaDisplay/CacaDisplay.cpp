@@ -16,7 +16,7 @@ static const arc::CacaDisplay::KeyMap KEYMAP = {
 	{'d', arc::CacaDisplay::MOVE_RIGHT},
 	{CACA_KEY_PAGEUP, arc::CacaDisplay::GAME_NEXT},
 	{CACA_KEY_PAGEDOWN, arc::CacaDisplay::GAME_PREV},
-	{'p', arc::CacaDisplay::LIB_NEXT,},
+	{'p', arc::CacaDisplay::LIB_NEXT},
 	{'o', arc::CacaDisplay::LIB_PREV},
 	{CACA_KEY_ESCAPE, arc::CacaDisplay::QUIT},
 };

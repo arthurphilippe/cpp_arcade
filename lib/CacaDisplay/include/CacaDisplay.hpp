@@ -19,7 +19,7 @@ namespace arc {
 class arc::CacaDisplay : public IDisplay {
 public:
 	CacaDisplay();
-	~CacaDisplay();
+	~CacaDisplay() override;
 
 	void clear();
 	void refresh();
