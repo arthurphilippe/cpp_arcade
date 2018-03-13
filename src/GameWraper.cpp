@@ -55,7 +55,7 @@ int arc::GameWraper::loop()
 		_startTime = std::chrono::high_resolution_clock::now();
 		_processInteractions();
 		_currDisplay->refresh();
-		_waitCycle(30);
+		_waitCycle(15);
 	}
 	return 0;
 }
@@ -65,7 +65,7 @@ void arc::GameWraper::_waitCycle(size_t fps)
 	auto finish = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double, std::milli> elapsed = finish - _startTime;
 	std::chrono::duration<double, std::milli> tempo(
-		((61 - fps) * 1000 / 60) - elapsed.count());
+		((61 - fps) * 100 / 60) - elapsed.count());
 	std::this_thread::sleep_for(tempo);
 }
 
