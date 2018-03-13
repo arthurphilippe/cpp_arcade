@@ -33,6 +33,7 @@ public:
 		return _info;
 	}
 	void proccessIteraction(Interaction &) noexcept;
+	void envUpdate() noexcept;
 private:
 	std::string	_name;
 	ItemList	_items;

@@ -37,6 +37,7 @@ int arc::GameWraper::loop()
 	while (_running) {
 		_startTime = std::chrono::high_resolution_clock::now();
 		_processInteractions();
+		_currGame->envUpdate();
 		_currDisplay->refresh();
 		_waitCycle(_currGame->getSpecs().fps);
 	}

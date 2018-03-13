@@ -68,3 +68,6 @@ void arc::Pacman::proccessIteraction(Interaction &interact) noexcept
 			break;
 	}
 }
+
+void arc::Pacman::envUpdate() noexcept
+{}

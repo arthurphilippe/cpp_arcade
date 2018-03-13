@@ -31,6 +31,7 @@ public:
 	virtual ItemList &getItems() noexcept = 0;
 	virtual const Specs &getSpecs() const noexcept = 0;
 	virtual void proccessIteraction(Interaction &) noexcept = 0;
+	virtual void envUpdate() noexcept = 0;
 };
 
 #endif /* !IGAME_HPP_ */
