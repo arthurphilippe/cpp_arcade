@@ -2,19 +2,19 @@
 ** EPITECH PROJECT, 2018
 ** cpp_arcade
 ** File description:
-** GameWarper
+** GameWraper
 */
 
 #include <algorithm>
 #include "unistd.h"
-#include "GameWarper.hpp"
+#include "GameWraper.hpp"
 #include "SpriteParser.hpp"
 
-const std::vector<arc::Interaction> arc::GameWarper::_sysInteractions {
+const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 	LIB_NEXT, LIB_PREV, GAME_NEXT, GAME_PREV, QUIT
 };
 
-arc::GameWarper::GameWarper()
+arc::GameWraper::GameWraper()
 	: _gameEntry("./games/Pacman/libPacman.so"),
 	_displayEntry("./lib/CacaDisplay/libcaca.so"),
 	_currGame(_gameEntry.get()()),
@@ -29,7 +29,7 @@ arc::GameWarper::GameWarper()
 	_currDisplay->refresh();
 }
 
-arc::GameWarper::~GameWarper()
+arc::GameWraper::~GameWraper()
 {
 	// bool hasExited = false;
 	// while (!hasExited) {
@@ -49,17 +49,27 @@ arc::GameWarper::~GameWarper()
 	// }
 }
 
-int arc::GameWarper::loop()
+int arc::GameWraper::loop()
 {
 	while (_running) {
+		_startTime = std::chrono::high_resolution_clock::now();
 		_processInteractions();
 		_currDisplay->refresh();
-		usleep(1000);
+		_waitCycle(30);
 	}
 	return 0;
 }
 
-void arc::GameWarper::_processWarperInter(Interaction &inter)
+void arc::GameWraper::_waitCycle(size_t fps)
+{
+	auto finish = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double, std::milli> elapsed = finish - _startTime;
+	std::chrono::duration<double, std::milli> tempo(
+		((61 - fps) * 1000 / 60) - elapsed.count());
+	std::this_thread::sleep_for(tempo);
+}
+
+void arc::GameWraper::_processWraperInter(Interaction &inter)
 {
 	switch (inter) {
 		case QUIT:
@@ -70,14 +80,14 @@ void arc::GameWarper::_processWarperInter(Interaction &inter)
 	}
 }
 
-void arc::GameWarper::_processInteractions()
+void arc::GameWraper::_processInteractions()
 {
 	auto inter = _currDisplay->getInteractions();
 	while (inter.size() != 0) {
 		std::cout << inter.front() << std::endl;
 		if (find(_sysInteractions.begin(), _sysInteractions.end(),
 			inter.front()) != _sysInteractions.end())
-			_processWarperInter(inter.front());
+			_processWraperInter(inter.front());
 		else {
 			std::cout << "is not sysinter" << std::endl;
 			_currGame->proccessIteraction(inter.front());
@@ -88,7 +98,7 @@ void arc::GameWarper::_processInteractions()
 	}
 }
 
-void arc::GameWarper::_setItemSprites(Item &item)
+void arc::GameWraper::_setItemSprites(Item &item)
 {
 	if (item.spritesPath.length())
 		item.sprites = SpriteParser::parser(item.spritesPath);
