@@ -35,9 +35,9 @@ public:
 	InteractionList getInteractions();
 	using KeyMap = std::unordered_map<sf::Keyboard::Key, Interaction>;
 
-	class SpriteStockage {
+	class SpriteStorage {
 	public:
-		SpriteStockage(const std::string &path)
+		SpriteStorage(const std::string &path)
 			: _path(path)
 			{
 				if (!_texture.loadFromFile(path))
@@ -45,7 +45,7 @@ public:
 				_texture.setSmooth(true);
 				_sprite.setTexture(_texture);
 			}
-		~SpriteStockage() {};
+		~SpriteStorage() {};
 		const std::string &getPath() const noexcept {return _path;}
 	        sf::Sprite &getSprite() noexcept {return _sprite;}
 	private:
