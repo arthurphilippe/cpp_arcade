@@ -67,12 +67,10 @@ void arc::GameWraper::_processInteractions()
 {
 	auto inter = _currDisplay->getInteractions();
 	while (inter.size() != 0) {
-		std::cout << inter.front() << std::endl;
 		if (find(_sysInteractions.begin(), _sysInteractions.end(),
 			inter.front()) != _sysInteractions.end())
 			_processWraperInter(inter.front());
 		else {
-			std::cout << "is not sysinter" << std::endl;
 			_currGame->proccessIteraction(inter.front());
 			_currDisplay->putItem(_currGame->getItems()[0]);
 			_currDisplay->refresh();
