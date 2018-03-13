@@ -50,6 +50,14 @@ void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 	_window.draw(text);
 }
 
+void arc::SfmlDisplay::putSprite()
+{
+}
+
+void arc::SfmlDisplay::putItem(const Item &item)
+{
+}
+
 void arc::SfmlDisplay::putItem(const Item &item)
 {
 	(void) item;
