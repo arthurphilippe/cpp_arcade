@@ -50,9 +50,28 @@ void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 	_window.draw(text);
 }
 
+sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
+{
+	for (auto i = _spriteVector.begin(); i != _spriteVector.end(); i++) {
+		if (currSprite.getPath() == i->get()->getPath())
+			return i->get()->getSprite();
+	}
+	_spriteVector.push_back(
+		std::unique_ptr<SpriteStorage>(
+			new SpriteStorage(
+				currSprite.getPath())));
+	return _spriteVector[
+		_spriteVector.size() - 1].
+		get()->getSprite();
+}
+
 void arc::SfmlDisplay::putItem(const Item &item)
 {
-	(void) item;
+	_window.clear();
+	auto &currSprite = item.sprites[item.currSpriteIdx];
+	sf::Sprite &sprite = findSprite(currSprite);
+	sprite.setPosition(item.x, item.y);
+	_window.draw(sprite);
 }
 
 void arc::SfmlDisplay::clear()
