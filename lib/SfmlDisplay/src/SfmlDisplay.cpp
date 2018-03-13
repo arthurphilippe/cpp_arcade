@@ -50,7 +50,7 @@ void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 	_window.draw(text);
 }
 
-void arc::SfmlDisplay::putSprite(sf::Sprite &sprite, sf::Vector2f position)
+void arc::SfmlDisplay::putSprite(sf::Sprite &sprite)
 {
 //	sprite.setPosition(position);
 	_window.draw(sprite);
@@ -59,29 +59,36 @@ void arc::SfmlDisplay::putSprite(sf::Sprite &sprite, sf::Vector2f position)
 /*
 **	Change the Throw Error
 */
-sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
+const sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
 {
+	// for (auto i = _spriteVector.begin(); i != _spriteVector.end(); i++) {
+	// 	if (currSprite.getPath() == i->path)
+	// 		return (i->sprite);
+	// }
+	// sf::Texture texture;
+	// if (!texture.loadFromFile(currSprite.getPath()))
+	// 	throw GfxException(GFX_ERR_INIT);
+	// texture.setSmooth(true);
+	// sf::Sprite sprite;
+	// sprite.setTexture(texture);
+	// struct spriteStruct sStruct = {currSprite.getName(),
+	// 		       sprite,
+	// 		       texture};
+       	// _spriteVector.push_back(sStruct);
+	// return sprite;
 	for (auto i = _spriteVector.begin(); i != _spriteVector.end(); i++) {
-		if (currSprite.getPath() == i->path)
-			return (i->sprite);
+		std::cout << i->get()->getPath() << std::endl;
+		if (currSprite.getPath() == i->get()->getPath())
+			return i->get()->getSprite();
 	}
-	sf::Texture texture;
-	if (!texture.loadFromFile(currSprite.getPath()))
-		throw GfxException(GFX_ERR_INIT);
-	texture.setSmooth(true);
-	sf::Sprite sprite;
-	sprite.setTexture(texture);
-	struct spriteStruct sStruct = {currSprite.getName(),
-			       sprite,
-			       texture};
-       	_spriteVector.push_back(sStruct);
-	return sprite;
+	_spriteVector.push_back(new SpriteStockage(currSprite.getPath()));
+	return _spriteVector[_spriteVector.size() - 1].get()->getSprite();
 }
 
 void arc::SfmlDisplay::putItem(const Item &item)
 {
 	auto &currSprite = item.sprites[item.currSpriteIdx];
-	putSprite(findSprite(currSprite), sf::Vector2f(item.x, item.y));
+	findSprite(currSprite);
 }
 
 void arc::SfmlDisplay::clear()
