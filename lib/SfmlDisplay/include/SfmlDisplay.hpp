@@ -30,8 +30,7 @@ public:
 	void refresh();
 	void putstr(const std::string &str, int x = 0, int y = 0);
 	void putItem(const Item &);
-	void putSprite(sf::Sprite &sprite);
-        const sf::Sprite &findSprite(const Sprite &currSprite);
+        sf::Sprite &findSprite(const Sprite &currSprite);
 	void waitEvent();
 	InteractionList getInteractions();
 	using KeyMap = std::unordered_map<sf::Keyboard::Key, Interaction>;
@@ -46,9 +45,9 @@ public:
 				_texture.setSmooth(true);
 				_sprite.setTexture(_texture);
 			}
-		~SpriteStockage();
+		~SpriteStockage() {};
 		const std::string &getPath() const noexcept {return _path;}
-		const sf::Sprite &getSprite() const noexcept {return _sprite;}
+	        sf::Sprite &getSprite() noexcept {return _sprite;}
 	private:
 		std::string _path;
 		sf::Texture _texture;
@@ -59,7 +58,7 @@ private:
 	sf::RenderWindow _window;
 	sf::Font _font;
 	std::vector<sf::Texture> _text;
-	std::vector<std::unique_ptr<SpriteStockage>> _spriteVector;
+	std::vector<std::unique_ptr<SpriteStorage>> _spriteVector;
 };
 
 #endif /* !SMFLDISPLAY_HPP_ */
