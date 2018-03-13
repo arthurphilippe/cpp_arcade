@@ -11,7 +11,7 @@
 
 static const arc::Item
 DEF_PACMAN = {"pacman",
-		"tests/SpriteConfigurationFiles/RealConfigurationFile.conf",
+		"tests/SpriteConfigurationFiles/SealConfigurationFile.conf",
 		arc::SpriteList(), 0, 20, 20};
 static const arc::Item
 DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 30, 30};

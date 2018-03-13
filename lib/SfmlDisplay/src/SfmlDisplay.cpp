@@ -50,17 +50,38 @@ void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 	_window.draw(text);
 }
 
-void arc::SfmlDisplay::putSprite()
+void arc::SfmlDisplay::putSprite(sf::Sprite &sprite, sf::Vector2f position)
 {
+//	sprite.setPosition(position);
+	_window.draw(sprite);
+}
+
+/*
+**	Change the Throw Error
+*/
+sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
+{
+	for (auto i = _spriteVector.begin(); i != _spriteVector.end(); i++) {
+		if (currSprite.getPath() == i->path)
+			return (i->sprite);
+	}
+	sf::Texture texture;
+	if (!texture.loadFromFile(currSprite.getPath()))
+		throw GfxException(GFX_ERR_INIT);
+	texture.setSmooth(true);
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
+	struct spriteStruct sStruct = {currSprite.getName(),
+			       sprite,
+			       texture};
+       	_spriteVector.push_back(sStruct);
+	return sprite;
 }
 
 void arc::SfmlDisplay::putItem(const Item &item)
 {
-}
-
-void arc::SfmlDisplay::putItem(const Item &item)
-{
-	(void) item;
+	auto &currSprite = item.sprites[item.currSpriteIdx];
+	putSprite(findSprite(currSprite), sf::Vector2f(item.x, item.y));
 }
 
 void arc::SfmlDisplay::clear()
