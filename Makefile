@@ -18,7 +18,7 @@ MAIN		=	src/Main.cpp
 SRCS		=	src/SpriteParser.cpp	\
 			src/Error.cpp		\
 			src/DynamicFunc.cpp	\
-			src/GameWarper.cpp
+			src/GameWraper.cpp
 
 OBJ_MAIN	=	$(MAIN:.cpp=.o)
 
