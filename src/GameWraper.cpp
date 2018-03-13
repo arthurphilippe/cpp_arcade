@@ -30,24 +30,7 @@ arc::GameWraper::GameWraper()
 }
 
 arc::GameWraper::~GameWraper()
-{
-	// bool hasExited = false;
-	// while (!hasExited) {
-	// 	auto inter = _currDisplay->getInteractions();
-	// 	while (inter.size() != 0) {
-	// 		if (inter.front() == Interaction::QUIT) {
-	// 			std::cout << "recived quit" << std::endl;
-	// 			hasExited = true;
-	// 		} else {
-	// 			_currGame->proccessIteraction(inter.front());
-	// 			// _currGame->dump();
-				// _currDisplay->putItem(_currGame->getItems()[0]);
-	// 			_currDisplay->refresh();
-	// 		}
-	// 		inter.pop();
-	// 	}
-	// }
-}
+{}
 
 int arc::GameWraper::loop()
 {
@@ -55,17 +38,16 @@ int arc::GameWraper::loop()
 		_startTime = std::chrono::high_resolution_clock::now();
 		_processInteractions();
 		_currDisplay->refresh();
-		_waitCycle(15);
+		_waitCycle(_currGame->getSpecs().fps);
 	}
 	return 0;
 }
 
-void arc::GameWraper::_waitCycle(size_t fps)
+void arc::GameWraper::_waitCycle(unsigned int fps)
 {
 	auto finish = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double, std::milli> elapsed = finish - _startTime;
-	std::chrono::duration<double, std::milli> tempo(
-		((61 - fps) * 100 / 60) - elapsed.count());
+	millisec elapsed = finish - _startTime;
+	millisec tempo(((61 - fps) * 100 / 60) - elapsed.count());
 	std::this_thread::sleep_for(tempo);
 }
 

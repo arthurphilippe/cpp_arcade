@@ -16,6 +16,7 @@ namespace arc {
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 12;
+	constexpr auto FPS = 15;
 }
 
 class arc::Pacman : public arc::IGame {
@@ -27,15 +28,15 @@ public:
 	{
 		return _items;
 	}
-	const GridSize &getGridSize() const noexcept override
+	const Specs &getSpecs() const noexcept override
 	{
-		return _gridSize;
+		return _info;
 	}
 	void proccessIteraction(Interaction &) noexcept;
 private:
 	std::string	_name;
 	ItemList	_items;
-	GridSize	_gridSize;
+	Specs		_info;
 
 	static ItemList defaultItems;
 

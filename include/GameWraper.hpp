@@ -19,6 +19,7 @@
 
 namespace arc {
 	class GameWraper;
+	using millisec = std::chrono::duration<double, std::milli>;
 }
 
 class arc::GameWraper {
@@ -38,7 +39,7 @@ private:
 	void _processInteractions();
 	static const std::vector<Interaction> _sysInteractions;
 	static void _setItemSprites(Item &item);
-	void _waitCycle(size_t fps);
+	void _waitCycle(unsigned int fps);
 
 	std::chrono::high_resolution_clock::time_point _startTime;
 	bool _running;

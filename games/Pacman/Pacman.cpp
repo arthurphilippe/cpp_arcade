@@ -23,7 +23,7 @@ static const arc::Item
 DEF_GHOSTD = {"ghost d", "", arc::SpriteList(), 0, 60, 30};
 
 arc::Pacman::Pacman()
-	: _name("Pacman"), _gridSize({GRID_H, GRID_L, GRID_STEP})
+	: _name("Pacman"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	_items.push_back(DEF_PACMAN);
 	_items.push_back(DEF_GHOSTA);
@@ -35,8 +35,8 @@ arc::Pacman::Pacman()
 void arc::Pacman::dump() const noexcept
 {
 	std::cout << "Dumping game " << _name << "." << std::endl;
-	std::cout << "Grid size: " << _gridSize.x << "*" << _gridSize.y;
-	std::cout << "*" <<_gridSize.pixelStep << std::endl;
+	std::cout << "Grid size: " << _info.x << "*" << _info.y;
+	std::cout << "*" <<_info.pixelStep << std::endl;
 	_dumpItems();
 }
 
