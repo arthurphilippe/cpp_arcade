@@ -19,17 +19,19 @@ namespace arc {
 
 class arc::IGame {
 public:
-	struct GridSize {
+	struct Specs {
 		int x;
 		int y;
-		int pixelStep;
+		unsigned int pixelStep;
+		unsigned int fps;
 	};
 
 	virtual ~IGame() = default;
 	virtual void dump() const noexcept = 0;
 	virtual ItemList &getItems() noexcept = 0;
-	virtual const GridSize &getGridSize() const noexcept = 0;
+	virtual const Specs &getSpecs() const noexcept = 0;
 	virtual void proccessIteraction(Interaction &) noexcept = 0;
+	virtual void envUpdate() noexcept = 0;
 };
 
 #endif /* !IGAME_HPP_ */

@@ -13,11 +13,12 @@
 #include "IDisplay.hpp"
 #include "SpriteParser.hpp"
 #include "Error.hpp"
-#include "GameWarper.hpp"
+#include "GameWraper.hpp"
 
 int main()
 {
-	arc::GameWarper toto;
+	arc::GameWraper toto;
+	toto.loop();
 	// std::cout << "Hi :3" << std::endl;
 	// arc::DynamicFunc<arc::IGame *(*)()>
 	// 	entry("./games/Pacman/libPacman.so");
