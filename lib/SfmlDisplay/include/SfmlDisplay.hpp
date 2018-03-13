@@ -35,6 +35,7 @@ public:
 	void waitEvent();
 	InteractionList getInteractions();
 	using KeyMap = std::unordered_map<sf::Keyboard::Key, Interaction>;
+
 	class SpriteStockage {
 	public:
 		SpriteStockage(const std::string &path)
@@ -53,11 +54,12 @@ public:
 		sf::Texture _texture;
 		sf::Sprite _sprite;
 	};
+
 private:
 	sf::RenderWindow _window;
 	sf::Font _font;
 	std::vector<sf::Texture> _text;
-	std::vector<std::unique_ptr<SpriteStockage*>> _spriteVector;
+	std::vector<std::unique_ptr<SpriteStockage>> _spriteVector;
 };
 
 #endif /* !SMFLDISPLAY_HPP_ */

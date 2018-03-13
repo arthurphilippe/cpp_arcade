@@ -81,7 +81,7 @@ const sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
 		if (currSprite.getPath() == i->get()->getPath())
 			return i->get()->getSprite();
 	}
-	_spriteVector.push_back(new SpriteStockage(currSprite.getPath()));
+	_spriteVector.push_back(std::unique_ptr<SpriteStockage>(new SpriteStockage(currSprite.getPath())));
 	return _spriteVector[_spriteVector.size() - 1].get()->getSprite();
 }
 
