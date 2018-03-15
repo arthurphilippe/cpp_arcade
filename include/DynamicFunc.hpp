@@ -42,5 +42,4 @@ namespace arc {
 	};
 }
 
-
 #endif /* !SYMLOAD_HPP_ */

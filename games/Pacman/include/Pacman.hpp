@@ -16,7 +16,7 @@ namespace arc {
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 12;
-	constexpr auto FPS = 15;
+	constexpr auto FPS = 56;
 }
 
 class arc::Pacman : public arc::IGame {

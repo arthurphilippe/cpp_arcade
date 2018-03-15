@@ -16,7 +16,7 @@ const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 
 arc::GameWraper::GameWraper()
 	: _gameEntry("./games/Pacman/libPacman.so"),
-	_displayEntry("./lib/CacaDisplay/libcaca.so"),
+	_displayEntry("./lib/SfmlDisplay/libsfml.so"),
 	_currGame(_gameEntry.get()()),
 	_currDisplay(_displayEntry.get()()),
 	_running(true)

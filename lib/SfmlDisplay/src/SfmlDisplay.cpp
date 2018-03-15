@@ -19,6 +19,7 @@ static const arc::SfmlDisplay::KeyMap KEYMAP = {
 	{sf::Keyboard::P, arc::LIB_NEXT,},
 	{sf::Keyboard::O, arc::LIB_PREV},
 	{sf::Keyboard::Escape, arc::QUIT},
+	{sf::Keyboard::Space, arc::ACTION_1}
 };
 
 

@@ -64,6 +64,9 @@ void arc::Pacman::proccessIteraction(Interaction &interact) noexcept
 		case MOVE_RIGHT:
 			_items[0].x += 1;
 			break;
+		case ACTION_1:
+			std::cout << "SHOOT THAT SHIT" << std::endl;
+			break;
 		default:
 			break;
 	}

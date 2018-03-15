@@ -27,6 +27,7 @@ namespace arc {
 		MOVE_DOWN,
 		MOVE_LEFT,
 		MOVE_RIGHT,
+		ACTION_1,
 		LIB_NEXT,
 		LIB_PREV,
 		GAME_NEXT,
