@@ -10,6 +10,7 @@
 
 	#include <caca.h>
 	#include <unordered_map>
+	#include "Sprite.hpp"
 	#include "IDisplay.hpp"
 
 namespace arc {
@@ -26,9 +27,12 @@ public:
 	void putstr(const std::string &, int x = 0, int y = 0);
 	void putItem(const Item &);
 	void waitEvent();
+
+	caca_color getItemColor(const Sprite &sprite);
 	InteractionList getInteractions();
 
 	using KeyMap = std::unordered_map<int, Interaction>;
+	using ColorMap = std::unordered_map<Color, caca_color>;
 private:
 	caca_display_t	*_dp;
 	caca_canvas_t	*_cv;
