@@ -51,11 +51,8 @@ void Startup::setGameLibs(std::string path)
 	if (gameDir == NULL)
 		throw std::exception();
 	while ((entry = readdir(gameDir)) != NULL) {
-		std::cout << "ret readdir : " << entry->d_name << std::endl;
-		if (entry->d_type != DT_DIR) {
-			std::cout << "push back " << std::endl;
+		if (entry->d_type != DT_DIR)
 			this->gameLibs.push_back((std::string)entry->d_name);
-		}
 	}
 	closedir(gameDir);
 }
