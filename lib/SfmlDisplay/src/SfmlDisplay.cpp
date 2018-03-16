@@ -75,6 +75,15 @@ void arc::SfmlDisplay::putItem(const Item &item)
 	_window.draw(sprite);
 }
 
+void arc::SfmlDisplay::putItem(const Item &item, int x, int y)
+{
+	_window.clear();
+	auto &currSprite = item.sprites[item.currSpriteIdx];
+	sf::Sprite &sprite = findSprite(currSprite);
+	sprite.setPosition(x, y);
+	_window.draw(sprite);
+}
+
 void arc::SfmlDisplay::clear()
 {
 	_window.clear();

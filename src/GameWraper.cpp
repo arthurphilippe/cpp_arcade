@@ -15,7 +15,7 @@ const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 };
 
 arc::GameWraper::GameWraper()
-	: _gameEntry("./games/Pacman/libPacman.so"),
+	: _gameEntry("./games/SolarFox/libSolarFox.so"),
 	_displayEntry("./lib/SfmlDisplay/libsfml.so"),
 	_currGame(_gameEntry.get()()),
 	_currDisplay(_displayEntry.get()()),
@@ -72,8 +72,9 @@ void arc::GameWraper::_processInteractions()
 			_processWraperInter(inter.front());
 		else {
 			_currGame->proccessIteraction(inter.front());
-			_currDisplay->putItem(_currGame->getItems()[0]);
+			_currDisplay->putItem(_currGame->getItemFromName("Seal"));
 			_currDisplay->refresh();
+			_currGame->envUpdate();
 		}
 		inter.pop();
 	}

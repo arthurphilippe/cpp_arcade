@@ -65,12 +65,21 @@ void arc::Pacman::proccessIteraction(Interaction &interact) noexcept
 			_items[0].x += 1;
 			break;
 		case ACTION_1:
-			std::cout << "SHOOT THAT SHIT" << std::endl;
 			break;
 		default:
 			break;
 	}
 }
+
+arc::ItemList &arc::Pacman::getItemsFromName(const std::string &name)
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == name)
+			_todraw.push_back(*i);
+	}
+	return _todraw;
+}
+
 
 void arc::Pacman::envUpdate() noexcept
 {}

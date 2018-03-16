@@ -29,6 +29,7 @@ public:
 	virtual ~IGame() = default;
 	virtual void dump() const noexcept = 0;
 	virtual ItemList &getItems() noexcept = 0;
+	virtual Item &getItemFromName(const std::string &) = 0;
 	virtual const Specs &getSpecs() const noexcept = 0;
 	virtual void proccessIteraction(Interaction &) noexcept = 0;
 	virtual void envUpdate() noexcept = 0;

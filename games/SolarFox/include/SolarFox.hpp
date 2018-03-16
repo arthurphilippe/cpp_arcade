@@ -2,48 +2,60 @@
 ** EPITECH PROJECT, 2018
 ** cpp_arcade
 ** File description:
-** Pacman
+** SolarFox
 */
 
-#ifndef DEFAULTGAME_HPP_
-	#define DEFAULTGAME_HPP_
+#ifndef SOLARFOX_HPP_
+	#define SOLARFOX_HPP_
 
+	#include <chrono>
 	#include <string>
+	#include "Arc.hpp"
 	#include "IGame.hpp"
 
 namespace arc {
-	class Pacman;
+	class SolarFox;
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 12;
 	constexpr auto FPS = 56;
 }
 
-class arc::Pacman : public arc::IGame {
+class arc::SolarFox : public arc::IGame {
 public:
-	Pacman();
-	~Pacman() {};
+	SolarFox();
+	~SolarFox() {
+		_startTime = std::chrono::high_resolution_clock::now();
+	};
 	void dump() const noexcept override;
 	ItemList &getItems() noexcept override
 	{
 		return _items;
 	}
+	Item &getItemFromName(const std::string &name);
 	const Specs &getSpecs() const noexcept override
 	{
 		return _info;
 	}
-	ItemList &getItemsFromName(const std::string &name);
 	void proccessIteraction(Interaction &) noexcept;
 	void envUpdate() noexcept;
+	void shoot(const std::string &name);
 private:
+struct position {
+	int x;
+	int y;
+};
+	std::vector<struct position> _bulletpos;
 	std::string	_name;
 	ItemList	_items;
 	ItemList	_todraw;
 	Specs		_info;
+	void changeItemsPositionFromName(const std::string &name, int a, int b);
+	std::chrono::high_resolution_clock::time_point _startTime;
 
 	static ItemList defaultItems;
 
 	void _dumpItems() const noexcept;
 };
 
-#endif /* !DEFAULTGAME_HPP_ */
+#endif /* !SOLARFOX_HPP_ */

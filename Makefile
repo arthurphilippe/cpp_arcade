@@ -75,6 +75,9 @@ $(TEST): $(OBJS_TEST)
 games:
 	@$(MAKE) -C games/Pacman/
 	@ln -sf games/Pacman/libPacman.so lib_arcade_pacman.so
+	@$(MAKE) -C games/SolarFox/
+	@ln -sf games/SolarFox/libSolarFox.so lib_arcade_solarfox.so
+
 
 graphicals:
 	@$(MAKE) -C lib/CacaDisplay
@@ -91,6 +94,7 @@ fclean: clean
 	@$(MAKE) fclean -C lib/CacaDisplay/
 	@$(MAKE) fclean -C games/Pacman/
 	@$(MAKE) fclean -C lib/SfmlDisplay/
+	@$(MAKE) fclean -C games/SolarFox/
 
 artifacts_clean:
 	@printf "[\033[0;31mdeletion\033[0m][artifacts]% 29s\n" `find -type f \( -name "*.gcno" -o -name "*.gc*" -o -name "*.html" \) -delete -print | wc -l | tr -d '\n'` | tr " " "."

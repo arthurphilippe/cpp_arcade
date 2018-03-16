@@ -23,6 +23,7 @@ public:
 	virtual void clear() = 0;
 	virtual void putstr(const std::string &, int x = 0, int y = 0) = 0;
 	virtual void putItem(const Item &) = 0;
+	void putItem(const Item &item, int x, int y);
 	virtual void waitEvent() = 0;
 	virtual void refresh() = 0;
 	virtual InteractionList getInteractions() = 0;
