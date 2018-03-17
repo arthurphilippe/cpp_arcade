@@ -80,7 +80,13 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 
 void arc::SolarFox::shoot(const std::string &name)
 {
-	
+	auto mainchar = getItemFromName(name);
+        struct Position tmp;
+
+	tmp.x = mainchar.x;
+	tmp.y = mainchar.y;
+	_bulletpos.push_back(tmp);
+//	std::cout << mainchar.x << std::endl;
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -113,5 +119,5 @@ arc::Item &arc::SolarFox::getItemFromName(const std::string &name)
 
 void arc::SolarFox::envUpdate() noexcept
 {
-	_todraw.clear();
+//	_todraw.clear();
 }

@@ -35,6 +35,11 @@ arc::SfmlDisplay::~SfmlDisplay()
 {
 }
 
+void arc::SfmlDisplay::clear()
+{
+	_window.clear();
+}
+
 void arc::SfmlDisplay::refresh()
 {
 	_window.display();
@@ -69,7 +74,6 @@ sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
 
 void arc::SfmlDisplay::putItem(const Item &item)
 {
-	_window.clear();
 	auto &currSprite = item.sprites[item.currSpriteIdx];
 	sf::Sprite &sprite = findSprite(currSprite);
 	sprite.setPosition(item.x, item.y);
@@ -78,8 +82,7 @@ void arc::SfmlDisplay::putItem(const Item &item)
 
 void arc::SfmlDisplay::putItem(const Item &item, int x, int y)
 {
-	_window.clear();
-	auto &currSprite = item.sprites[item.currSpriteIdx];
+	 auto &currSprite = item.sprites[item.currSpriteIdx];
 	sf::Sprite &sprite = findSprite(currSprite);
 	sprite.setPosition(x, y);
 	_window.draw(sprite);
@@ -90,11 +93,6 @@ void arc::SfmlDisplay::putSpritePosition(const Item &item, const std::vector<str
 	for (auto i  = poslist.begin(); i != poslist.end(); i++) {
 		putItem(item, i->x, i->y);
 	}
-}
-
-void arc::SfmlDisplay::clear()
-{
-	_window.clear();
 }
 
 void arc::SfmlDisplay::waitEvent()

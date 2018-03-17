@@ -68,14 +68,18 @@ void arc::GameWraper::_processInteractions()
 	auto inter = _currDisplay->getInteractions();
 	while (inter.size() != 0) {
 		if (find(_sysInteractions.begin(), _sysInteractions.end(),
-			inter.front()) != _sysInteractions.end())
+			 inter.front()) != _sysInteractions.end())
 			_processWraperInter(inter.front());
 		else {
+			_currDisplay->clear();
+			_currDisplay->refresh();
 			_currGame->proccessIteraction(inter.front());
 			_currDisplay->putItem(_currGame->getItemFromName("Seal"));
-			_currDisplay->putSpritePosition(_currGame->getItemFromName("Bullet"), _currGame->getBulletPos());
-			_currDisplay->refresh();
+			_currDisplay->putSpritePosition(
+				_currGame->getItemFromName("Bullet"),
+				_currGame->getBulletPos());
 			_currGame->envUpdate();
+
 		}
 		inter.pop();
 	}
