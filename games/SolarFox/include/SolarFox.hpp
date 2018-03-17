@@ -19,6 +19,8 @@ namespace arc {
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 12;
 	constexpr auto FPS = 56;
+	constexpr auto W_HEIGHT = 720;
+	constexpr auto W_WIDTH = 1280;
 }
 
 class arc::SolarFox : public arc::IGame {
@@ -42,6 +44,7 @@ public:
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 private:
+	Interaction _keystate;
 	std::vector<struct Position> _bulletpos;
 	std::string	_name;
 	ItemList	_items;

@@ -76,6 +76,7 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 		default:
 			break;
 	}
+	_keystate = interact;
 }
 
 void arc::SolarFox::shoot(const std::string &name)
@@ -88,6 +89,7 @@ void arc::SolarFox::shoot(const std::string &name)
 	}
 	tmp.x = mainchar.x;
 	tmp.y = mainchar.y;
+	tmp.interact = _keystate;
 	_bulletpos.push_back(tmp);
 }
 
@@ -121,15 +123,32 @@ arc::Item &arc::SolarFox::getItemFromName(const std::string &name)
 
 void arc::SolarFox::envUpdate() noexcept
 {
-	int flag = 0;
+	std::vector<int> count;
+	int a = 0;
 
 	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
-		switch (flag) {
-		case 0:
+		switch (i->interact) {
+		case MOVE_UP:
+			i->y -= 1;
+			break;
+		case MOVE_DOWN:
+			i->y += 1;
+			break;
+		case MOVE_LEFT:
+			i->x -= 1;
+			break;
+		case MOVE_RIGHT:
 			i->x += 1;
 			break;
 		default:
 			break;
 		}
 	}
+	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
+		if (i->x > W_WIDTH || i->x < 0 || i->y > W_HEIGHT || i->y < 0) {
+			count.push_back(a);
+		}
+		a += 1;
+	}
+
 }

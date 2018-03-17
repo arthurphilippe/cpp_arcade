@@ -21,11 +21,6 @@ namespace arc {
 		int		y;
 	};
 
-	struct Position {
-		int x;
-		int y;
-	};
-
 	using ItemList = std::vector<Item>;
 
 	enum Interaction {
@@ -41,6 +36,13 @@ namespace arc {
 		QUIT,
 	};
 	using InteractionList = std::queue<Interaction>;
+
+	struct Position {
+		int x;
+		int y;
+		Interaction interact;
+	};
+
 }
 
 #endif /* !ARC_HPP_ */
