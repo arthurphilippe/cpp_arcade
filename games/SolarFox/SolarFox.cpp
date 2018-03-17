@@ -82,11 +82,13 @@ void arc::SolarFox::shoot(const std::string &name)
 {
 	auto mainchar = getItemFromName(name);
         struct Position tmp;
-
+	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
+		if (i->x == mainchar.x && i->y == mainchar.y)
+			return;
+	}
 	tmp.x = mainchar.x;
 	tmp.y = mainchar.y;
 	_bulletpos.push_back(tmp);
-//	std::cout << mainchar.x << std::endl;
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -119,5 +121,15 @@ arc::Item &arc::SolarFox::getItemFromName(const std::string &name)
 
 void arc::SolarFox::envUpdate() noexcept
 {
-//	_todraw.clear();
+	int flag = 0;
+
+	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
+		switch (flag) {
+		case 0:
+			i->x += 1;
+			break;
+		default:
+			break;
+		}
+	}
 }
