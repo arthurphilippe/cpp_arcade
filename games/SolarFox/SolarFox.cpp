@@ -58,25 +58,27 @@ using millisec = std::chrono::duration<double, std::milli>;
 void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
 	switch (interact) {
-		case MOVE_LEFT:
-			changeItemsPositionFromName("Seal", -1, 0);
-			break;
-		case MOVE_RIGHT:
-			changeItemsPositionFromName("Seal", 1, 0);
-			break;
-		case MOVE_UP:
-			changeItemsPositionFromName("Seal", 0, -1);
-			break;
-		case MOVE_DOWN:
-			changeItemsPositionFromName("Seal", 0, 1);
-			break;
-		case ACTION_1:
-			shoot("Seal");
-			break;
-		default:
-			break;
+	case MOVE_LEFT:
+		changeItemsPositionFromName("Seal", -1, 0);
+		break;
+	case MOVE_RIGHT:
+		changeItemsPositionFromName("Seal", 1, 0);
+		break;
+	case MOVE_UP:
+		changeItemsPositionFromName("Seal", 0, -1);
+		break;
+	case MOVE_DOWN:
+		changeItemsPositionFromName("Seal", 0, 1);
+		break;
+	case ACTION_1:
+		shoot("Seal");
+		break;
+	default:
+		break;
 	}
-	_keystate = interact;
+	if (interact == MOVE_LEFT || interact == MOVE_RIGHT || interact == MOVE_UP ||
+	    interact == MOVE_DOWN)
+		_keystate = interact;
 }
 
 void arc::SolarFox::shoot(const std::string &name)
@@ -150,5 +152,4 @@ void arc::SolarFox::envUpdate() noexcept
 		}
 		a += 1;
 	}
-
 }
