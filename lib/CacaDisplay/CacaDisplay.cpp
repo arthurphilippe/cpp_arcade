@@ -85,6 +85,16 @@ void arc::CacaDisplay::putItem(const Item &item)
 		caca_put_char(_cv, item.x, item.y, '?');
 }
 
+void arc::CacaDisplay::putItem(const Item &item, int x ,int y)
+{
+	
+}
+
+void arc::CacaDisplay::putSpritePosition(
+	const Item &item, const std::vector<struct Position> &poslist)
+{
+}
+
 
 void arc::CacaDisplay::waitEvent()
 {

@@ -71,6 +71,7 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 			changeItemsPositionFromName("Seal", 0, 1);
 			break;
 		case ACTION_1:
+			shoot("Seal");
 			break;
 		default:
 			break;
@@ -79,7 +80,7 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 
 void arc::SolarFox::shoot(const std::string &name)
 {
-
+	
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)

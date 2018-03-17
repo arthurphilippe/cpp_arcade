@@ -27,6 +27,9 @@ public:
 	void putstr(const std::string &, int x = 0, int y = 0);
 	void putItem(const Item &);
 	void waitEvent();
+	void putItem(const Item &item, int x ,int y);
+	void putSpritePosition(
+		const Item &item, const std::vector<struct Position> &poslist);
 
 	caca_color getItemColor(const Sprite &sprite);
 	InteractionList getInteractions();

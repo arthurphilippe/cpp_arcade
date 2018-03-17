@@ -40,12 +40,9 @@ public:
 	void proccessIteraction(Interaction &) noexcept;
 	void envUpdate() noexcept;
 	void shoot(const std::string &name);
+	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 private:
-struct position {
-	int x;
-	int y;
-};
-	std::vector<struct position> _bulletpos;
+	std::vector<struct Position> _bulletpos;
 	std::string	_name;
 	ItemList	_items;
 	ItemList	_todraw;

@@ -9,6 +9,7 @@
 	#define DEFAULTGAME_HPP_
 
 	#include <string>
+	#include "Arc.hpp"
 	#include "IGame.hpp"
 
 namespace arc {
@@ -35,11 +36,15 @@ public:
 	ItemList &getItemsFromName(const std::string &name);
 	void proccessIteraction(Interaction &) noexcept;
 	void envUpdate() noexcept;
+	arc::Item &getItemFromName(const std::string &name);
+	void putSpritePosition(const Item &item, const std::vector<struct Position> &poslist);
+	const std::vector<struct Position> &getBulletPos() {return _bulletPos;}
 private:
 	std::string	_name;
 	ItemList	_items;
 	ItemList	_todraw;
 	Specs		_info;
+	std::vector<struct Position> _bulletPos;
 
 	static ItemList defaultItems;
 

@@ -9,6 +9,7 @@
 	#define IGAME_HPP_
 
 	#include <vector>
+	#include "Arc.hpp"
 	#include "Sprite.hpp"
 	#include "SpriteParser.hpp"
 	#include "IDisplay.hpp"
@@ -33,6 +34,7 @@ public:
 	virtual const Specs &getSpecs() const noexcept = 0;
 	virtual void proccessIteraction(Interaction &) noexcept = 0;
 	virtual void envUpdate() noexcept = 0;
+	virtual const std::vector<struct Position> &getBulletPos() = 0;
 };
 
 #endif /* !IGAME_HPP_ */

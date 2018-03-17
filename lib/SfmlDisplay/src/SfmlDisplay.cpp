@@ -6,6 +6,7 @@
 //
 
 #include <iostream>
+#include "Arc.hpp"
 #include "GfxException.hpp"
 #include "SfmlDisplay.hpp"
 
@@ -82,6 +83,13 @@ void arc::SfmlDisplay::putItem(const Item &item, int x, int y)
 	sf::Sprite &sprite = findSprite(currSprite);
 	sprite.setPosition(x, y);
 	_window.draw(sprite);
+}
+
+void arc::SfmlDisplay::putSpritePosition(const Item &item, const std::vector<struct Position> &poslist)
+{
+	for (auto i  = poslist.begin(); i != poslist.end(); i++) {
+		putItem(item, i->x, i->y);
+	}
 }
 
 void arc::SfmlDisplay::clear()

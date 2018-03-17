@@ -20,6 +20,12 @@ namespace arc {
 		int		x;
 		int		y;
 	};
+
+	struct Position {
+		int x;
+		int y;
+	};
+
 	using ItemList = std::vector<Item>;
 
 	enum Interaction {
