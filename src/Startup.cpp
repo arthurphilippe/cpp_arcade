@@ -33,13 +33,19 @@ void Startup::setGfxLibs(std::string path)
 {
 	DIR *gfxDir = opendir(path.c_str());
 	struct dirent *entry = NULL;
+	std::string filePath = path;
 
 	if (gfxDir == NULL)
 		throw std::exception();
 	while ((entry = readdir(gfxDir)) != NULL) {
-		if (entry->d_type != DT_DIR)
-			this->gfxLibs.push_back((std::string)entry->d_name);
+		if (entry->d_type != DT_DIR &&
+			this->checkExtension(entry->d_name)) {
+			filePath += (std::string)entry->d_name;
+			this->gfxLibs.push_back(filePath);
+			filePath = path;
+		}
 	}
+	free(entry);
 	closedir(gfxDir);
 }
 
@@ -47,13 +53,19 @@ void Startup::setGameLibs(std::string path)
 {
 	DIR *gameDir = opendir(path.c_str());
 	struct dirent *entry = NULL;
+	std::string filePath = path;
 
 	if (gameDir == NULL)
 		throw std::exception();
 	while ((entry = readdir(gameDir)) != NULL) {
-		if (entry->d_type != DT_DIR)
-			this->gameLibs.push_back((std::string)entry->d_name);
+		if (entry->d_type != DT_DIR &&
+			this->checkExtension(entry->d_name)) {
+			filePath += (std::string)entry->d_name;
+			this->gameLibs.push_back(filePath);
+			filePath = path;
+		}
 	}
+	free(entry);
 	closedir(gameDir);
 }
 
@@ -61,12 +73,22 @@ void Startup::dumpLibs() const
 {
 	unsigned int iterator = 0;
 
-	std::cout << "Gfx Libraries: " << this->gfxLibs.size() << std::endl;
+	std::cout << "Gfx Libraries Path:" << std::endl;
 	for (iterator = 0; iterator < this->gfxLibs.size() ; iterator++) {
-		std::cout << iterator <<'\t' << this->gfxLibs[iterator] << std::endl;
+		std::cout <<'\t' << this->gfxLibs[iterator] << std::endl;
 	}
-	std::cout << "Game Libraries: " << this->gameLibs.size() <<std::endl;
+	std::cout << "Game Libraries Path:" << std::endl;
 	for (iterator = 0; iterator < this->gameLibs.size() ; iterator++) {
-		std::cout << iterator << '\t' << this->gameLibs[iterator] << std::endl;
+		std::cout << '\t' << this->gameLibs[iterator] << std::endl;
 	}
+}
+
+bool Startup::checkExtension(char *path)
+{
+	std::string extension(path);
+
+	extension = extension.substr(extension.size() - 3, 3);
+	if (extension == ".so")
+		return (true);
+	return (false);
 }

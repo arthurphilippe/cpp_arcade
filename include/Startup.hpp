@@ -18,12 +18,13 @@ class Startup {
 public:
 	Startup();
 	~Startup();
+	void dumpLibs() const;
 	std::vector<std::string> getGfxLibs() const;
 	std::vector<std::string> getGameLibs() const;
-	void dumpLibs() const;
 private:
 	void setGfxLibs(std::string path = "./lib/");
 	void setGameLibs(std::string path = "./games/");
+	bool checkExtension(char *path);
 	std::vector<std::string> gfxLibs;
 	std::vector<std::string> gameLibs;
 };
