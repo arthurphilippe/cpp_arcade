@@ -13,10 +13,12 @@
 #include "IDisplay.hpp"
 #include "SpriteParser.hpp"
 #include "Error.hpp"
+#include "Startup.hpp"
 #include "GameWraper.hpp"
 
 int main()
 {
+	arc::Startup start(".", ".");
 	arc::GameWraper toto;
 	toto.loop();
 	// std::cout << "Hi :3" << std::endl;

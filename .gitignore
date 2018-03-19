@@ -7,3 +7,6 @@ vgcore*
 .vscode/
 arcade
 *.so
+.idea/
+CMakeLists.txt
+cmake-build-debug/
