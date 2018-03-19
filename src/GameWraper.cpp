@@ -71,18 +71,12 @@ void arc::GameWraper::_processInteractions()
 			 inter.front()) != _sysInteractions.end())
 			_processWraperInter(inter.front());
 		else {
-			_currDisplay->clear();
 			_currGame->proccessIteraction(inter.front());
-			_currDisplay->putItem(_currGame->getItemFromName("Seal"));
-			
 		}
-		_currDisplay->putSpritePosition(
-			_currGame->getItemFromName("Bullet"),
-			_currGame->getBulletPos());
-		_currGame->envUpdate();
-		_currDisplay->refresh();
 		inter.pop();
 	}
+	_currDisplay->clear();
+	_currDisplay->putItem(_currGame->getItemFromName("Seal"));
 	_currDisplay->putSpritePosition(
 		_currGame->getItemFromName("Bullet"),
 		_currGame->getBulletPos());
