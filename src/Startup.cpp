@@ -60,7 +60,7 @@ void arc::Startup::setLibs(const std::string &path, T &list)
 	std::string filePath = path;
 
 	if (gameDir == NULL)
-		throw arc::StartupError(ERR_GAME_PATH+path);
+		throw arc::StartupError(ERR_GAME_PATH + path);
 	while ((entry = readdir(gameDir)) != NULL) {
 		if (entry->d_type != DT_DIR &&
 			checkExtension(entry->d_name))
