@@ -87,7 +87,7 @@ bool Startup::checkExtension(char *path)
 {
 	std::string extension(path);
 
-	extension = extension.substr(extension.size() - 3, 3);
+	extension = extension.substr(extension.length() - 3, 3);
 	if (extension == ".so")
 		return (true);
 	return (false);
