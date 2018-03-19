@@ -9,27 +9,42 @@
 #include <iostream>
 #include "Startup.hpp"
 
-Startup::Startup()
+Startup::Startup(const std::string &gamepath, const std::string &gfxpath)
 {
-	setGfxLibs();
-	setGameLibs();
+	setGfxLibs(gfxpath);
+	setGameLibs(gamepath);
 }
 
 Startup::~Startup()
 {
 }
 
+void Startup::askUserName()
+{
+	char username[255];
+
+	std::cout << "Please, enter your username: " << std::endl;
+	std::cin.getline(username, 255);
+	_username = username;
+}
+
+void Startup::startGame()
+{
+	dumpLibs();
+	askUserName();
+}
+
 std::vector<std::string> Startup::getGfxLibs() const
 {
-	return (this->gfxLibs);
+	return (_gfxLibs);
 }
 
 std::vector<std::string> Startup::getGameLibs() const
 {
-	return (this->gameLibs);
+	return (_gameLibs);
 }
 
-void Startup::setGfxLibs(std::string path)
+void Startup::setGfxLibs(const std::string &path)
 {
 	DIR *gfxDir = opendir(path.c_str());
 	struct dirent *entry = NULL;
@@ -39,9 +54,9 @@ void Startup::setGfxLibs(std::string path)
 		throw std::exception();
 	while ((entry = readdir(gfxDir)) != NULL) {
 		if (entry->d_type != DT_DIR &&
-			this->checkExtension(entry->d_name)) {
+			checkExtension(entry->d_name)) {
 			filePath += (std::string)entry->d_name;
-			this->gfxLibs.push_back(filePath);
+			_gfxLibs.push_back(filePath);
 			filePath = path;
 		}
 	}
@@ -49,7 +64,7 @@ void Startup::setGfxLibs(std::string path)
 	closedir(gfxDir);
 }
 
-void Startup::setGameLibs(std::string path)
+void Startup::setGameLibs(const std::string &path)
 {
 	DIR *gameDir = opendir(path.c_str());
 	struct dirent *entry = NULL;
@@ -59,9 +74,9 @@ void Startup::setGameLibs(std::string path)
 		throw std::exception();
 	while ((entry = readdir(gameDir)) != NULL) {
 		if (entry->d_type != DT_DIR &&
-			this->checkExtension(entry->d_name)) {
+			checkExtension(entry->d_name)) {
 			filePath += (std::string)entry->d_name;
-			this->gameLibs.push_back(filePath);
+			_gameLibs.push_back(filePath);
 			filePath = path;
 		}
 	}
@@ -71,15 +86,13 @@ void Startup::setGameLibs(std::string path)
 
 void Startup::dumpLibs() const
 {
-	unsigned int iterator = 0;
-
 	std::cout << "Gfx Libraries Path:" << std::endl;
-	for (iterator = 0; iterator < this->gfxLibs.size() ; iterator++) {
-		std::cout <<'\t' << this->gfxLibs[iterator] << std::endl;
+	for (auto i = _gfxLibs.begin(); i != _gfxLibs.end(); i++) {
+		std::cout << '\t' << *i << std::endl;
 	}
 	std::cout << "Game Libraries Path:" << std::endl;
-	for (iterator = 0; iterator < this->gameLibs.size() ; iterator++) {
-		std::cout << '\t' << this->gameLibs[iterator] << std::endl;
+		for (auto i = _gameLibs.begin(); i != _gameLibs.end(); i++) {
+		std::cout << '\t' << *i << std::endl;
 	}
 }
 

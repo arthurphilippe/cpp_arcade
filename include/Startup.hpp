@@ -16,17 +16,21 @@ namespace arc {
 
 class Startup {
 public:
-	Startup();
+	Startup(const std::string &gamepath = "./games/", const std::string &gfxpath = "./lib/");
 	~Startup();
 	void dumpLibs() const;
+	void startGame();
 	std::vector<std::string> getGfxLibs() const;
 	std::vector<std::string> getGameLibs() const;
+	const std::string &getUserName() const noexcept {return _username;}
 private:
-	void setGfxLibs(std::string path = "./lib/");
-	void setGameLibs(std::string path = "./games/");
+	void setGfxLibs(const std::string &path = "./lib/");
+	void setGameLibs(const std::string &path = "./games/");
 	bool checkExtension(char *path);
-	std::vector<std::string> gfxLibs;
-	std::vector<std::string> gameLibs;
+	void askUserName();
+	std::vector<std::string> _gfxLibs;
+	std::vector<std::string> _gameLibs;
+	std::string _username;
 };
 
 #endif /* STARTUP_H_ */
