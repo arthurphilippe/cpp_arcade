@@ -48,7 +48,9 @@ endif
 	@$(CXX) -c -o $@ $< $(CPPFLAGS)
 	@printf "[\033[0;32mcompiled\033[0m]% 40s\n" $< | tr " " "."
 
-all: $(NAME) lib
+all: $(NAME) games graphicals
+
+core: $(NAME)
 
 debug: CPPFLAGS += -ggdb
 debug: fclean
@@ -70,17 +72,22 @@ $(TEST): $(OBJS_TEST)
 	@$(CXX) $(LDFLAGS) $(OBJS_TEST) -o $(TEST) -lcriterion
 	@printf "[\033[0;36mlinked\033[0m]% 42s\n" $(TEST) | tr " " "."
 
-lib:
+games:
 	@$(MAKE) -C games/Pacman/
+	@ln -sf games/Pacman/libPacman.so lib_arcade_pacman.so
+
+graphicals:
 	@$(MAKE) -C lib/CacaDisplay
-	@$(MAKE) -C lib/SfmlDisplay/
+	@ln -sf lib/CacaDisplay/libcaca.so lib_arcade_caca.so
+	@$(MAKE) -C lib/SfmlDisplay
+	@ln -sf lib/SfmlDisplay/libsfml.so lib_arcade_sfml.so
 
 clean: artifacts_clean
 	@printf "[\033[0;31mdeletion\033[0m][objects]% 31s\n" `$(RM) $(OBJ_MAIN) $(OBJS) $(OBJS_TEST) | wc -l | tr -d '\n'` | tr " " "."
 
 fclean: clean
-	@$(RM) $(NAME) $(TEST) > /dev/null
-	@printf "[\033[0;31mdeletion\033[0m][binary]% 32s\n" $(NAME) | tr " " "."
+	@$(RM) $(NAME) $(TEST) lib_arcade_*.so  > /dev/null
+	@printf "[\033[0;31mdeletion\033[0m][binaries]% 30s\n" $(NAME) | tr " " "."
 	@$(MAKE) fclean -C lib/CacaDisplay/
 	@$(MAKE) fclean -C games/Pacman/
 	@$(MAKE) fclean -C lib/SfmlDisplay/
@@ -90,4 +97,4 @@ artifacts_clean:
 
 re: fclean all
 
-.PHONY: all clean fclean re debug tests tests_run clean artifacts_clean lib
+.PHONY: all clean fclean re debug tests tests_run clean artifacts_clean lib core games graphicals
