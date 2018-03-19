@@ -14,19 +14,20 @@ namespace arc {
 	class Startup;
 }
 
-class Startup {
+class arc::Startup {
 public:
 	Startup(const std::string &gamepath = "./games/", const std::string &gfxpath = "./lib/");
 	~Startup();
-	void dumpLibs() const;
 	void startGame();
 	std::vector<std::string> getGfxLibs() const;
 	std::vector<std::string> getGameLibs() const;
 	const std::string &getUserName() const noexcept {return _username;}
 private:
-	void setGfxLibs(const std::string &path = "./lib/");
-	void setGameLibs(const std::string &path = "./games/");
-	bool checkExtension(char *path);
+	template<typename T>
+	void setLibs(const std::string &path, T &list);
+	void dumpScores();
+	void dumpLibs() const;
+	bool checkExtension(char *filename);
 	void askUserName();
 	std::vector<std::string> _gfxLibs;
 	std::vector<std::string> _gameLibs;

@@ -7,19 +7,21 @@
 
 #include <dirent.h>
 #include <iostream>
+#include "Error.hpp"
 #include "Startup.hpp"
 
-Startup::Startup(const std::string &gamepath, const std::string &gfxpath)
+arc::Startup::Startup(const std::string &gamepath, const std::string &gfxpath)
 {
-	setGfxLibs(gfxpath);
-	setGameLibs(gamepath);
+	setLibs(gfxpath, _gfxLibs);
+	setLibs(gamepath, _gameLibs);
+	startGame();
 }
 
-Startup::~Startup()
+arc::Startup::~Startup()
 {
 }
 
-void Startup::askUserName()
+void arc::Startup::askUserName()
 {
 	char username[255];
 
@@ -28,63 +30,47 @@ void Startup::askUserName()
 	_username = username;
 }
 
-void Startup::startGame()
+void arc::Startup::startGame()
 {
 	dumpLibs();
-	askUserName();
+	dumpScores();
+//	askUserName();
 }
 
-std::vector<std::string> Startup::getGfxLibs() const
+void arc::Startup::dumpScores()
+{
+	std::cout << "Faudra faire l'affichage du score un jour" << std::endl;
+}
+
+std::vector<std::string> arc::Startup::getGfxLibs() const
 {
 	return (_gfxLibs);
 }
 
-std::vector<std::string> Startup::getGameLibs() const
+std::vector<std::string> arc::Startup::getGameLibs() const
 {
 	return (_gameLibs);
 }
 
-void Startup::setGfxLibs(const std::string &path)
-{
-	DIR *gfxDir = opendir(path.c_str());
-	struct dirent *entry = NULL;
-	std::string filePath = path;
-
-	if (gfxDir == NULL)
-		throw std::exception();
-	while ((entry = readdir(gfxDir)) != NULL) {
-		if (entry->d_type != DT_DIR &&
-			checkExtension(entry->d_name)) {
-			filePath += (std::string)entry->d_name;
-			_gfxLibs.push_back(filePath);
-			filePath = path;
-		}
-	}
-	free(entry);
-	closedir(gfxDir);
-}
-
-void Startup::setGameLibs(const std::string &path)
+template<typename T>
+void arc::Startup::setLibs(const std::string &path, T &list)
 {
 	DIR *gameDir = opendir(path.c_str());
 	struct dirent *entry = NULL;
 	std::string filePath = path;
 
 	if (gameDir == NULL)
-		throw std::exception();
+		throw arc::StartupError(ERR_GAME_PATH+path);
 	while ((entry = readdir(gameDir)) != NULL) {
 		if (entry->d_type != DT_DIR &&
-			checkExtension(entry->d_name)) {
-			filePath += (std::string)entry->d_name;
-			_gameLibs.push_back(filePath);
-			filePath = path;
-		}
+			checkExtension(entry->d_name))
+			list.push_back(entry->d_name);
 	}
 	free(entry);
-	closedir(gameDir);
+	closedir(gameDir);	
 }
 
-void Startup::dumpLibs() const
+void arc::Startup::dumpLibs() const
 {
 	std::cout << "Gfx Libraries Path:" << std::endl;
 	for (auto i = _gfxLibs.begin(); i != _gfxLibs.end(); i++) {
@@ -96,11 +82,12 @@ void Startup::dumpLibs() const
 	}
 }
 
-bool Startup::checkExtension(char *path)
+bool arc::Startup::checkExtension(char *filename)
 {
-	std::string extension(path);
+	std::string extension(filename);
 
-	extension = extension.substr(extension.length() - 3, 3);
+	if (extension.length() > 4)
+		extension = extension.substr(extension.length() - 3, 3);
 	if (extension == ".so")
 		return (true);
 	return (false);
