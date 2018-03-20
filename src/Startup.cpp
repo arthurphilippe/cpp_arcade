@@ -42,18 +42,17 @@ void arc::Startup::dumpScores()
 	std::cout << "Faudra faire l'affichage du score un jour" << std::endl;
 }
 
-std::vector<std::string> arc::Startup::getGfxLibs() const
+arc::libArray arc::Startup::getGfxLibs() const
 {
 	return (_gfxLibs);
 }
 
-std::vector<std::string> arc::Startup::getGameLibs() const
+arc::libArray arc::Startup::getGameLibs() const
 {
 	return (_gameLibs);
 }
 
-template<typename T>
-void arc::Startup::setLibs(const std::string &path, T &list)
+void arc::Startup::setLibs(const std::string &path, libArray &list)
 {
 	DIR *gameDir = opendir(path.c_str());
 	struct dirent *entry = NULL;
@@ -67,7 +66,7 @@ void arc::Startup::setLibs(const std::string &path, T &list)
 			list.push_back(entry->d_name);
 	}
 	free(entry);
-	closedir(gameDir);	
+	closedir(gameDir);
 }
 
 void arc::Startup::dumpLibs() const

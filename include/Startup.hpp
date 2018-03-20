@@ -12,6 +12,7 @@
 
 namespace arc {
 	class Startup;
+	using libArray = std::vector<std::string>;
 }
 
 class arc::Startup {
@@ -19,18 +20,17 @@ public:
 	Startup(const std::string &gamepath = "./games/", const std::string &gfxpath = "./lib/");
 	~Startup();
 	void startGame();
-	std::vector<std::string> getGfxLibs() const;
-	std::vector<std::string> getGameLibs() const;
+	libArray getGfxLibs() const;
+	libArray getGameLibs() const;
 	const std::string &getUserName() const noexcept {return _username;}
 private:
-	template<typename T>
-	void setLibs(const std::string &path, T &list);
+	void setLibs(const std::string &path, libArray &list);
 	void dumpScores();
 	void dumpLibs() const;
 	bool checkExtension(char *filename);
 	void askUserName();
-	std::vector<std::string> _gfxLibs;
-	std::vector<std::string> _gameLibs;
+	libArray _gfxLibs;
+	libArray _gameLibs;
 	std::string _username;
 };
 
