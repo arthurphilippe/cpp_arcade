@@ -51,7 +51,8 @@ void arc::Pacman::_dumpItems() const noexcept
 
 void arc::Pacman::putSpritePosition(const Item &item, const std::vector<struct Position> &poslist)
 {
-
+	(void) item;
+	(void) poslist;
 }
 
 void arc::Pacman::proccessIteraction(Interaction &interact) noexcept
@@ -82,6 +83,7 @@ arc::Item &arc::Pacman::getItemFromName(const std::string &name)
 		if (i->name == name)
 			return *i;
 	}
+	return _items[0];
 }
 
 

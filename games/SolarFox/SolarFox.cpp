@@ -120,6 +120,7 @@ arc::Item &arc::SolarFox::getItemFromName(const std::string &name)
 		if (i->name == name)
 			return *i;
 	}
+	return _items[0];
 }
 
 
