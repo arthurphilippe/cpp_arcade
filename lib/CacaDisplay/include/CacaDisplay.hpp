@@ -5,8 +5,8 @@
 ** CacaDisplay
 */
 
-#ifndef CACA_HPP_
-	#define CACA_HPP_
+#ifndef CACADISPLAY_HPP_
+	#define CACADISPLAY_HPP_
 
 	#include <caca.h>
 	#include <unordered_map>
@@ -42,4 +42,4 @@ private:
 	caca_event_t	_ev;
 };
 
-#endif /* !CACA_HPP_ */
+#endif /* !CACADISPLAY_HPP_ */

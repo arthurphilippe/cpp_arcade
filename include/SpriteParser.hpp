@@ -5,8 +5,8 @@
 ** SpriteParser
 */
 
-#ifndef SRPITE_PARSER_H_
-	#define SRPITE_PARSER_H_
+#ifndef SRPITEPARSER_H_
+	#define SRPITEPARSER_H_
 
 	#include <unordered_map>
 	#include <vector>
@@ -44,4 +44,4 @@ private:
 	static Color _color;
 };
 
-#endif /* SRPITE_PARSER_H_ */
+#endif /* SRPITEPARSER_H_ */

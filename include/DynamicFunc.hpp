@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2018
 ** cpp_arcade
 ** File description:
-** SymLoad
+** DynamicLoad
 */
 
-#ifndef SYMLOAD_HPP_
-	#define SYMLOAD_HPP_
+#ifndef DYNAMICFUNC_HPP_
+	#define DYNAMICFUNC_HPP_
 
 	#include <string>
 	#include <stdexcept>
@@ -42,4 +42,4 @@ namespace arc {
 	};
 }
 
-#endif /* !SYMLOAD_HPP_ */
+#endif /* !DYNAMICFUNC_HPP_ */

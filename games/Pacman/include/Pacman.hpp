@@ -5,8 +5,8 @@
 ** Pacman
 */
 
-#ifndef DEFAULTGAME_HPP_
-	#define DEFAULTGAME_HPP_
+#ifndef PACMAN_HPP_
+	#define PACMAN_HPP_
 
 	#include <string>
 	#include "Arc.hpp"
@@ -51,4 +51,4 @@ private:
 	void _dumpItems() const noexcept;
 };
 
-#endif /* !DEFAULTGAME_HPP_ */
+#endif /* !PACMAN_HPP_ */
