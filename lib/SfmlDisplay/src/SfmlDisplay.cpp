@@ -6,6 +6,7 @@
 //
 
 #include <iostream>
+#include "Arc.hpp"
 #include "GfxException.hpp"
 #include "SfmlDisplay.hpp"
 
@@ -19,6 +20,7 @@ static const arc::SfmlDisplay::KeyMap KEYMAP = {
 	{sf::Keyboard::P, arc::LIB_NEXT,},
 	{sf::Keyboard::O, arc::LIB_PREV},
 	{sf::Keyboard::Escape, arc::QUIT},
+	{sf::Keyboard::Space, arc::ACTION_1}
 };
 
 
@@ -31,6 +33,11 @@ arc::SfmlDisplay::SfmlDisplay(int x, int y, const std::string &name)
 
 arc::SfmlDisplay::~SfmlDisplay()
 {
+}
+
+void arc::SfmlDisplay::clear()
+{
+	_window.clear();
 }
 
 void arc::SfmlDisplay::refresh()
@@ -67,16 +74,25 @@ sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
 
 void arc::SfmlDisplay::putItem(const Item &item)
 {
-	_window.clear();
 	auto &currSprite = item.sprites[item.currSpriteIdx];
 	sf::Sprite &sprite = findSprite(currSprite);
 	sprite.setPosition(item.x, item.y);
 	_window.draw(sprite);
 }
 
-void arc::SfmlDisplay::clear()
+void arc::SfmlDisplay::putItem(const Item &item, int x, int y)
 {
-	_window.clear();
+	 auto &currSprite = item.sprites[item.currSpriteIdx];
+	sf::Sprite &sprite = findSprite(currSprite);
+	sprite.setPosition(x, y);
+	_window.draw(sprite);
+}
+
+void arc::SfmlDisplay::putSpritePosition(const Item &item, const std::vector<struct Position> &poslist)
+{
+	for (auto i  = poslist.begin(); i != poslist.end(); i++) {
+		putItem(item, i->x, i->y);
+	}
 }
 
 void arc::SfmlDisplay::waitEvent()

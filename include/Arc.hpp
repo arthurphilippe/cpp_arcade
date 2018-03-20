@@ -20,6 +20,7 @@ namespace arc {
 		int		x;
 		int		y;
 	};
+
 	using ItemList = std::vector<Item>;
 
 	enum Interaction {
@@ -27,6 +28,7 @@ namespace arc {
 		MOVE_DOWN,
 		MOVE_LEFT,
 		MOVE_RIGHT,
+		ACTION_1,
 		LIB_NEXT,
 		LIB_PREV,
 		GAME_NEXT,
@@ -34,6 +36,13 @@ namespace arc {
 		QUIT,
 	};
 	using InteractionList = std::queue<Interaction>;
+
+	struct Position {
+		int x;
+		int y;
+		Interaction interact;
+	};
+
 }
 
 #endif /* !ARC_HPP_ */

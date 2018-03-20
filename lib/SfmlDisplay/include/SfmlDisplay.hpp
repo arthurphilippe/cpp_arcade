@@ -30,7 +30,9 @@ public:
 	void refresh();
 	void putstr(const std::string &str, int x = 0, int y = 0);
 	void putItem(const Item &);
-        sf::Sprite &findSprite(const Sprite &currSprite);
+        void putItem(const Item &item, int x, int y);
+	sf::Sprite &findSprite(const Sprite &currSprite);
+	void putSpritePosition(const Item &item, const std::vector<struct Position> &poslist);
 	void waitEvent();
 	InteractionList getInteractions();
 	using KeyMap = std::unordered_map<sf::Keyboard::Key, Interaction>;

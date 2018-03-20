@@ -9,6 +9,7 @@
 	#define DEFAULTGAME_HPP_
 
 	#include <string>
+	#include "Arc.hpp"
 	#include "IGame.hpp"
 
 namespace arc {
@@ -16,7 +17,7 @@ namespace arc {
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 12;
-	constexpr auto FPS = 15;
+	constexpr auto FPS = 56;
 }
 
 class arc::Pacman : public arc::IGame {
@@ -32,12 +33,18 @@ public:
 	{
 		return _info;
 	}
+	ItemList &getItemsFromName(const std::string &name);
 	void proccessIteraction(Interaction &) noexcept;
 	void envUpdate() noexcept;
+	arc::Item &getItemFromName(const std::string &name);
+	void putSpritePosition(const Item &item, const std::vector<struct Position> &poslist);
+	const std::vector<struct Position> &getBulletPos() {return _bulletPos;}
 private:
 	std::string	_name;
 	ItemList	_items;
+	ItemList	_todraw;
 	Specs		_info;
+	std::vector<struct Position> _bulletPos;
 
 	static ItemList defaultItems;
 

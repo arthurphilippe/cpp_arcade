@@ -15,7 +15,8 @@ const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 };
 
 arc::GameWraper::GameWraper()
-	: _gameEntry("./games/Pacman/libPacman.so"),
+	: _gameEntry("./games/SolarFox/libSolarFox.so"),
+//	_displayEntry("./lib/SfmlDisplay/libsfml.so"),
 	_displayEntry("./lib/CacaDisplay/libcaca.so"),
 	_currGame(_gameEntry.get()()),
 	_currDisplay(_displayEntry.get()()),
@@ -64,19 +65,24 @@ void arc::GameWraper::_processWraperInter(Interaction &inter)
 }
 
 void arc::GameWraper::_processInteractions()
-{
+{	
 	auto inter = _currDisplay->getInteractions();
 	while (inter.size() != 0) {
 		if (find(_sysInteractions.begin(), _sysInteractions.end(),
-			inter.front()) != _sysInteractions.end())
+			 inter.front()) != _sysInteractions.end())
 			_processWraperInter(inter.front());
 		else {
 			_currGame->proccessIteraction(inter.front());
-			_currDisplay->putItem(_currGame->getItems()[0]);
-			_currDisplay->refresh();
 		}
 		inter.pop();
 	}
+	_currDisplay->clear();
+	_currDisplay->putItem(_currGame->getItemFromName("Seal"));
+	_currDisplay->putSpritePosition(
+		_currGame->getItemFromName("Bullet"),
+		_currGame->getBulletPos());
+	_currGame->envUpdate();
+	_currDisplay->refresh();
 }
 
 void arc::GameWraper::_setItemSprites(Item &item)

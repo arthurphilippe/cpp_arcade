@@ -49,6 +49,12 @@ void arc::Pacman::_dumpItems() const noexcept
 	}
 }
 
+void arc::Pacman::putSpritePosition(const Item &item, const std::vector<struct Position> &poslist)
+{
+	(void) item;
+	(void) poslist;
+}
+
 void arc::Pacman::proccessIteraction(Interaction &interact) noexcept
 {
 	switch (interact) {
@@ -64,10 +70,22 @@ void arc::Pacman::proccessIteraction(Interaction &interact) noexcept
 		case MOVE_RIGHT:
 			_items[0].x += 1;
 			break;
+		case ACTION_1:
+			break;
 		default:
 			break;
 	}
 }
+
+arc::Item &arc::Pacman::getItemFromName(const std::string &name)
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == name)
+			return *i;
+	}
+	return _items[0];
+}
+
 
 void arc::Pacman::envUpdate() noexcept
 {}

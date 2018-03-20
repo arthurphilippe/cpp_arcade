@@ -20,6 +20,7 @@ static const arc::CacaDisplay::KeyMap KEYMAP = {
 	{'p', arc::LIB_NEXT},
 	{'o', arc::LIB_PREV},
 	{CACA_KEY_ESCAPE, arc::QUIT},
+	{' ', arc::ACTION_1}
 };
 
 static const arc::CacaDisplay::ColorMap _map = {
@@ -83,6 +84,26 @@ void arc::CacaDisplay::putItem(const Item &item)
 	}
 	else
 		caca_put_char(_cv, item.x, item.y, '?');
+}
+
+void arc::CacaDisplay::putItem(const Item &item, int x ,int y)
+{
+		auto &currSprite = item.sprites[item.currSpriteIdx];
+
+	if (currSprite.getSubstitute()) {
+		caca_set_color_ansi(_cv, getItemColor(currSprite), CACA_BLACK);
+		caca_put_char(_cv, x, y, currSprite.getSubstitute());
+	}
+	else
+		caca_put_char(_cv, x, y, '?');
+}
+
+void arc::CacaDisplay::putSpritePosition(
+	const Item &item, const std::vector<struct Position> &poslist)
+{
+	for (auto i  = poslist.begin(); i != poslist.end(); i++) {
+		putItem(item, i->x, i->y);
+	}
 }
 
 
