@@ -34,6 +34,8 @@ protected:
 private:
 	libArray			_games;
 	libArray			_libs;
+	uint				_currGameIdx;
+	uint				_currDisplayIdx;
 	DynamicObject<IGame>		_gameEntry;
 	DynamicObject<IDisplay>		_displayEntry;
 	std::unique_ptr<IGame>		_currGame;
@@ -45,6 +47,7 @@ private:
 	static const std::vector<Interaction> _sysInteractions;
 	static void _setItemSprites(Item &item);
 	void _waitCycle(unsigned int fps);
+	void _displaySwitch(int mod);
 
 	std::chrono::high_resolution_clock::time_point _startTime;
 	bool _running;

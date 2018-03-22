@@ -19,7 +19,6 @@
 int main()
 {
 	arc::Startup start;
-	// arc::Startup start("./", "./");
 	arc::GameWraper toto(start);
 	toto.loop();
 	// std::cout << "Hi :3" << std::endl;

@@ -17,8 +17,10 @@ const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 arc::GameWraper::GameWraper(const Startup &startup)
 	: _games(startup.getGameLibs()),
 	_libs(startup.getGfxLibs()),
-	_gameEntry(*_games.begin()),
-	_displayEntry(*_libs.begin()),
+	_currGameIdx(0),
+	_currDisplayIdx(0),
+	_gameEntry(_games[0]),
+	_displayEntry(_libs[0]),
 	_currGame(_gameEntry.get()),
 	_currDisplay(_displayEntry.get()),
 	_running(true)
@@ -60,6 +62,12 @@ void arc::GameWraper::_processWraperInter(Interaction &inter)
 		case QUIT:
 			_running = false;
 			break;
+		case LIB_NEXT:
+			_displaySwitch(1);
+			break;
+		case LIB_PREV:
+			_displaySwitch(-1);
+			break;
 		default:
 			break;
 	}
@@ -90,4 +98,20 @@ void arc::GameWraper::_setItemSprites(Item &item)
 {
 	if (item.spritesPath.length())
 		item.sprites = SpriteParser::parser(item.spritesPath);
+}
+
+void arc::GameWraper::_displaySwitch(int mod)
+{
+	if (mod >= 0) {
+		_currDisplayIdx += mod;
+		if (_currDisplayIdx >= _libs.size())
+			_currDisplayIdx = 0;
+	} else if (_currDisplayIdx == 0) {
+		_currDisplayIdx = _libs.size() - 1;
+	} else {
+		_currDisplayIdx += mod;
+	}
+	_currDisplay->~IDisplay();
+	_currDisplay.release();
+	_currDisplay.reset(_displayEntry.reset(_libs[_currDisplayIdx]));
 }
