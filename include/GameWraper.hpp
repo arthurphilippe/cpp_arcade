@@ -15,7 +15,9 @@
 	#include "IGame.hpp"
 	#include "IDisplay.hpp"
 	#include "DynamicFunc.hpp"
+	#include "DynamicObject.hpp"
 	#include "Arc.hpp"
+	#include "Startup.hpp"
 
 namespace arc {
 	class GameWraper;
@@ -24,16 +26,19 @@ namespace arc {
 
 class arc::GameWraper {
 public:
-	GameWraper();
+	GameWraper(const Startup &startup);
 	~GameWraper();
 
 	int loop();
 protected:
 private:
-	DynamicFunc<IGame *(*)()>	_gameEntry;
-	DynamicFunc<IDisplay *(*)()>	_displayEntry;
+	libArray			_games;
+	libArray			_libs;
+	DynamicObject<IGame>		_gameEntry;
+	DynamicObject<IDisplay>		_displayEntry;
 	std::unique_ptr<IGame>		_currGame;
 	std::unique_ptr<IDisplay>	_currDisplay;
+
 
 	void _processWraperInter(Interaction &iter);
 	void _processInteractions();

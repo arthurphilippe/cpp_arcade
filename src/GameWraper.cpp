@@ -14,12 +14,13 @@ const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 	LIB_NEXT, LIB_PREV, GAME_NEXT, GAME_PREV, QUIT
 };
 
-arc::GameWraper::GameWraper()
-	: _gameEntry("./games/SolarFox/libSolarFox.so"),
-//	_displayEntry("./lib/SfmlDisplay/libsfml.so"),
-	_displayEntry("./lib/CacaDisplay/libcaca.so"),
-	_currGame(_gameEntry.get()()),
-	_currDisplay(_displayEntry.get()()),
+arc::GameWraper::GameWraper(const Startup &startup)
+	: _games(startup.getGameLibs()),
+	_libs(startup.getGfxLibs()),
+	_gameEntry(*_games.begin()),
+	_displayEntry(*_libs.begin()),
+	_currGame(_gameEntry.get()),
+	_currDisplay(_displayEntry.get()),
 	_running(true)
 {
 	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
@@ -65,7 +66,7 @@ void arc::GameWraper::_processWraperInter(Interaction &inter)
 }
 
 void arc::GameWraper::_processInteractions()
-{	
+{
 	auto inter = _currDisplay->getInteractions();
 	while (inter.size() != 0) {
 		if (find(_sysInteractions.begin(), _sysInteractions.end(),
