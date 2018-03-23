@@ -41,13 +41,13 @@ private:
 	std::unique_ptr<IGame>		_currGame;
 	std::unique_ptr<IDisplay>	_currDisplay;
 
-
 	void _processWraperInter(Interaction &iter);
 	void _processInteractions();
 	static const std::vector<Interaction> _sysInteractions;
 	static void _setItemSprites(Item &item);
 	void _waitCycle(unsigned int fps);
 	void _displaySwitch(int mod);
+	void _gameSwitch(int mod);
 
 	std::chrono::high_resolution_clock::time_point _startTime;
 	bool _running;

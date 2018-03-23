@@ -68,6 +68,12 @@ void arc::GameWraper::_processWraperInter(Interaction &inter)
 		case LIB_PREV:
 			_displaySwitch(-1);
 			break;
+		case GAME_NEXT:
+			_gameSwitch(1);
+			break;
+		case GAME_PREV:
+			_gameSwitch(-1);
+			break;
 		default:
 			break;
 	}
@@ -114,4 +120,22 @@ void arc::GameWraper::_displaySwitch(int mod)
 	_currDisplay->~IDisplay();
 	_currDisplay.release();
 	_currDisplay.reset(_displayEntry.reset(_libs[_currDisplayIdx]));
+}
+
+void arc::GameWraper::_gameSwitch(int mod)
+{
+	if (mod >= 0) {
+		_currGameIdx += mod;
+		if (_currGameIdx >= _libs.size())
+			_currGameIdx = 0;
+	} else if (_currGameIdx == 0) {
+		_currGameIdx = _libs.size() - 1;
+	} else {
+		_currGameIdx += mod;
+	}
+	_currGame->~IGame();
+	_currGame.release();
+	_currGame.reset(_gameEntry.reset(_games[_currGameIdx]));
+	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
+			 _setItemSprites);
 }
