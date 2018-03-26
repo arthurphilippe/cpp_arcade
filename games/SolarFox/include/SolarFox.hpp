@@ -52,10 +52,11 @@ private:
 	Specs		_info;
 	void changeItemsPositionFromName(const std::string &name, int a, int b);
 	std::chrono::high_resolution_clock::time_point _startTime;
-
+	void changeSpritePosition(SpriteList &spritelist, int x, int y) noexcept;
 	static ItemList defaultItems;
-
+	void printBackground() const noexcept;
 	void _dumpItems() const noexcept;
+	SpriteList &getSpriteListFromName(const std::string &name);
 };
 
 #endif /* !SOLARFOX_HPP_ */
