@@ -9,7 +9,6 @@
 #include <functional>
 #include <memory>
 #include "IGame.hpp"
-#include "DynamicFunc.hpp"
 #include "IDisplay.hpp"
 #include "SpriteParser.hpp"
 #include "Error.hpp"

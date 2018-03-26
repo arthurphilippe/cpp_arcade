@@ -14,7 +14,6 @@
 	#include <thread>
 	#include "IGame.hpp"
 	#include "IDisplay.hpp"
-	#include "DynamicFunc.hpp"
 	#include "DynamicObject.hpp"
 	#include "Arc.hpp"
 	#include "Startup.hpp"
