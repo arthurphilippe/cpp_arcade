@@ -56,15 +56,15 @@ enum arc::ACTION_LIST arc::SolarFox::canMove(const std::string &name, int x, int
 {
 	auto item = getItemFromName(name).sprites[0];
 	std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-				std::cout << "name = " << item.name << "x = " << item.x << " y = " << item.y << std::endl;
+				std::cout << "name = " << item.name << " || x = " << item.x << " || y = " << item.y << std::endl;
 	if (x == 1)
 	{
 		for (auto i = _items.begin(); i != _items.end(); i++) {
 			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->y >= item.y - GRID_H / 2 && z->y <= item.y + GRID_H / 2) && z->x < (item.x + GRID_STEP) && z->name != name) {
+				if ((z->y >= item.y - GRID_H / 2 && z->y <= item.y + GRID_H / 2) && z->x - item.x <= (GRID_STEP) && z->x - item.x >= 0  && z->name != name) {
 					std::cout << item.y + GRID_STEP << std::endl;
 					std::cout << z->y << std::endl;
-					std::cout << "name = " << z->name << "x = " << z->x << "y = " << z->y << std::endl;
+					std::cout << "name = " << z->name << " || x = " << z->x << " || y = " << z->y << std::endl;
 					std::cout << "GOAL" << std::endl;
 					 return arc::ACTION_LIST::BLOCK;
 				 }
