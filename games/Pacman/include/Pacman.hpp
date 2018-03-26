@@ -38,6 +38,7 @@ public:
 	void envUpdate() noexcept;
 	arc::Item &getItemFromName(const std::string &name);
 	void putSpritePosition(const Item &item, const std::vector<struct Position> &poslist);
+	SpriteList &getSpriteListFromName(const std::string &name) {}
 	const std::vector<struct Position> &getBulletPos() {return _bulletPos;}
 private:
 	std::string	_name;
