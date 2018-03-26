@@ -24,6 +24,7 @@ public:
 
 	void clear();
 	void refresh();
+	void setStep(uint step);
 	void putstr(const std::string &, int x = 0, int y = 0);
 	void putItem(const Item &);
 	void waitEvent();
@@ -40,6 +41,7 @@ private:
 	caca_display_t	*_dp;
 	caca_canvas_t	*_cv;
 	caca_event_t	_ev;
+	uint		_step;
 };
 
 #endif /* !CACADISPLAY_HPP_ */

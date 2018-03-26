@@ -28,9 +28,13 @@ public:
 
 	void clear();
 	void refresh();
+	void setStep(uint step)
+	{
+		(void) step;
+	}
 	void putstr(const std::string &str, int x = 0, int y = 0);
 	void putItem(const Item &);
-        void putItem(const Item &item, int x, int y);
+	void putItem(const Item &item, int x, int y);
 	sf::Sprite &findSprite(const Sprite &currSprite);
 	void putSpritePosition(const Item &item, const std::vector<struct Position> &poslist);
 	void waitEvent();
@@ -49,7 +53,7 @@ public:
 			}
 		~SpriteStorage() {};
 		const std::string &getPath() const noexcept {return _path;}
-	        sf::Sprite &getSprite() noexcept {return _sprite;}
+		sf::Sprite &getSprite() noexcept {return _sprite;}
 	private:
 		std::string _path;
 		sf::Texture _texture;

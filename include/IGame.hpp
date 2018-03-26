@@ -23,8 +23,8 @@ public:
 	struct Specs {
 		int x;
 		int y;
-		unsigned int pixelStep;
-		unsigned int fps;
+		uint pixelStep;
+		uint fps;
 	};
 
 	virtual ~IGame() = default;
