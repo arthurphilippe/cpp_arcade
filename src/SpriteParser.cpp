@@ -52,9 +52,7 @@ const int &arc::SpriteParser::getErrorLineNb()
 	return (_nbrline);
 }
 
-arc::Sprite arc::SpriteParser::createSprite(
-	const std::string &path, const char &substitute,
-	const std::string &name)
+arc::Sprite arc::SpriteParser::createSprite()
 {
 	Sprite tmp(setName(), setPath(), setSubstitute());
 	tmp.setX(std::stoi(getInfo("X")));
@@ -100,9 +98,7 @@ char arc::SpriteParser::setSubstitute()
 void arc::SpriteParser::parseLine()
 {
 	if (_line.length() > 0 && _line[0] != '#')
-		_vector.push_back(createSprite(setPath(),
-						setSubstitute(),
-						setName()));
+		_vector.push_back(createSprite());
 	_nbrline += 1;
 }
 

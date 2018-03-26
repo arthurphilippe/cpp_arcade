@@ -31,7 +31,7 @@ public:
 	void putItem(const Item &item, int x ,int y);
 	void putSpritePosition(
 	const Item &item, const std::vector<struct Position> &poslist);
-	void putSpriteList(const SpriteList &list) {}
+	void putSpriteList(const SpriteList &list) {(void) list;}
 	caca_color getItemColor(const Sprite &sprite);
 	InteractionList getInteractions();
 
