@@ -84,10 +84,16 @@ void arc::GameWraper::_processInteractions()
 {
 	auto inter = _currDisplay->getInteractions();
 	while (inter.size() != 0) {
+		bool had_action_1 = false;
+		if (had_action_1 && inter.front() == ACTION_1) {
+			inter.pop();
+			continue;
+		}
 		if (find(_sysInteractions.begin(), _sysInteractions.end(),
 			 inter.front()) != _sysInteractions.end())
 			_processWraperInter(inter.front());
 		else {
+			had_action_1 = (inter.front() == ACTION_1) ? true : false;
 			_currGame->proccessIteraction(inter.front());
 		}
 		inter.pop();
