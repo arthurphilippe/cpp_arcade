@@ -9,9 +9,31 @@
 	#define ARC_HPP_
 
 	#include <queue>
-	#include "Sprite.hpp"
 
 namespace arc {
+	enum Color {
+		BLUE,
+		RED,
+		GREEN,
+		YELLOW,
+		CYAN,
+		MAGENTA,
+		WHITE,
+		BLACK,
+		UNDEFINED,
+		DFT_COLOR_RET_ERROR,
+	};
+	struct Sprite {
+		int x;
+		int y;
+		int rotation;
+		char substitute;
+		std::string name;
+		std::string path;
+		arc::Color color;
+	};
+	using SpriteList = std::vector<Sprite>;
+
 	struct Item {
 		std::string	name;
 		std::string	spritesPath;

@@ -94,8 +94,8 @@ void arc::SolarFox::shoot(const std::string &name)
 void arc::SolarFox::changeSpritePosition(SpriteList &spritelist, int x, int y) noexcept
 {
 	for (auto i = spritelist.begin(); i != spritelist.end(); i++) {
-		i->setX(i->getX() + x);
-		i->setY(i->getY() + y);
+		i->x = i->x + x;
+		i->y = i->y + y;
 	}
 }
 

@@ -18,18 +18,18 @@ constexpr auto CONF_FILE_ERR_COLOR(
 Test(FunctionnalTest, SpriteParser) {
 
 	auto kappa = arc::SpriteParser::parser(REAL_CONF_FILE);
-        cr_assert(kappa[0].getColor() == arc::Color::WHITE);
-	cr_assert(kappa[1].getColor() == arc::Color::BLUE);
+        cr_assert(kappa[0].color() == arc::Color::WHITE);
+	cr_assert(kappa[1].color() == arc::Color::BLUE);
 
-	cr_assert(kappa[0].getName() == "Pacman");
-	cr_assert(kappa[1].getName() == "Pacman");
+	cr_assert(kappa[0].name == "Pacman");
+	cr_assert(kappa[1].name == "Pacman");
 
-	cr_assert(kappa[0].getSubstitute() == 'a');
-	cr_assert(kappa[1].getSubstitute() == 'b');
+	cr_assert(kappa[0].substitute == 'a');
+	cr_assert(kappa[1].substitute == 'b');
 
-	cr_assert(kappa[0].getPath() == "sprite/pacman/potiti");
-	cr_assert(kappa[1].getPath() == "sprite/pacman/potiti");
-	
+	cr_assert(kappa[0].path() == "sprite/pacman/potiti");
+	cr_assert(kappa[1].path() == "sprite/pacman/potiti");
+
 	cr_assert(kappa.size() == 2);
 }
 

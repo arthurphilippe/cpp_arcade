@@ -10,7 +10,6 @@
 
 	#include <vector>
 	#include "Arc.hpp"
-	#include "Sprite.hpp"
 	#include "SpriteParser.hpp"
 	#include "IDisplay.hpp"
 

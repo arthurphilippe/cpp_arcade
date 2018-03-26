@@ -10,7 +10,6 @@
 
 	#include <caca.h>
 	#include <unordered_map>
-	#include "Sprite.hpp"
 	#include "IDisplay.hpp"
 
 namespace arc {
