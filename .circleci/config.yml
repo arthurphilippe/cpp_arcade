@@ -8,21 +8,21 @@ jobs:
       - run:
           name: Build Project
           command: make
-      - run:
-          name: Build Unit Tests Suites
-          command: make tests -j 4
+      # - run:
+      #     name: Build Unit Tests Suites
+      #     command: make tests -j 4
       - run:
           name: Tidy up
           command: make clean
-      - run:
-          name: Unit Tests Execution
-          command: ./unit_tests.out
-      - run:
-          name: Code Coverage - Processing
-          command: ./tests/coverage.sh
-      - run:
-          name: Code Coverage - Output
-          command: cat coverage.log
+      # - run:
+      #     name: Unit Tests Execution
+      #     command: ./unit_tests.out
+      # - run:
+      #     name: Code Coverage - Processing
+      #     command: ./tests/coverage.sh
+      # - run:
+      #     name: Code Coverage - Output
+      #     command: cat coverage.log
 
   build_clang:
     docker:
@@ -41,15 +41,15 @@ jobs:
       - run:
           name: Build Project
           command: make -j 4 arcade
-      - run:
-          name: Build Unit Tests Suites
-          command: make tests -j 4
+      # - run:
+      #     name: Build Unit Tests Suites
+      #     command: make tests -j 4
       - run:
           name: Tidy up
           command: make clean
-      - run:
-          name: Unit Tests Execution
-          command: ./unit_tests.out
+      # - run:
+      #     name: Unit Tests Execution
+      #     command: ./unit_tests.out
 
 workflows:
   version: 2
