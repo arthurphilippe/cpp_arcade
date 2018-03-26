@@ -35,6 +35,7 @@ public:
 	virtual void proccessIteraction(Interaction &) noexcept = 0;
 	virtual void envUpdate() noexcept = 0;
 	virtual const std::vector<struct Position> &getBulletPos() = 0;
+	virtual SpriteList &getSpriteListFromName(const std::string &name) = 0;
 };
 
 #endif /* !IGAME_HPP_ */

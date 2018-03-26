@@ -28,6 +28,7 @@ public:
 	virtual void refresh() = 0;
 	virtual InteractionList getInteractions() = 0;
 	virtual void putSpritePosition(const Item &item, const std::vector<struct Position> &poslist) = 0;
+	virtual void putSpriteList(const SpriteList &list) = 0;
 };
 
 #endif /* !IDISPLAY_HPP_ */
