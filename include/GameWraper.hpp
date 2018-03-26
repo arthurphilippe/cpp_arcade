@@ -14,8 +14,9 @@
 	#include <thread>
 	#include "IGame.hpp"
 	#include "IDisplay.hpp"
-	#include "DynamicFunc.hpp"
+	#include "DynamicObject.hpp"
 	#include "Arc.hpp"
+	#include "Startup.hpp"
 
 namespace arc {
 	class GameWraper;
@@ -24,14 +25,18 @@ namespace arc {
 
 class arc::GameWraper {
 public:
-	GameWraper();
+	GameWraper(const Startup &startup);
 	~GameWraper();
 
 	int loop();
 protected:
 private:
-	DynamicFunc<IGame *(*)()>	_gameEntry;
-	DynamicFunc<IDisplay *(*)()>	_displayEntry;
+	libArray			_games;
+	libArray			_libs;
+	uint				_currGameIdx;
+	uint				_currDisplayIdx;
+	DynamicObject<IGame>		_gameEntry;
+	DynamicObject<IDisplay>		_displayEntry;
 	std::unique_ptr<IGame>		_currGame;
 	std::unique_ptr<IDisplay>	_currDisplay;
 
@@ -40,6 +45,8 @@ private:
 	static const std::vector<Interaction> _sysInteractions;
 	static void _setItemSprites(Item &item);
 	void _waitCycle(unsigned int fps);
+	void _displaySwitch(int mod);
+	void _gameSwitch(int mod);
 
 	std::chrono::high_resolution_clock::time_point _startTime;
 	bool _running;

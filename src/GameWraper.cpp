@@ -14,12 +14,15 @@ const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 	LIB_NEXT, LIB_PREV, GAME_NEXT, GAME_PREV, QUIT
 };
 
-arc::GameWraper::GameWraper()
-	: _gameEntry("./games/SolarFox/libSolarFox.so"),
-	_displayEntry("./lib/SfmlDisplay/libsfml.so"),
-//	_displayEntry("./lib/CacaDisplay/libcaca.so"),
-	_currGame(_gameEntry.get()()),
-	_currDisplay(_displayEntry.get()()),
+arc::GameWraper::GameWraper(const Startup &startup)
+	: _games(startup.getGameLibs()),
+	_libs(startup.getGfxLibs()),
+	_currGameIdx(0),
+	_currDisplayIdx(0),
+	_gameEntry(_games[0]),
+	_displayEntry(_libs[0]),
+	_currGame(_gameEntry.get()),
+	_currDisplay(_displayEntry.get()),
 	_running(true)
 {
 	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
@@ -59,6 +62,18 @@ void arc::GameWraper::_processWraperInter(Interaction &inter)
 		case QUIT:
 			_running = false;
 			break;
+		case LIB_NEXT:
+			_displaySwitch(1);
+			break;
+		case LIB_PREV:
+			_displaySwitch(-1);
+			break;
+		case GAME_NEXT:
+			_gameSwitch(1);
+			break;
+		case GAME_PREV:
+			_gameSwitch(-1);
+			break;
 		default:
 			break;
 	}
@@ -90,4 +105,38 @@ void arc::GameWraper::_setItemSprites(Item &item)
 {
 	if (item.spritesPath.length())
 		item.sprites = SpriteParser::parser(item.spritesPath);
+}
+
+void arc::GameWraper::_displaySwitch(int mod)
+{
+	if (mod >= 0) {
+		_currDisplayIdx += mod;
+		if (_currDisplayIdx >= _libs.size())
+			_currDisplayIdx = 0;
+	} else if (_currDisplayIdx == 0) {
+		_currDisplayIdx = _libs.size() - 1;
+	} else {
+		_currDisplayIdx += mod;
+	}
+	_currDisplay->~IDisplay();
+	_currDisplay.release();
+	_currDisplay.reset(_displayEntry.reset(_libs[_currDisplayIdx]));
+}
+
+void arc::GameWraper::_gameSwitch(int mod)
+{
+	if (mod >= 0) {
+		_currGameIdx += mod;
+		if (_currGameIdx >= _libs.size())
+			_currGameIdx = 0;
+	} else if (_currGameIdx == 0) {
+		_currGameIdx = _libs.size() - 1;
+	} else {
+		_currGameIdx += mod;
+	}
+	_currGame->~IGame();
+	_currGame.release();
+	_currGame.reset(_gameEntry.reset(_games[_currGameIdx]));
+	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
+			 _setItemSprites);
 }
