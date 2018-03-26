@@ -31,6 +31,7 @@ arc::GameWraper::GameWraper(const Startup &startup)
 	_currDisplay->clear();
 	_currDisplay->putstr("kapa", 0, 0);
 	_currDisplay->refresh();
+	_currDisplay->setStep(_currGame->getSpecs().pixelStep);
 }
 
 arc::GameWraper::~GameWraper()
@@ -83,10 +84,16 @@ void arc::GameWraper::_processInteractions()
 {
 	auto inter = _currDisplay->getInteractions();
 	while (inter.size() != 0) {
+		bool had_action_1 = false;
+		if (had_action_1 && inter.front() == ACTION_1) {
+			inter.pop();
+			continue;
+		}
 		if (find(_sysInteractions.begin(), _sysInteractions.end(),
 			 inter.front()) != _sysInteractions.end())
 			_processWraperInter(inter.front());
 		else {
+			had_action_1 = (inter.front() == ACTION_1) ? true : false;
 			_currGame->proccessIteraction(inter.front());
 		}
 		inter.pop();
@@ -96,6 +103,7 @@ void arc::GameWraper::_processInteractions()
 	_currDisplay->putSpritePosition(
 		_currGame->getItemFromName("Bullet"),
 		_currGame->getBulletPos());
+	_currDisplay->putSpriteList(_currGame->getSpriteListFromName("Wall"));
 	_currGame->envUpdate();
 	_currDisplay->refresh();
 }
@@ -120,6 +128,7 @@ void arc::GameWraper::_displaySwitch(int mod)
 	_currDisplay->~IDisplay();
 	_currDisplay.release();
 	_currDisplay.reset(_displayEntry.reset(_libs[_currDisplayIdx]));
+	_currDisplay->setStep(_currGame->getSpecs().pixelStep);
 }
 
 void arc::GameWraper::_gameSwitch(int mod)
@@ -138,4 +147,5 @@ void arc::GameWraper::_gameSwitch(int mod)
 	_currGame.reset(_gameEntry.reset(_games[_currGameIdx]));
 	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
 			 _setItemSprites);
+	_currDisplay->setStep(_currGame->getSpecs().pixelStep);
 }

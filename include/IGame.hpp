@@ -23,8 +23,8 @@ public:
 	struct Specs {
 		int x;
 		int y;
-		unsigned int pixelStep;
-		unsigned int fps;
+		uint pixelStep;
+		uint fps;
 	};
 
 	virtual ~IGame() = default;
@@ -35,6 +35,7 @@ public:
 	virtual void proccessIteraction(Interaction &) noexcept = 0;
 	virtual void envUpdate() noexcept = 0;
 	virtual const std::vector<struct Position> &getBulletPos() = 0;
+	virtual SpriteList &getSpriteListFromName(const std::string &name) = 0;
 };
 
 #endif /* !IGAME_HPP_ */

@@ -36,8 +36,8 @@ static const arc::CacaDisplay::ColorMap _map = {
 };
 
 arc::CacaDisplay::CacaDisplay()
+	: _dp(caca_create_display(NULL)), _step(1)
 {
-	_dp = caca_create_display(NULL);
 	if (!_dp)
 		throw GfxException(GFX_ERR_INIT);
 	_cv = caca_get_canvas(_dp);
@@ -60,6 +60,11 @@ void arc::CacaDisplay::refresh()
 	caca_refresh_display(_dp);
 }
 
+void arc::CacaDisplay::setStep(uint step)
+{
+	_step = step;
+}
+
 void arc::CacaDisplay::putstr(const std::string &str, int x, int y)
 {
 	caca_put_str(_cv, x, y, str.c_str());
@@ -80,22 +85,24 @@ void arc::CacaDisplay::putItem(const Item &item)
 
 	if (currSprite.getSubstitute()) {
 		caca_set_color_ansi(_cv, getItemColor(currSprite), CACA_BLACK);
-		caca_put_char(_cv, item.x, item.y, currSprite.getSubstitute());
+		caca_put_char(_cv, item.x / _step, item.y / _step,
+				currSprite.getSubstitute());
 	}
 	else
-		caca_put_char(_cv, item.x, item.y, '?');
+		caca_put_char(_cv, item.x / _step, item.y / _step, '?');
 }
 
 void arc::CacaDisplay::putItem(const Item &item, int x ,int y)
 {
-		auto &currSprite = item.sprites[item.currSpriteIdx];
+	auto &currSprite = item.sprites[item.currSpriteIdx];
 
 	if (currSprite.getSubstitute()) {
 		caca_set_color_ansi(_cv, getItemColor(currSprite), CACA_BLACK);
-		caca_put_char(_cv, x, y, currSprite.getSubstitute());
+		caca_put_char(_cv, x / _step, y / _step,
+				currSprite.getSubstitute());
 	}
 	else
-		caca_put_char(_cv, x, y, '?');
+		caca_put_char(_cv, x / _step, y / _step, '?');
 }
 
 void arc::CacaDisplay::putSpritePosition(

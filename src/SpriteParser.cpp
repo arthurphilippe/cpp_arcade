@@ -18,6 +18,16 @@ arc::SpriteList arc::SpriteParser::_vector;
 int arc::SpriteParser::_nbrline;
 arc::Color _color;
 
+static const std::unordered_map<std::string, int> COREMAP = {
+        {"Name", 0},
+        {"X", 1},
+        {"Y", 2},
+        {"Rotation", 3},
+        {"Substitute", 4},
+        {"Color", 5},
+        {"Path", 6},
+};
+
 static const arc::SpriteParser::MapColor _mapColor = {
 	{"BLUE", arc::Color::BLUE},
 	{"RED", arc::Color::RED},
@@ -42,35 +52,26 @@ const int &arc::SpriteParser::getErrorLineNb()
 	return (_nbrline);
 }
 
-arc::Sprite arc::SpriteParser::createSprite(
-	const std::string &path, const char &substitute,
-	const std::string &name)
+arc::Sprite arc::SpriteParser::createSprite()
 {
-	Sprite tmp(name, path, substitute);
-
+	Sprite tmp(setName(), setPath(), setSubstitute());
+	tmp.setX(std::stoi(getInfo("X")));
+	tmp.setY(std::stoi(getInfo("Y")));
+	tmp.setRotation(std::stoi(getInfo("Rotation")));
 	tmp.setColor(setColor());
 	return tmp;
 }
 
 std::string arc::SpriteParser::setName()
 {
-	std::string tmp = _line;
-	size_t tokenplace;
-
-	if ((tokenplace = tmp.find(':')) == std::string::npos)
-		throw ParserError(arc::ERR_NAME);
-	tmp = tmp.substr(0, tokenplace);
-	return tmp;
+	return getInfo("Name");
 }
 
 arc::Color arc::SpriteParser::setColor()
 {
-	std::string tmp = _line;
+	std::string tmp = getInfo("Color");
 	arc::Color color = arc::Color::DFT_COLOR_RET_ERROR;
 
-	for (int i = 0; i != 2; i++)
-		tmp = tmp.substr(tmp.find_first_of(":") + 1, tmp.find_last_of(":"));
-	tmp = tmp.substr(0, tmp.find(":"));
 	for (auto i = _mapColor.begin(); i != _mapColor.end(); i++) {
 		if (i->first == tmp)
 			color = i->second;
@@ -82,20 +83,13 @@ arc::Color arc::SpriteParser::setColor()
 
 std::string arc::SpriteParser::setPath()
 {
-	std::string tmp = _line;
-
-	tmp = tmp.substr(tmp.find_last_of(":", tmp.length()) + 1, tmp.length());
-	if (access(tmp.c_str(), R_OK) == -1 || tmp == _line)
-		throw ParserError(arc::ERR_PATH);
-	return tmp;
+	return getInfo("Path");
 }
 
 char arc::SpriteParser::setSubstitute()
 {
-	std::string tmp = _line;
+	std::string tmp = getInfo("Substitute");
 
-	tmp = tmp.substr(tmp.find(":") + 1, tmp.length());
-	tmp = tmp.substr(0, tmp.find(":"));
 	if (tmp.length() > 1)
 		throw ParserError(arc::ERR_SUB);
 	return tmp[0];
@@ -104,9 +98,7 @@ char arc::SpriteParser::setSubstitute()
 void arc::SpriteParser::parseLine()
 {
 	if (_line.length() > 0 && _line[0] != '#')
-		_vector.push_back(createSprite(setPath(),
-						setSubstitute(),
-						setName()));
+		_vector.push_back(createSprite());
 	_nbrline += 1;
 }
 
@@ -125,6 +117,27 @@ void arc::SpriteParser::readFile(const std::string &filename)
 		_s += "'.";
 		throw ParserError(_s);
 	}
+}
+
+
+int arc::SpriteParser::getIndex(const std::string &what)
+{
+        for (auto i = COREMAP.begin(); i != COREMAP.end(); i++) {
+                if (what == i->first)
+                        return i->second;
+        }
+        return -1;
+}
+
+std::string arc::SpriteParser::getInfo(const std::string &what)
+{
+        std::string tmp = _line;
+
+        for (int i = 0; i < getIndex(what); i ++) {
+                tmp = tmp.substr(tmp.find(":") + 1, tmp.length());
+        }
+        tmp = tmp.substr(0, tmp.find(":"));
+        return tmp;
 }
 
 arc::SpriteList arc::SpriteParser::parser(const std::string &filename)

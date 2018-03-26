@@ -23,7 +23,6 @@ static const arc::SfmlDisplay::KeyMap KEYMAP = {
 	{sf::Keyboard::Space, arc::ACTION_1}
 };
 
-
 arc::SfmlDisplay::SfmlDisplay(int x, int y, const std::string &name)
 {
 	_window.create(sf::VideoMode(x,y), name);
@@ -66,7 +65,7 @@ sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
 	_spriteVector.push_back(
 		std::unique_ptr<SpriteStorage>(
 			new SpriteStorage(
-				currSprite.getPath())));
+				currSprite.getPath(), currSprite.getRotation())));
 	return _spriteVector[
 		_spriteVector.size() - 1].
 		get()->getSprite();
@@ -82,10 +81,22 @@ void arc::SfmlDisplay::putItem(const Item &item)
 
 void arc::SfmlDisplay::putItem(const Item &item, int x, int y)
 {
-	 auto &currSprite = item.sprites[item.currSpriteIdx];
+	auto &currSprite = item.sprites[item.currSpriteIdx];
 	sf::Sprite &sprite = findSprite(currSprite);
 	sprite.setPosition(x, y);
 	_window.draw(sprite);
+}
+
+void arc::SfmlDisplay::putSpriteList(const SpriteList &splist)
+{
+	for (auto i = splist.begin(); i != splist.end(); i++)
+	{
+		auto currSprite = i;
+		auto sprite = findSprite(*currSprite);
+		sprite.setPosition(currSprite->getX(), currSprite->getY());
+		sprite.setRotation(currSprite->getRotation());
+		_window.draw(sprite);
+	}
 }
 
 void arc::SfmlDisplay::putSpritePosition(const Item &item, const std::vector<struct Position> &poslist)

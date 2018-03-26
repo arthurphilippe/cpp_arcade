@@ -41,11 +41,20 @@ public:
 	{
 		_substitute = substitute;
 	}
+	void setX(const int &x) noexcept {_x = x;}
+	void setY(const int &y) noexcept {_y = y;}
+	void setRotation(const int &rotation) noexcept {_rotation = rotation;}
 	const std::string &getName() const noexcept {return _name;}
 	const std::string &getPath() const noexcept {return _path;}
 	const char &getSubstitute() const noexcept {return _substitute;}
 	const arc::Color &getColor() const noexcept {return _color;}
+	const int &getX() const noexcept {return _x;}
+	const int &getY() const noexcept {return _y;}
+	const int &getRotation() const noexcept {return _rotation;}
 private:
+	int _x;
+	int _y;
+	int _rotation;
 	char _substitute;
 	std::string _name;
 	std::string _path;

@@ -26,12 +26,12 @@ public:
 	static const int &getErrorLineNb();
 	using MapColor = std::unordered_map<std::string, arc::Color>;
 private:
-	static Sprite createSprite(const std::string &path,
-					const char &substitute,
-					const std::string &name);
+	static Sprite createSprite();
 	static std::string modifyFolder(std::string foldername);
 	static void parseLine();
 	static void readFile(const std::string &name);
+	static int getIndex(const std::string &what);
+	static std::string getInfo(const std::string &what);
 
 	static std::string setName();
 	static std::string setPath();
