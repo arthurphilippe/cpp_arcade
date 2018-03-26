@@ -32,6 +32,8 @@ private:
 	static std::string modifyFolder(std::string foldername);
 	static void parseLine();
 	static void readFile(const std::string &name);
+	static int getIndex(const std::string &what);
+	static std::string getInfo(const std::string &what);
 
 	static std::string setName();
 	static std::string setPath();

@@ -29,8 +29,8 @@ public:
 	void waitEvent();
 	void putItem(const Item &item, int x ,int y);
 	void putSpritePosition(
-		const Item &item, const std::vector<struct Position> &poslist);
-
+	const Item &item, const std::vector<struct Position> &poslist);
+	void putSpriteList(const SpriteList &list) {}
 	caca_color getItemColor(const Sprite &sprite);
 	InteractionList getInteractions();
 
