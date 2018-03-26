@@ -109,7 +109,7 @@ void arc::CacaDisplay::putSpritePosition(
 	const Item &item, const std::vector<struct Position> &poslist)
 {
 	for (auto i  = poslist.begin(); i != poslist.end(); i++) {
-		putItem(item, i->x / _step, i->y / _step);
+		putItem(item, i->x, i->y);
 	}
 }
 

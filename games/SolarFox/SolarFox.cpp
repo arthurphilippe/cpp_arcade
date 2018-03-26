@@ -85,8 +85,8 @@ void arc::SolarFox::shoot(const std::string &name)
 		if (i->x == mainchar.x && i->y == mainchar.y)
 			return;
 	}
-	tmp.x = splist[0].getX();
-	tmp.y = splist[0].getY();
+	tmp.x = mainchar.x;
+	tmp.y = mainchar.y;
 	tmp.interact = _keystate;
 	_bulletpos.push_back(tmp);
 }
@@ -147,16 +147,16 @@ void arc::SolarFox::envUpdate() noexcept
 	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
 		switch (i->interact) {
 		case MOVE_UP:
-			i->y -= 2;
+			i->y -= 1;
 			break;
 		case MOVE_DOWN:
-			i->y += 2;
+			i->y += 1;
 			break;
 		case MOVE_LEFT:
-			i->x -= 2;
+			i->x -= 1;
 			break;
 		case MOVE_RIGHT:
-			i->x += 2;
+			i->x += 1;
 			break;
 		default:
 			break;
