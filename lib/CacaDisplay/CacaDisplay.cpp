@@ -73,7 +73,7 @@ void arc::CacaDisplay::putstr(const std::string &str, int x, int y)
 caca_color arc::CacaDisplay::getItemColor(const Sprite &sprite)
 {
 	for (auto i = _map.begin(); i != _map.end(); i++) {
-		if (i->first == sprite.getColor())
+		if (i->first == sprite.color)
 			return (i->second);
 	}
 	return CACA_DEFAULT;
@@ -83,10 +83,10 @@ void arc::CacaDisplay::putItem(const Item &item)
 {
 	auto &currSprite = item.sprites[item.currSpriteIdx];
 
-	if (currSprite.getSubstitute()) {
+	if (currSprite.substitute) {
 		caca_set_color_ansi(_cv, getItemColor(currSprite), CACA_BLACK);
 		caca_put_char(_cv, item.x / _step, item.y / _step,
-				currSprite.getSubstitute());
+				currSprite.substitute);
 	}
 	else
 		caca_put_char(_cv, item.x / _step, item.y / _step, '?');
@@ -96,10 +96,10 @@ void arc::CacaDisplay::putItem(const Item &item, int x ,int y)
 {
 	auto &currSprite = item.sprites[item.currSpriteIdx];
 
-	if (currSprite.getSubstitute()) {
+	if (currSprite.substitute) {
 		caca_set_color_ansi(_cv, getItemColor(currSprite), CACA_BLACK);
 		caca_put_char(_cv, x / _step, y / _step,
-				currSprite.getSubstitute());
+				currSprite.substitute);
 	}
 	else
 		caca_put_char(_cv, x / _step, y / _step, '?');

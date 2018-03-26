@@ -19,13 +19,13 @@ int arc::SpriteParser::_nbrline;
 arc::Color _color;
 
 static const std::unordered_map<std::string, int> COREMAP = {
-        {"Name", 0},
-        {"X", 1},
-        {"Y", 2},
-        {"Rotation", 3},
-        {"Substitute", 4},
-        {"Color", 5},
-        {"Path", 6},
+	{"Name", 0},
+	{"X", 1},
+	{"Y", 2},
+	{"Rotation", 3},
+	{"Substitute", 4},
+	{"Color", 5},
+	{"Path", 6},
 };
 
 static const arc::SpriteParser::MapColor _mapColor = {
@@ -54,11 +54,14 @@ const int &arc::SpriteParser::getErrorLineNb()
 
 arc::Sprite arc::SpriteParser::createSprite()
 {
-	Sprite tmp(setName(), setPath(), setSubstitute());
-	tmp.setX(std::stoi(getInfo("X")));
-	tmp.setY(std::stoi(getInfo("Y")));
-	tmp.setRotation(std::stoi(getInfo("Rotation")));
-	tmp.setColor(setColor());
+	Sprite tmp;
+	tmp.name = setName();
+	tmp.path = setPath();
+	tmp.substitute = setSubstitute();
+	tmp.x = std::stoi(getInfo("X"));
+	tmp.y = std::stoi(getInfo("Y"));
+	tmp.rotation = std::stoi(getInfo("Rotation"));
+	tmp.color = setColor();
 	return tmp;
 }
 
@@ -122,22 +125,22 @@ void arc::SpriteParser::readFile(const std::string &filename)
 
 int arc::SpriteParser::getIndex(const std::string &what)
 {
-        for (auto i = COREMAP.begin(); i != COREMAP.end(); i++) {
-                if (what == i->first)
-                        return i->second;
-        }
-        return -1;
+	for (auto i = COREMAP.begin(); i != COREMAP.end(); i++) {
+		if (what == i->first)
+			return i->second;
+	}
+	return -1;
 }
 
 std::string arc::SpriteParser::getInfo(const std::string &what)
 {
-        std::string tmp = _line;
+	std::string tmp = _line;
 
-        for (int i = 0; i < getIndex(what); i ++) {
-                tmp = tmp.substr(tmp.find(":") + 1, tmp.length());
-        }
-        tmp = tmp.substr(0, tmp.find(":"));
-        return tmp;
+	for (int i = 0; i < getIndex(what); i ++) {
+		tmp = tmp.substr(tmp.find(":") + 1, tmp.length());
+	}
+	tmp = tmp.substr(0, tmp.find(":"));
+	return tmp;
 }
 
 arc::SpriteList arc::SpriteParser::parser(const std::string &filename)

@@ -56,7 +56,7 @@ public:
 				_sprite.setRotation(rotation);
 			}
 		~SpriteStorage() {};
-		const std::string &getPath() const noexcept {return _path;}
+		const std::string &path() const noexcept {return _path;}
 		sf::Sprite &getSprite() noexcept {return _sprite;}
 	private:
 		std::string _path;

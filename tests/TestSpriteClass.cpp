@@ -7,44 +7,44 @@
 
 #include <criterion/criterion.h>
 #include <criterion/assert.h>
-#include "Sprite.hpp"
 
-Test(getName, SpriteClass) {
-	arc::Sprite sprite("DontBlameMe", "/src/", 'c');
 
-	cr_assert_str_eq(sprite.getName().c_str(), "DontBlameMe");
-}
+// Test(name, SpriteClass) {
+// 	arc::Sprite sprite{"DontBlameMe", "/src/", 'c'};
 
-Test(getPath, SpriteClass) {
-	arc::Sprite sprite("DontBlameMe", "/src/", 'c');
+// 	cr_assert_str_eq(sprite.name.c_str(), "DontBlameMe");
+// }
 
-	cr_assert_str_eq(sprite.getPath().c_str(), "/src/");
-}
+// Test(path, SpriteClass) {
+// 	arc::Sprite sprite{"DontBlameMe", "/src/", 'c'};
 
-Test(getSubstitute, SpriteClass) {
-	arc::Sprite sprite("DontBlameMe", "/src/", 'c');
+// 	cr_assert_str_eq(sprite.path().c_str(), "/src/");
+// }
 
-	cr_assert_eq(sprite.getSubstitute(), 'c');
-}
+// Test(getSubstitute, SpriteClass) {
+// 	arc::Sprite sprite{"DontBlameMe", "/src/", 'c'};
 
-Test(setName, SpriteClass) {
-	arc::Sprite sprite("DontBlameMe", "/src/", 'c');
+// 	cr_assert_eq(sprite.substitute, 'c');
+// }
 
-	sprite.setName("LoveMeMakeMeCrazy");
-	cr_assert_str_eq(sprite.getName().c_str(), "LoveMeMakeMeCrazy");
-}
+// Test(setName, SpriteClass) {
+// 	arc::Sprite sprite{"DontBlameMe", "/src/", 'c'};
 
-Test(setPath, SpriteClass) {
-	arc::Sprite sprite("DontBlameMe", "/src/", 'c');
+// 	sprite.setName("LoveMeMakeMeCrazy");
+// 	cr_assert_str_eq(sprite.name.c_str(), "LoveMeMakeMeCrazy");
+// }
 
-	sprite.setPath("/lib/");
-	cr_assert_str_eq(sprite.getPath().c_str(), "/lib/");
-}
+// Test(setPath, SpriteClass) {
+// 	arc::Sprite sprite{"DontBlameMe", "/src/", 'c'};
 
-Test(setSubstitute, SpriteClass) {
-	arc::Sprite sprite("DontBlameMe", "/src/", 'c');
+// 	sprite.setPath("/lib/");
+// 	cr_assert_str_eq(sprite.path().c_str(), "/lib/");
+// }
 
-	sprite.setSubstitute('a');
-	cr_assert_eq(sprite.getSubstitute(), 'a');
-}
+// Test(setSubstitute, SpriteClass) {
+// 	arc::Sprite sprite{"DontBlameMe", "/src/", 'c'};
+
+// 	sprite.setSubstitute('a');
+// 	cr_assert_eq(sprite.substitute, 'a');
+// }
 

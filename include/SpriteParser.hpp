@@ -10,7 +10,6 @@
 
 	#include <unordered_map>
 	#include <vector>
-	#include "Sprite.hpp"
 	#include "Arc.hpp"
 
 namespace arc {
