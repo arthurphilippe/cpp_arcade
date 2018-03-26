@@ -16,23 +16,18 @@ DEF_PACMAN = {"Seal",
 static const arc::Item
 DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 30, 30};
 static const arc::Item
-DEF_GHOSTB = {"ghost b", "", arc::SpriteList(), 0, 40, 30};
+DEF_SHOOT = {"Bullet",
+"tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 20, 20};
 static const arc::Item
-DEF_GHOSTC = {"ghost c", "", arc::SpriteList(), 0, 50, 30};
-static const arc::Item
-DEF_GHOSTD = {"ghost d", "", arc::SpriteList(), 0, 60, 30};
-static const arc::Item
-DEF_SHOOT = {"Bullet", "tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 20, 20};
+DEF_WALL = {"Wall",
+"tests/SpriteConfigurationFiles/Wall.conf", arc::SpriteList(), 0, 20, 20};
 
 arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	_items.push_back(DEF_PACMAN);
-	_items.push_back(DEF_GHOSTA);
-	_items.push_back(DEF_GHOSTB);
-	_items.push_back(DEF_GHOSTC);
-	_items.push_back(DEF_GHOSTD);
 	_items.push_back(DEF_SHOOT);
+	_items.push_back(DEF_WALL);
 }
 
 void arc::SolarFox::dump() const noexcept
@@ -84,15 +79,24 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 void arc::SolarFox::shoot(const std::string &name)
 {
 	auto mainchar = getItemFromName(name);
+	auto splist = mainchar.sprites;
         struct Position tmp;
 	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
 		if (i->x == mainchar.x && i->y == mainchar.y)
 			return;
 	}
-	tmp.x = mainchar.x;
-	tmp.y = mainchar.y;
+	tmp.x = splist[0].getX();
+	tmp.y = splist[0].getY();
 	tmp.interact = _keystate;
 	_bulletpos.push_back(tmp);
+}
+
+void arc::SolarFox::changeSpritePosition(SpriteList &spritelist, int x, int y) noexcept
+{
+	for (auto i = spritelist.begin(); i != spritelist.end(); i++) {
+		i->setX(i->getX() + x);
+		i->setY(i->getY() + y);
+	}
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -101,8 +105,10 @@ void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, 
 	millisec elapsed = finish - _startTime;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == name) {
+			changeSpritePosition(i->sprites, x, y);
 			i->x += x;
 			i->y += y;
+			changeSpritePosition(i->sprites, x, y);
 			if (elapsed.count() > 200) {
 				if (i->currSpriteIdx > 4)
 					i->currSpriteIdx = 0;
@@ -123,6 +129,15 @@ arc::Item &arc::SolarFox::getItemFromName(const std::string &name)
 	return _items[0];
 }
 
+arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
+{
+
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == name)
+			return i->sprites;
+	}
+	return _items[0].sprites;
+}
 
 void arc::SolarFox::envUpdate() noexcept
 {
@@ -132,21 +147,24 @@ void arc::SolarFox::envUpdate() noexcept
 	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
 		switch (i->interact) {
 		case MOVE_UP:
-			i->y -= 1;
+			i->y -= 2;
 			break;
 		case MOVE_DOWN:
-			i->y += 1;
+			i->y += 2;
 			break;
 		case MOVE_LEFT:
-			i->x -= 1;
+			i->x -= 2;
 			break;
 		case MOVE_RIGHT:
-			i->x += 1;
+			i->x += 2;
 			break;
 		default:
 			break;
 		}
 	}
+	/*
+	**	a => emplecement dans le vecteur de la valeur à supprimer.
+	*/
 	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
 		if (i->x > W_WIDTH || i->x < 0 || i->y > W_HEIGHT || i->y < 0) {
 			count.push_back(a);
