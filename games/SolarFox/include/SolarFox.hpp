@@ -44,6 +44,7 @@ public:
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 private:
+	enum ACTION_LIST canMove(const std::string &name, int x, int y);
 	Interaction _keystate;
 	std::vector<struct Position> _bulletpos;
 	std::string	_name;

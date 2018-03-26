@@ -23,6 +23,12 @@ namespace arc {
 		UNDEFINED,
 		DFT_COLOR_RET_ERROR,
 	};
+	enum ACTION_LIST {
+		BLOCK,
+		DIE,
+		EAT,
+		MOVE,
+	};
 	struct Sprite {
 		int x;
 		int y;

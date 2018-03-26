@@ -12,15 +12,17 @@
 static const arc::Item
 DEF_PACMAN = {"Seal",
 		"tests/SpriteConfigurationFiles/SealConfigurationFile.conf",
-		arc::SpriteList(), 0, 20, 20};
+		arc::SpriteList(), 0, 100, 220};
 static const arc::Item
 DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 30, 30};
 static const arc::Item
-DEF_SHOOT = {"Bullet",
-"tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 20, 20};
+DEF_SHOOT = {"Bullet", "tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 20, 20};
 static const arc::Item
 DEF_WALL = {"Wall",
 "tests/SpriteConfigurationFiles/Wall.conf", arc::SpriteList(), 0, 20, 20};
+static const arc::Item
+DEF_FRUIT = {"Fruit",
+"sprite/FruitConf.conf", arc::SpriteList(), 0, 200, 200};
 
 arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
@@ -28,6 +30,7 @@ arc::SolarFox::SolarFox()
 	_items.push_back(DEF_PACMAN);
 	_items.push_back(DEF_SHOOT);
 	_items.push_back(DEF_WALL);
+	_items.push_back(DEF_FRUIT);
 }
 
 void arc::SolarFox::dump() const noexcept
@@ -49,6 +52,26 @@ void arc::SolarFox::_dumpItems() const noexcept
 
 using millisec = std::chrono::duration<double, std::milli>;
 
+enum arc::ACTION_LIST arc::SolarFox::canMove(const std::string &name, int x, int y)
+{
+	auto item = getItemFromName(name).sprites[0];
+	std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+				std::cout << "name = " << item.name << "x = " << item.x << " y = " << item.y << std::endl;
+	if (x == 1)
+	{
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
+				if ((z->y >= item.y - 50 && z->y <= item.y + 50) && z->x < item.x + 50 && z->name != name) {
+					std::cout << "name = " << z->name << "x = " << z->x << "y = " << z->y << std::endl;
+					std::cout << "GOAL" << std::endl;
+					 return arc::ACTION_LIST::BLOCK;
+				 }
+
+			}
+		}
+	}
+	return arc::ACTION_LIST::MOVE;
+}
 
 void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
@@ -57,7 +80,8 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 		changeItemsPositionFromName("Seal", -1, 0);
 		break;
 	case MOVE_RIGHT:
-		changeItemsPositionFromName("Seal", 1, 0);
+		if (canMove("Seal", 1, 0) != arc::ACTION_LIST::BLOCK)
+			changeItemsPositionFromName("Seal", 1, 0);
 		break;
 	case MOVE_UP:
 		changeItemsPositionFromName("Seal", 0, -1);
