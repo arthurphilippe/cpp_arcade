@@ -52,57 +52,75 @@ void arc::SolarFox::_dumpItems() const noexcept
 
 using millisec = std::chrono::duration<double, std::milli>;
 
-arc::ACTION_LIST arc::SolarFox::canMoveDirectionY(arc::Item item, const int &y, const std::string &name)
+arc::ACTION_LIST arc::SolarFox::canMoveDirectionY(const Sprite &sprite, const int &y, const std::string &name)
 {
-
-	return arc::ACTION_LIST::MOVE;
-}
-
-
-arc::ACTION_LIST arc::SolarFox::canMoveDirectionX(Sprite sprite, const int &x, const std::string &name)
-{
-	std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-	std::cout << "name = " << sprite.name << " || x = " << sprite.x << " || y = " << sprite.y << std::endl;
-	if (x == 1)
+	if (y == 1)
 	{
 		for (auto i = _items.begin(); i != _items.end(); i++) {
 			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->y >= sprite.y - GRID_H / 2 && z->y <= sprite.y + GRID_H / 2) && z->x - sprite.x <= (GRID_STEP) && z->x - sprite.x >= 0  && z->name != name) {
-					std::cout << sprite.y + GRID_STEP << std::endl;
-					std::cout << z->y << std::endl;
-					std::cout << "name = " << z->name << " || x = " << z->x << " || y = " << z->y << std::endl;
-					std::cout << "GOAL" << std::endl;
+				if ((z->x >= sprite.x - GRID_H / 2
+				&& z->x <= sprite.x + GRID_H / 2)
+				&& z->y - sprite.y <= (GRID_STEP) && z->y - sprite.y >= 0
+				&& z->name != name) {
 					 return arc::ACTION_LIST::BLOCK;
 				 }
-
+			}
+		}
+	}
+	if (y == -1)
+	{
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
+				if ((z->x >= sprite.x - GRID_H / 2
+				&& z->x <= sprite.x + GRID_H / 2)
+				&& z->y - sprite.y >= (0 - GRID_STEP) && z->y - sprite.y <= 0
+				&& z->name != name) {
+					 return arc::ACTION_LIST::BLOCK;
+				 }
 			}
 		}
 	}
 	return arc::ACTION_LIST::MOVE;
-	// for (auto i = _items.begin(); i != _items.end(); i++) {
-	// 	for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-	// 		if ((z->y >= item.y - GRID_H / 2 && z->y <= item.y + GRID_H / 2 && z->name != name) &&
-	// 		z->x - item.x <= GRID_STEP && z->x - item.x >=0)
-	// 		std::cout << "HEAD = " << i->name << std::endl;
-	// 		if ((z->y >= item.y - GRID_H / 2 && z->y <= item.y + GRID_H / 2)
-	// 		&& z->x - item.x <= (GRID_STEP) && z->x - item.x >= 0
-	// 		&& z->name != name) {
-	// 				return arc::ACTION_LIST::BLOCK;
-	// 		}
-	// 	}
-	// }
-	// return arc::ACTION_LIST::MOVE;
+}
+
+
+arc::ACTION_LIST arc::SolarFox::canMoveDirectionX(const Sprite &sprite, const int &x, const std::string &name)
+{
+	if (x == 1)
+	{
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
+				if ((z->y >= sprite.y - GRID_H / 2
+				&& z->y <= sprite.y + GRID_H / 2)
+				&& z->x - sprite.x <= (GRID_STEP) && z->x - sprite.x >= 0
+				&& z->name != name) {
+					 return arc::ACTION_LIST::BLOCK;
+				 }
+			}
+		}
+	}
+	if (x == -1)
+	{
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
+				if ((z->y >= sprite.y - GRID_H / 2
+				&& z->y <= sprite.y + GRID_H / 2)
+				&& z->x - sprite.x >= (0 - GRID_STEP) && z->x - sprite.x <= 0
+				&& z->name != name) {
+					 return arc::ACTION_LIST::BLOCK;
+				 }
+			}
+		}
+	}
+	return arc::ACTION_LIST::MOVE;
 }
 
 arc::ACTION_LIST arc::SolarFox::moveDirectionPars(arc::Item item, const struct Position &pos, const std::string &name)
 {
 	if (pos.x != 0)
-	{
 		return canMoveDirectionX(item.sprites[0], pos.x, name);
-
-	}
 	else if (pos.y != 0)
-		return canMoveDirectionY(item, pos.y, name);
+		return canMoveDirectionY(item.sprites[0], pos.y, name);
 	return arc::ACTION_LIST::MOVE;
 }
 
@@ -112,17 +130,14 @@ arc::ACTION_LIST arc::SolarFox::canMove(const std::string &name, int x, int y)
 	struct Position pos;
 	pos.x = x;
 	pos.y = y;
-	if (x == 1)
-	{
-			return moveDirectionPars(item, pos, name);
-	}
-	return arc::ACTION_LIST::MOVE;
+	return moveDirectionPars(item, pos, name);
 }
 
 void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
 	switch (interact) {
 	case MOVE_LEFT:
+		if (canMove("Seal", -1, 0) != arc::ACTION_LIST::BLOCK)
 		changeItemsPositionFromName("Seal", -1, 0);
 		break;
 	case MOVE_RIGHT:
@@ -130,9 +145,11 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 			changeItemsPositionFromName("Seal", 1, 0);
 		break;
 	case MOVE_UP:
+		if (canMove("Seal", 0, -1) != arc::ACTION_LIST::BLOCK)
 		changeItemsPositionFromName("Seal", 0, -1);
 		break;
 	case MOVE_DOWN:
+		if (canMove("Seal", 0, 1) != arc::ACTION_LIST::BLOCK)
 		changeItemsPositionFromName("Seal", 0, 1);
 		break;
 	case ACTION_1:
