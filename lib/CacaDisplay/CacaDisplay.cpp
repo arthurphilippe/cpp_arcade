@@ -85,11 +85,11 @@ void arc::CacaDisplay::putItem(const Item &item)
 
 	if (currSprite.substitute) {
 		caca_set_color_ansi(_cv, getItemColor(currSprite), CACA_BLACK);
-		caca_put_char(_cv, item.x / _step, item.y / _step,
+		caca_put_char(_cv, currSprite.x / _step, currSprite.y / _step,
 				currSprite.substitute);
 	}
 	else
-		caca_put_char(_cv, item.x / _step, item.y / _step, '?');
+		caca_put_char(_cv, currSprite.x / _step, currSprite.y / _step, '?');
 }
 
 void arc::CacaDisplay::putItem(const Item &item, int x ,int y)
