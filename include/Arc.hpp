@@ -24,16 +24,20 @@ namespace arc {
 		DFT_COLOR_RET_ERROR,
 	};
 	enum ACTION_LIST {
+		PLAYER,
 		BLOCK,
 		DIE,
 		EAT,
 		MOVE,
+		MUNITION,
+		DFT,
 	};
 	struct Sprite {
 		int x;
 		int y;
 		int rotation;
 		char substitute;
+		arc::ACTION_LIST flag;
 		std::string name;
 		std::string path;
 		arc::Color color;
