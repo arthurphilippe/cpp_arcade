@@ -12,6 +12,7 @@
 	#include <string>
 	#include "Arc.hpp"
 	#include "IGame.hpp"
+	#include "Error.hpp"
 
 namespace arc {
 	class SolarFox;
@@ -47,6 +48,34 @@ public:
 	arc::Action moveDirectionPars(arc::Item, const struct Position &pos, const std::string &name);
 	arc::Action canMoveDirectionX(const arc::Sprite &, const int &x, const std::string &name);
 	arc::Action canMoveDirectionY(const arc::Sprite &, const int &y, const std::string &name);
+
+	class ItemParser {
+	public:
+		ItemParser() = delete;
+		~ItemParser() = delete;
+		static arc::SpriteList parser(const std::string &filename);
+		static const std::string &getErrorLine();
+		static const int &getErrorLineNb();
+		using FlagMap = std::unordered_map<std::string, arc::Action>;
+		using MapColor = std::unordered_map<std::string, arc::Color>;
+		static const std::string getAttribute();
+		static std::string _line;
+	private:
+		static Sprite createSprite();
+		static std::string modifyFolder(std::string foldername);
+		static void parseLine();
+		static void readFile(const std::string &name);
+		static int getIndex(const std::string &what);
+		static std::string getInfo(const std::string &what);
+		static arc::Action setFlag();
+		static std::string setName();
+		static std::string setPath();
+		static char setSubstitute();
+		static Color setColor();
+		static SpriteList _vector;
+		static int _nbrline;
+		static Color _color;
+	};
 private:
 	Interaction _keystate;
 	std::vector<struct Position> _bulletpos;

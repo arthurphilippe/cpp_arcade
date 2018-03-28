@@ -258,3 +258,167 @@ void arc::SolarFox::envUpdate() noexcept
 		a += 1;
 	}
 }
+#include <fstream>
+std::string arc::SolarFox::ItemParser::_line;
+arc::SpriteList arc::SolarFox::ItemParser::_vector;
+int arc::SolarFox::ItemParser::_nbrline;
+arc::Color arc::SolarFox::ItemParser::_color;
+
+static const std::unordered_map<std::string, int> COREMAP = {
+	{"Name", 0},
+	{"X", 1},
+	{"Y", 2},
+	{"Rotation", 3},
+	{"Substitute", 4},
+	{"Color", 5},
+	{"Flag", 6},
+	{"Attribute", 7},
+	{"Path", 8},
+};
+
+static const arc::SolarFox::ItemParser::FlagMap _flagMap = {
+	{"BLOCK", arc::Action::BLOCK},
+	{"DIE", arc::Action::DIE},
+	{"EAT", arc::Action::EAT},
+	{"MOVE", arc::Action::MOVE},
+	{"PLAYER", arc::Action::PLAYER},
+};
+
+static const arc::SolarFox::ItemParser::MapColor _mapColor = {
+	{"BLUE", arc::Color::BLUE},
+	{"RED", arc::Color::RED},
+	{"GREEN", arc::Color::GREEN},
+	{"BLACK", arc::Color::BLACK},
+	{"YELLOW", arc::Color::YELLOW},
+	{"CYAN", arc::Color::CYAN},
+	{"MAGENTA", arc::Color::MAGENTA},
+	{"WHITE", arc::Color::WHITE},
+	{"BLACK", arc::Color::BLACK},
+	{"UNDEFINED", arc::Color::UNDEFINED},
+};
+
+
+const std::string &arc::SolarFox::ItemParser::getErrorLine()
+{
+	return (_line);
+}
+
+const int &arc::SolarFox::ItemParser::getErrorLineNb()
+{
+	return (_nbrline);
+}
+
+arc::Sprite arc::SolarFox::ItemParser::createSprite()
+{
+	Sprite tmp;
+	tmp.name = setName();
+	tmp.path = setPath();
+	tmp.substitute = setSubstitute();
+	tmp.x = std::stoi(getInfo("X"));
+	tmp.y = std::stoi(getInfo("Y"));
+	tmp.rotation = std::stoi(getInfo("Rotation"));
+	tmp.color = setColor();
+	tmp.flag = setFlag();
+	return tmp;
+}
+
+arc::Action arc::SolarFox::ItemParser::setFlag()
+{
+	for (auto i = _flagMap.begin() ; i != _flagMap.end() ; i++) {
+		if (i->first == getInfo("Flag")) {
+			return i->second;
+		}
+	}
+	return arc::Action::DFT;
+}
+
+std::string arc::SolarFox::ItemParser::setName()
+{
+	return getInfo("Name");
+}
+
+arc::Color arc::SolarFox::ItemParser::setColor()
+{
+	std::string tmp = getInfo("Color");
+	arc::Color color = arc::Color::DFT_COLOR_RET_ERROR;
+
+	for (auto i = _mapColor.begin(); i != _mapColor.end(); i++) {
+		if (i->first == tmp)
+			color = i->second;
+	}
+	if (color == arc::Color::DFT_COLOR_RET_ERROR)
+		throw ParserError(ERR_COLOR);
+	return color;
+}
+
+const std::string arc::SolarFox::ItemParser::getAttribute()
+{
+	return getInfo("Attribute");
+}
+
+std::string arc::SolarFox::ItemParser::setPath()
+{
+	return getInfo("Path");
+}
+
+char arc::SolarFox::ItemParser::setSubstitute()
+{
+	std::string tmp = getInfo("Substitute");
+
+	if (tmp.length() > 1)
+		throw ParserError(arc::ERR_SUB);
+	return tmp[0];
+}
+
+void arc::SolarFox::ItemParser::parseLine()
+{
+	if (_line.length() > 0 && _line[0] != '#')
+		_vector.push_back(createSprite());
+	_nbrline += 1;
+}
+
+void arc::SolarFox::ItemParser::readFile(const std::string &filename)
+{
+	std::ifstream s(filename);
+	std::string tmp;
+
+	if (s.is_open()) {
+		while (getline(s, _line)) {
+			parseLine();
+		}
+	} else {
+		std::string _s("Error: can't open '");
+		_s += filename;
+		_s += "'.";
+		throw ParserError(_s);
+	}
+}
+
+int arc::SolarFox::ItemParser::getIndex(const std::string &what)
+{
+	for (auto i = COREMAP.begin(); i != COREMAP.end(); i++) {
+		if (what == i->first)
+			return i->second;
+	}
+	return -1;
+}
+
+std::string arc::SolarFox::ItemParser::getInfo(const std::string &what)
+{
+	std::string tmp = _line;
+
+	for (int i = 0; i < getIndex(what); i ++) {
+		tmp = tmp.substr(tmp.find(":") + 1, tmp.length());
+	}
+	tmp = tmp.substr(0, tmp.find(":"));
+	return tmp;
+}
+
+arc::SpriteList arc::SolarFox::ItemParser::parser(const std::string &filename)
+{
+	_line.clear();
+	_vector.clear();
+	_nbrline = 1;
+	readFile(filename);
+	return _vector;
+}

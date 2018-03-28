@@ -25,6 +25,7 @@ public:
 	static const int &getErrorLineNb();
 	using FlagMap = std::unordered_map<std::string, arc::Action>;
 	using MapColor = std::unordered_map<std::string, arc::Color>;
+	static const std::string getAttribute();
 private:
 	static Sprite createSprite();
 	static std::string modifyFolder(std::string foldername);

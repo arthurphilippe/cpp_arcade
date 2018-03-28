@@ -16,7 +16,7 @@
 std::string arc::ItemParser::_line;
 arc::SpriteList arc::ItemParser::_vector;
 int arc::ItemParser::_nbrline;
-arc::Color _color;
+arc::Color arc::ItemParser::_color;
 
 static const std::unordered_map<std::string, int> COREMAP = {
 	{"Name", 0},
@@ -26,7 +26,8 @@ static const std::unordered_map<std::string, int> COREMAP = {
 	{"Substitute", 4},
 	{"Color", 5},
 	{"Flag", 6},
-	{"Path", 7},
+	{"Attribute", 7},
+	{"Path", 8},
 };
 
 static const arc::ItemParser::FlagMap _flagMap = {
@@ -104,6 +105,11 @@ arc::Color arc::ItemParser::setColor()
 	return color;
 }
 
+const std::string arc::ItemParser::getAttribute()
+{
+	return getInfo("Attribute");
+}
+
 std::string arc::ItemParser::setPath()
 {
 	return getInfo("Path");
@@ -141,7 +147,6 @@ void arc::ItemParser::readFile(const std::string &filename)
 		throw ParserError(_s);
 	}
 }
-
 
 int arc::ItemParser::getIndex(const std::string &what)
 {
