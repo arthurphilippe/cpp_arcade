@@ -43,10 +43,10 @@ public:
 	void envUpdate() noexcept;
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
-	arc::ACTION_LIST canMove(const std::string &name, int x, int y);
-	arc::ACTION_LIST moveDirectionPars(arc::Item, const struct Position &pos, const std::string &name);
-	arc::ACTION_LIST canMoveDirectionX(const arc::Sprite &, const int &x, const std::string &name);
-	arc::ACTION_LIST canMoveDirectionY(const arc::Sprite &, const int &y, const std::string &name);
+	arc::Action canMove(const std::string &name, int x, int y);
+	arc::Action moveDirectionPars(arc::Item, const struct Position &pos, const std::string &name);
+	arc::Action canMoveDirectionX(const arc::Sprite &, const int &x, const std::string &name);
+	arc::Action canMoveDirectionY(const arc::Sprite &, const int &y, const std::string &name);
 private:
 	Interaction _keystate;
 	std::vector<struct Position> _bulletpos;

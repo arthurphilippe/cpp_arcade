@@ -23,7 +23,7 @@ namespace arc {
 		UNDEFINED,
 		DFT_COLOR_RET_ERROR,
 	};
-	enum ACTION_LIST {
+	enum Action {
 		PLAYER,
 		BLOCK,
 		DIE,
@@ -37,7 +37,7 @@ namespace arc {
 		int y;
 		int rotation;
 		char substitute;
-		arc::ACTION_LIST flag;
+		arc::Action flag;
 		std::string name;
 		std::string path;
 		arc::Color color;
