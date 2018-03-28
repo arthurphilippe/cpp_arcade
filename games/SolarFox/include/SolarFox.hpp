@@ -61,8 +61,9 @@ private:
 	SpriteList &getSpriteListFromName(const std::string &name);
 
 	// Item Moves
+	void _itemMove(const std::string &, Vectori);
 	void _itemMove(Item &, Vectori);
-	int _vectorGetDist(Vectori, Vectori);
+	bool _vectorIsCollided(Vectori, Vectori);
 	Action _vectorCollide(Item &, Vectori);
 };
 

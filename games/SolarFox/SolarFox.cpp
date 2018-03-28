@@ -52,31 +52,34 @@ void arc::SolarFox::_dumpItems() const noexcept
 
 using millisec = std::chrono::duration<double, std::milli>;
 
-int arc::SolarFox::_vectorGetDist(Vectori a, Vectori b)
+bool arc::SolarFox::_vectorIsCollided(Vectori a, Vectori b)
 {
-	int sq1 = b.v_x - a.v_x;
-	int sq2 = b.v_y - a.v_y;
+	int diffx = a.v_x - b.v_x;
+	int diffy = a.v_y - b.v_y;
 
-	sq1 *= sq1;
-	sq2 *= sq2;
-	return (std::sqrt(sq1 + sq2));
+	diffx = std::abs(diffx);
+	diffy = std::abs(diffy);
+	if (diffx < GRID_STEP && diffy < GRID_STEP)
+		return true;
+	return false;
 }
 
 arc::Action arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
 {
-	int dist = 0;
-
 	for (auto it = _items.begin(); it != _items.end(); it++) {
-		if (it->name == item.name)
-			continue;
-		int currDist = _vectorGetDist(pos, (Vectori){it->x, it->y});
-		if (!dist || currDist < dist)
-			dist = currDist;
+		if (it->name != item.name &&
+			_vectorIsCollided(pos, (Vectori){it->x, it->y}))
+			return BLOCK;
 	}
-	std::cout << "dist " << dist << std::endl;
-	if (dist && dist < GRID_STEP)
-		return BLOCK;
 	return DFT;
+}
+
+void arc::SolarFox::_itemMove(const std::string &name, Vectori mod)
+{
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->name == name)
+			_itemMove(*it, mod);
+	}
 }
 
 void arc::SolarFox::_itemMove(Item &item, Vectori mod)
@@ -93,27 +96,15 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-		_itemMove(_items[0] , move->second);
+		_itemMove("Seal" , move->second);
 	} else {
 	switch (interact)
 	{
-	case MOVE_LEFT:
-		changeItemsPositionFromName("Seal", -1, 0);
-		break;
-	case MOVE_RIGHT:
-		changeItemsPositionFromName("Seal", 1, 0);
-		break;
-	case MOVE_UP:
-		changeItemsPositionFromName("Seal", 0, -1);
-		break;
-	case MOVE_DOWN:
-		changeItemsPositionFromName("Seal", 0, 1);
-		break;
-	case ACTION_1:
-		shoot("Seal");
-		break;
-	default:
-		break;
+		case ACTION_1:
+			shoot("Seal");
+			break;
+		default:
+			break;
 	}
 	}
 	if (interact == MOVE_LEFT || interact == MOVE_RIGHT || interact == MOVE_UP || interact == MOVE_DOWN)
