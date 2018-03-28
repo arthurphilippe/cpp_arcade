@@ -52,104 +52,61 @@ void arc::SolarFox::_dumpItems() const noexcept
 
 using millisec = std::chrono::duration<double, std::milli>;
 
-arc::Action arc::SolarFox::canMoveDirectionY(const Sprite &sprite, const int &y,const std::string &name)
+int arc::SolarFox::_vectorGetDist(Vectori a, Vectori b)
 {
-	if (y == 1)
-	{
-		for (auto i = _items.begin(); i != _items.end(); i++) {
-			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->x >= sprite.x - GRID_STEP / 2
-					&& z->x <= sprite.x + GRID_STEP / 2)
-					&& z->y - sprite.y <= (GRID_STEP) && z->y - sprite.y >= 0
-				&& z->name != name) {
-					 return arc::Action::BLOCK;
-				 }
-			}
-		}
-	}
-	if (y == -1)
-	{
-		for (auto i = _items.begin(); i != _items.end(); i++) {
-			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->x >= sprite.x - GRID_STEP / 2
-				&& z->x <= sprite.x + GRID_STEP / 2)
-				&& z->y - sprite.y >= (0 - GRID_STEP) && z->y - sprite.y <= 0
-				&& z->name != name) {
-					 return arc::Action::BLOCK;
-				}
-			}
-		}
-	}
-	return arc::Action::MOVE;
+	int sq1 = b.v_x - a.v_x;
+	int sq2 = b.v_y - a.v_y;
+
+	sq1 *= sq1;
+	sq2 *= sq2;
+	return (std::sqrt(sq1 + sq2));
 }
 
-
-arc::Action arc::SolarFox::canMoveDirectionX(const Sprite &sprite, const int &x, const std::string &name)
+arc::Action arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
 {
-	if (x == 1)
-	{
-		for (auto i = _items.begin(); i != _items.end(); i++) {
-			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->y >= sprite.y - GRID_STEP / 2
-				&& z->y <= sprite.y + GRID_STEP / 2)
-				&& z->x - sprite.x <= (GRID_STEP) && z->x - sprite.x >= 0
-				&& z->name != name) {
-					 return arc::Action::BLOCK;
-				}
-			}
-		}
+	int dist = 0;
+
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->name == item.name)
+			continue;
+		int currDist = _vectorGetDist(pos, (Vectori){it->x, it->y});
+		if (!dist || currDist < dist)
+			dist = currDist;
 	}
-	if (x == -1)
-	{
-		for (auto i = _items.begin(); i != _items.end(); i++) {
-			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->y >= sprite.y - GRID_STEP / 2
-				&& z->y <= sprite.y + GRID_STEP / 2)
-				&& z->x - sprite.x >= (0 - GRID_STEP) && z->x - sprite.x <= 0
-				&& z->name != name) {
-					 return arc::Action::BLOCK;
-				}
-			}
-		}
-	}
-	return arc::Action::MOVE;
+	std::cout << "dist " << dist << std::endl;
+	if (dist && dist < GRID_STEP)
+		return BLOCK;
+	return DFT;
 }
 
-arc::Action arc::SolarFox::moveDirectionPars(arc::Item item, const struct Position &pos, const std::string &name)
+void arc::SolarFox::_itemMove(Item &item, Vectori mod)
 {
-	if (pos.x != 0)
-		return canMoveDirectionX(item.sprites[0], pos.x, name);
-	else if (pos.y != 0)
-		return canMoveDirectionY(item.sprites[0], pos.y, name);
-	return arc::Action::MOVE;
-}
+	Vectori newPos {item.x + mod.v_x, item.y + mod.v_y};
 
-arc::Action arc::SolarFox::canMove(const std::string &name, int x, int y)
-{
-	auto item = getItemFromName(name);
-	struct Position pos;
-	pos.x = x;
-	pos.y = y;
-	return moveDirectionPars(item, pos, name);
+	if (_vectorCollide(item, newPos) != BLOCK) {
+		item.x = newPos.v_x;
+		item.y = newPos.v_y;
+	}
 }
 
 void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
-	switch (interact) {
+	auto move = MOVE_BINDS.find(interact);
+	if (move != MOVE_BINDS.end()) {
+		_itemMove(_items[0] , move->second);
+	} else {
+	switch (interact)
+	{
 	case MOVE_LEFT:
-		if (canMove("Seal", -1, 0) != arc::Action::BLOCK)
 		changeItemsPositionFromName("Seal", -1, 0);
 		break;
 	case MOVE_RIGHT:
-		if (canMove("Seal", 1, 0) != arc::Action::BLOCK)
-			changeItemsPositionFromName("Seal", 1, 0);
+		changeItemsPositionFromName("Seal", 1, 0);
 		break;
 	case MOVE_UP:
-		if (canMove("Seal", 0, -1) != arc::Action::BLOCK)
 		changeItemsPositionFromName("Seal", 0, -1);
 		break;
 	case MOVE_DOWN:
-		if (canMove("Seal", 0, 1) != arc::Action::BLOCK)
 		changeItemsPositionFromName("Seal", 0, 1);
 		break;
 	case ACTION_1:
@@ -157,6 +114,7 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 		break;
 	default:
 		break;
+	}
 	}
 	if (interact == MOVE_LEFT || interact == MOVE_RIGHT || interact == MOVE_UP || interact == MOVE_DOWN)
 		_keystate = interact;
@@ -166,7 +124,7 @@ void arc::SolarFox::shoot(const std::string &name)
 {
 	auto mainchar = getItemFromName(name);
 	auto splist = mainchar.sprites;
-        struct Position tmp;
+	struct Position tmp;
 	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
 		if (i->x == mainchar.x && i->y == mainchar.y)
 			return;

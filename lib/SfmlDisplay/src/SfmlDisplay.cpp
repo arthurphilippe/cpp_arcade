@@ -75,7 +75,7 @@ void arc::SfmlDisplay::putItem(const Item &item)
 {
 	auto &currSprite = item.sprites[item.currSpriteIdx];
 	sf::Sprite &sprite = findSprite(currSprite);
-	sprite.setPosition(currSprite.x, currSprite.y);
+	sprite.setPosition(item.x, item.y);
 	_window.draw(sprite);
 }
 
