@@ -12,6 +12,7 @@
 	#include <memory>
 	#include <chrono>
 	#include <thread>
+	#include <functional>
 	#include "IGame.hpp"
 	#include "IDisplay.hpp"
 	#include "DynamicObject.hpp"

@@ -8,6 +8,7 @@
 #ifndef SFMLDISPLAY_HPP_
 	#define SFMLDISPLAY_HPP_
 
+#include <iostream>
 #include <memory>
 #include <vector>
 #include <unordered_map>
@@ -34,26 +35,22 @@ public:
 	}
 	void putstr(const std::string &str, int x = 0, int y = 0);
 	void putItem(const Item &);
-	void putItem(const Item &item, int x, int y);
-	sf::Sprite &findSprite(const Sprite &currSprite);
-	void putSpritePosition(const Item &item, const std::vector<struct Position> &poslist);
-	void putSpriteList(const SpriteList &list);
+	sf::Sprite &findSprite(const Item &item);
 	void waitEvent();
 	InteractionList getInteractions();
 	using KeyMap = std::unordered_map<sf::Keyboard::Key, Interaction>;
 
 	class SpriteStorage {
 	public:
-		SpriteStorage(const std::string &path, const int &rotation)
-			: _path(path)
+		SpriteStorage(const Item &item)
+			: _path(item.sprites[item.currSpriteIdx].path)
 			{
-				if (!_texture.loadFromFile(path))
+				if (!_texture.loadFromFile(item.sprites[item.currSpriteIdx].path))
 					throw GfxException(GFX_ERR_INIT);
 				_texture.setSmooth(true);
 				_sprite.setTexture(_texture);
 				auto bound = _sprite.getGlobalBounds();
 				_sprite.setOrigin(bound.width / 2 ,bound.height / 2);
-				_sprite.setRotation(rotation);
 			}
 		~SpriteStorage() {};
 		const std::string &path() const noexcept {return _path;}

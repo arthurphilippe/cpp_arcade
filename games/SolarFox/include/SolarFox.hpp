@@ -53,20 +53,14 @@ public:
 	public:
 		ItemParser() = delete;
 		~ItemParser() = delete;
-		static arc::SpriteList parser(const std::string &filename);
-		static const std::string &getErrorLine();
-		static const int &getErrorLineNb();
 		using FlagMap = std::unordered_map<std::string, arc::Action>;
 		using MapColor = std::unordered_map<std::string, arc::Color>;
 		static const std::string getAttribute();
 		static std::string _line;
-		static void parseLine();
 		static arc::Item createItem();
 		static std::string setName();
 		static Sprite createSprite();
 	private:
-		static std::string modifyFolder(std::string foldername);
-		static void readFile(const std::string &name);
 		static int getIndex(const std::string &what);
 		static std::string getInfo(const std::string &what);
 		static arc::Action setFlag();

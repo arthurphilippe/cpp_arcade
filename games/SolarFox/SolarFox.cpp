@@ -10,6 +10,9 @@
 #include "Arc.hpp"
 #include "SolarFox.hpp"
 
+const std::string
+DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
+
 std::string arc::SolarFox::ItemParser::_line;
 arc::SpriteList arc::SolarFox::ItemParser::_vector;
 arc::Color arc::SolarFox::ItemParser::_color;
@@ -62,7 +65,6 @@ arc::Item arc::SolarFox::ItemParser::createItem()
 {
 	arc::Item tmp;
 	tmp.name = setName();
-	std::cout << tmp.name << std::endl;
 	tmp.sprites.push_back(createSprite());
 	tmp.spritesPath = setPath();
 	tmp.x = std::stoi(getInfo("X"));
@@ -215,24 +217,14 @@ void arc::SolarFox::shoot(const std::string &name)
 	_bulletpos.push_back(tmp);
 }
 
-void arc::SolarFox::changeSpritePosition(SpriteList &spritelist, int x, int y) noexcept
-{
-	for (auto i = spritelist.begin(); i != spritelist.end(); i++) {
-		i->x = i->x + x;
-		i->y = i->y + y;
-	}
-}
-
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
 {
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startTime;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == name) {
-			changeSpritePosition(i->sprites, x, y);
 			i->x += x;
 			i->y += y;
-			changeSpritePosition(i->sprites, x, y);
 			if (elapsed.count() > 200) {
 				if (i->currSpriteIdx > 4)
 					i->currSpriteIdx = 0;
@@ -330,17 +322,6 @@ static const arc::SolarFox::ItemParser::MapColor _mapColor = {
 	{"UNDEFINED", arc::Color::UNDEFINED},
 };
 
-
-const std::string &arc::SolarFox::ItemParser::getErrorLine()
-{
-	return (_line);
-}
-
-const int &arc::SolarFox::ItemParser::getErrorLineNb()
-{
-	return (_nbrline);
-}
-
 arc::Sprite arc::SolarFox::ItemParser::createSprite()
 {
 	Sprite tmp;
@@ -403,34 +384,6 @@ char arc::SolarFox::ItemParser::setSubstitute()
 	return tmp[0];
 }
 
-void arc::SolarFox::ItemParser::parseLine()
-{
-	// if (_line.length() > 0 && _line[0] != '#') {
-	// 	std::cout << getAttribute() << std::endl;
-	// 	if (getAttribute() == "UNIQUE")
-	// 		getItems().push_back(createUnique());
-	// 	else if (getAttribute() == "APPEND")
-
-	// }
-}
-
-void arc::SolarFox::ItemParser::readFile(const std::string &filename)
-{
-	std::ifstream s(filename);
-	std::string tmp;
-
-	if (s.is_open()) {
-		while (getline(s, _line)) {
-			parseLine();
-		}
-	} else {
-		std::string _s("Error: can't open '");
-		_s += filename;
-		_s += "'.";
-		throw ParserError(_s);
-	}
-}
-
 int arc::SolarFox::ItemParser::getIndex(const std::string &what)
 {
 	for (auto i = COREMAP.begin(); i != COREMAP.end(); i++) {
@@ -449,13 +402,4 @@ std::string arc::SolarFox::ItemParser::getInfo(const std::string &what)
 	}
 	tmp = tmp.substr(0, tmp.find(":"));
 	return tmp;
-}
-
-arc::SpriteList arc::SolarFox::ItemParser::parser(const std::string &filename)
-{
-	_line.clear();
-	_vector.clear();
-	_nbrline = 1;
-	readFile(filename);
-	return _vector;
 }

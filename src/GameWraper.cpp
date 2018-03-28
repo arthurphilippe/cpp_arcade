@@ -99,12 +99,8 @@ void arc::GameWraper::_processInteractions()
 		inter.pop();
 	}
 	_currDisplay->clear();
-	_currDisplay->putItem(_currGame->getItemFromName("Seal"));
-	_currDisplay->putItem(_currGame->getItemFromName("Fruit"));
-	_currDisplay->putSpritePosition(
-		_currGame->getItemFromName("Bullet"),
-		_currGame->getBulletPos());
-	_currDisplay->putSpriteList(_currGame->getSpriteListFromName("Wall"));
+	for(auto i = _currGame->getItems().begin(); i != _currGame->getItems().end(); i++)
+		_currDisplay->putItem(*i);
 	_currGame->envUpdate();
 	_currDisplay->refresh();
 }
