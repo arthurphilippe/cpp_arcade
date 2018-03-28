@@ -149,7 +149,7 @@ void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, 
 					i->currSpriteIdx = 0;
 				else
 				i->currSpriteIdx += 1;
-			_startTime = std::chrono::high_resolution_clock::now();
+				_startTime = std::chrono::high_resolution_clock::now();
 			}
 		}
 	}
