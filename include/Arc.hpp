@@ -9,6 +9,7 @@
 	#define ARC_HPP_
 
 	#include <queue>
+	#include <unordered_map>
 
 namespace arc {
 	enum Color {
@@ -70,12 +71,24 @@ namespace arc {
 	};
 	using InteractionList = std::queue<Interaction>;
 
-	struct Position {
+	struct Vectori {
+		int v_x;
+		int v_y;
+	};
+
+	struct Position
+	{
 		int x;
 		int y;
 		Interaction interact;
 	};
 
+	const std::unordered_map<Interaction, Vectori> MOVE_BINDS {
+		{MOVE_UP, {0, -1}},
+		{MOVE_DOWN, {0, 1}},
+		{MOVE_LEFT, {-1, 0}},
+		{MOVE_RIGHT, {1, 0}}
+	};
 }
 
 #endif /* !ARC_HPP_ */

@@ -10,6 +10,7 @@
 
 	#include <chrono>
 	#include <string>
+	#include <cmath>
 	#include "Arc.hpp"
 	#include "IGame.hpp"
 	#include "Error.hpp"
@@ -45,10 +46,7 @@ public:
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 	void createItems();
-	arc::Action canMove(const std::string &name, int x, int y);
-	arc::Action moveDirectionPars(arc::Item, const struct Position &pos, const std::string &name);
-	arc::Action canMoveDirectionX(const arc::Sprite &, const int &x, const std::string &name);
-	arc::Action canMoveDirectionY(const arc::Sprite &, const int &y, const std::string &name);
+
 	class ItemParser {
 	public:
 		ItemParser() = delete;
@@ -82,11 +80,17 @@ private:
 	void createSprite();
 	void changeItemsPositionFromName(const std::string &name, int a, int b);
 	std::chrono::high_resolution_clock::time_point _startTime;
-	void changeSpritePosition(SpriteList &spritelist, int x, int y) noexcept;
+	void changeSpritePosition(SpriteList &spritelist,
+					int x, int y) noexcept;
 	static ItemList defaultItems;
-	void printBackground() const noexcept;
 	void _dumpItems() const noexcept;
 	SpriteList &getSpriteListFromName(const std::string &name);
+
+	// Item Moves
+	void _itemMove(const std::string &, Vectori);
+	void _itemMove(Item &, Vectori);
+	bool _vectorIsCollided(Vectori, Vectori);
+	Action _vectorCollide(Item &, Vectori);
 };
 
 #endif /* !SOLARFOX_HPP_ */

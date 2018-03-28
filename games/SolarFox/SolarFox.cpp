@@ -92,111 +92,60 @@ void arc::SolarFox::_dumpItems() const noexcept
 
 using millisec = std::chrono::duration<double, std::milli>;
 
-arc::Action arc::SolarFox::canMoveDirectionY(const Sprite &sprite, const int &y,const std::string &name)
+bool arc::SolarFox::_vectorIsCollided(Vectori a, Vectori b)
 {
-	if (y == 1)
-	{
-		for (auto i = _items.begin(); i != _items.end(); i++) {
-			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->x >= sprite.x - GRID_STEP / 2
-					&& z->x <= sprite.x + GRID_STEP / 2)
-					&& z->y - sprite.y <= (GRID_STEP) && z->y - sprite.y >= 0
-				&& z->name != name) {
-					 return arc::Action::BLOCK;
-				 }
-			}
-		}
-	}
-	if (y == -1)
-	{
-		for (auto i = _items.begin(); i != _items.end(); i++) {
-			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->x >= sprite.x - GRID_STEP / 2
-				&& z->x <= sprite.x + GRID_STEP / 2)
-				&& z->y - sprite.y >= (0 - GRID_STEP) && z->y - sprite.y <= 0
-				&& z->name != name) {
-					 return arc::Action::BLOCK;
-				}
-			}
-		}
-	}
-	return arc::Action::MOVE;
+	int diffx = a.v_x - b.v_x;
+	int diffy = a.v_y - b.v_y;
+
+	diffx = std::abs(diffx);
+	diffy = std::abs(diffy);
+	if (diffx < GRID_STEP && diffy < GRID_STEP)
+		return true;
+	return false;
 }
 
-
-arc::Action arc::SolarFox::canMoveDirectionX(const Sprite &sprite, const int &x, const std::string &name)
+arc::Action arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
 {
-	if (x == 1)
-	{
-		for (auto i = _items.begin(); i != _items.end(); i++) {
-			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->y >= sprite.y - GRID_STEP / 2
-				&& z->y <= sprite.y + GRID_STEP / 2)
-				&& z->x - sprite.x <= (GRID_STEP) && z->x - sprite.x >= 0
-				&& z->name != name) {
-					 return arc::Action::BLOCK;
-				}
-			}
-		}
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->name != item.name &&
+			_vectorIsCollided(pos, (Vectori){it->x, it->y}))
+			return BLOCK;
 	}
-	if (x == -1)
-	{
-		for (auto i = _items.begin(); i != _items.end(); i++) {
-			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
-				if ((z->y >= sprite.y - GRID_STEP / 2
-				&& z->y <= sprite.y + GRID_STEP / 2)
-				&& z->x - sprite.x >= (0 - GRID_STEP) && z->x - sprite.x <= 0
-				&& z->name != name) {
-					 return arc::Action::BLOCK;
-				}
-			}
-		}
-	}
-	return arc::Action::MOVE;
+	return DFT;
 }
 
-arc::Action arc::SolarFox::moveDirectionPars(arc::Item item, const struct Position &pos, const std::string &name)
+void arc::SolarFox::_itemMove(const std::string &name, Vectori mod)
 {
-	if (pos.x != 0)
-		return canMoveDirectionX(item.sprites[0], pos.x, name);
-	else if (pos.y != 0)
-		return canMoveDirectionY(item.sprites[0], pos.y, name);
-	return arc::Action::MOVE;
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->name == name)
+			_itemMove(*it, mod);
+	}
 }
 
-arc::Action arc::SolarFox::canMove(const std::string &name, int x, int y)
+void arc::SolarFox::_itemMove(Item &item, Vectori mod)
 {
-	auto item = getItemFromName(name);
-	struct Position pos;
-	pos.x = x;
-	pos.y = y;
-	return moveDirectionPars(item, pos, name);
+	Vectori newPos {item.x + mod.v_x, item.y + mod.v_y};
+
+	if (_vectorCollide(item, newPos) != BLOCK) {
+		item.x = newPos.v_x;
+		item.y = newPos.v_y;
+	}
 }
 
 void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
-	switch (interact) {
-	case MOVE_LEFT:
-		if (canMove("Seal", -1, 0) != arc::Action::BLOCK)
-		changeItemsPositionFromName("Seal", -1, 0);
-		break;
-	case MOVE_RIGHT:
-		if (canMove("Seal", 1, 0) != arc::Action::BLOCK)
-			changeItemsPositionFromName("Seal", 1, 0);
-		break;
-	case MOVE_UP:
-		if (canMove("Seal", 0, -1) != arc::Action::BLOCK)
-		changeItemsPositionFromName("Seal", 0, -1);
-		break;
-	case MOVE_DOWN:
-		if (canMove("Seal", 0, 1) != arc::Action::BLOCK)
-		changeItemsPositionFromName("Seal", 0, 1);
-		break;
-	case ACTION_1:
-		shoot("Seal");
-		break;
-	default:
-		break;
+	auto move = MOVE_BINDS.find(interact);
+	if (move != MOVE_BINDS.end()) {
+		_itemMove("Seal" , move->second);
+	} else {
+	switch (interact)
+	{
+		case ACTION_1:
+			shoot("Seal");
+			break;
+		default:
+			break;
+	}
 	}
 	if (interact == MOVE_LEFT || interact == MOVE_RIGHT || interact == MOVE_UP || interact == MOVE_DOWN)
 		_keystate = interact;
@@ -206,7 +155,7 @@ void arc::SolarFox::shoot(const std::string &name)
 {
 	auto mainchar = getItemFromName(name);
 	auto splist = mainchar.sprites;
-        struct Position tmp;
+	struct Position tmp;
 	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
 		if (i->x == mainchar.x && i->y == mainchar.y)
 			return;
@@ -230,7 +179,7 @@ void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, 
 					i->currSpriteIdx = 0;
 				else
 				i->currSpriteIdx += 1;
-			_startTime = std::chrono::high_resolution_clock::now();
+				_startTime = std::chrono::high_resolution_clock::now();
 			}
 		}
 	}
