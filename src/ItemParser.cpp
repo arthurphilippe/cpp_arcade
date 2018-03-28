@@ -2,7 +2,7 @@
 // EPITECH PROJECT, 2018
 // Arcade
 // File description:
-// SpriteParser
+// ItemParser
 //
 
 #include <fstream>
@@ -11,11 +11,11 @@
 #include <unistd.h>
 #include <dirent.h>
 #include "Error.hpp"
-#include "SpriteParser.hpp"
+#include "ItemParser.hpp"
 
-std::string arc::SpriteParser::_line;
-arc::SpriteList arc::SpriteParser::_vector;
-int arc::SpriteParser::_nbrline;
+std::string arc::ItemParser::_line;
+arc::SpriteList arc::ItemParser::_vector;
+int arc::ItemParser::_nbrline;
 arc::Color _color;
 
 static const std::unordered_map<std::string, int> COREMAP = {
@@ -29,7 +29,7 @@ static const std::unordered_map<std::string, int> COREMAP = {
 	{"Path", 7},
 };
 
-static const arc::SpriteParser::FlagMap _flagMap = {
+static const arc::ItemParser::FlagMap _flagMap = {
 	{"BLOCK", arc::Action::BLOCK},
 	{"DIE", arc::Action::DIE},
 	{"EAT", arc::Action::EAT},
@@ -37,7 +37,7 @@ static const arc::SpriteParser::FlagMap _flagMap = {
 	{"PLAYER", arc::Action::PLAYER},
 };
 
-static const arc::SpriteParser::MapColor _mapColor = {
+static const arc::ItemParser::MapColor _mapColor = {
 	{"BLUE", arc::Color::BLUE},
 	{"RED", arc::Color::RED},
 	{"GREEN", arc::Color::GREEN},
@@ -51,17 +51,17 @@ static const arc::SpriteParser::MapColor _mapColor = {
 };
 
 
-const std::string &arc::SpriteParser::getErrorLine()
+const std::string &arc::ItemParser::getErrorLine()
 {
 	return (_line);
 }
 
-const int &arc::SpriteParser::getErrorLineNb()
+const int &arc::ItemParser::getErrorLineNb()
 {
 	return (_nbrline);
 }
 
-arc::Sprite arc::SpriteParser::createSprite()
+arc::Sprite arc::ItemParser::createSprite()
 {
 	Sprite tmp;
 	tmp.name = setName();
@@ -75,7 +75,7 @@ arc::Sprite arc::SpriteParser::createSprite()
 	return tmp;
 }
 
-arc::Action arc::SpriteParser::setFlag()
+arc::Action arc::ItemParser::setFlag()
 {
 	for (auto i = _flagMap.begin() ; i != _flagMap.end() ; i++) {
 		if (i->first == getInfo("Flag")) {
@@ -85,12 +85,12 @@ arc::Action arc::SpriteParser::setFlag()
 	return arc::Action::DFT;
 }
 
-std::string arc::SpriteParser::setName()
+std::string arc::ItemParser::setName()
 {
 	return getInfo("Name");
 }
 
-arc::Color arc::SpriteParser::setColor()
+arc::Color arc::ItemParser::setColor()
 {
 	std::string tmp = getInfo("Color");
 	arc::Color color = arc::Color::DFT_COLOR_RET_ERROR;
@@ -104,12 +104,12 @@ arc::Color arc::SpriteParser::setColor()
 	return color;
 }
 
-std::string arc::SpriteParser::setPath()
+std::string arc::ItemParser::setPath()
 {
 	return getInfo("Path");
 }
 
-char arc::SpriteParser::setSubstitute()
+char arc::ItemParser::setSubstitute()
 {
 	std::string tmp = getInfo("Substitute");
 
@@ -118,14 +118,14 @@ char arc::SpriteParser::setSubstitute()
 	return tmp[0];
 }
 
-void arc::SpriteParser::parseLine()
+void arc::ItemParser::parseLine()
 {
 	if (_line.length() > 0 && _line[0] != '#')
 		_vector.push_back(createSprite());
 	_nbrline += 1;
 }
 
-void arc::SpriteParser::readFile(const std::string &filename)
+void arc::ItemParser::readFile(const std::string &filename)
 {
 	std::ifstream s(filename);
 	std::string tmp;
@@ -143,7 +143,7 @@ void arc::SpriteParser::readFile(const std::string &filename)
 }
 
 
-int arc::SpriteParser::getIndex(const std::string &what)
+int arc::ItemParser::getIndex(const std::string &what)
 {
 	for (auto i = COREMAP.begin(); i != COREMAP.end(); i++) {
 		if (what == i->first)
@@ -152,7 +152,7 @@ int arc::SpriteParser::getIndex(const std::string &what)
 	return -1;
 }
 
-std::string arc::SpriteParser::getInfo(const std::string &what)
+std::string arc::ItemParser::getInfo(const std::string &what)
 {
 	std::string tmp = _line;
 
@@ -163,7 +163,7 @@ std::string arc::SpriteParser::getInfo(const std::string &what)
 	return tmp;
 }
 
-arc::SpriteList arc::SpriteParser::parser(const std::string &filename)
+arc::SpriteList arc::ItemParser::parser(const std::string &filename)
 {
 	_line.clear();
 	_vector.clear();

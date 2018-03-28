@@ -4,7 +4,7 @@
 #include "IGame.hpp"
 #include "DynamicFunc.hpp"
 #include "IDisplay.hpp"
-#include "SpriteParser.hpp"
+#include "ItemParser.hpp"
 #include "Error.hpp"
 #include "GameWarper.hpp"
 
@@ -13,7 +13,7 @@ int main(int ac, char **av)
 {
 	if (ac > 1) {
 		try {
-			arc::SpriteParser::parser(av[1]);
+			arc::ItemParser::parser(av[1]);
 		}
 		catch (const arc::ParserError &error)
 		{

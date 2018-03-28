@@ -10,7 +10,7 @@
 
 	#include <vector>
 	#include "Arc.hpp"
-	#include "SpriteParser.hpp"
+	#include "ItemParser.hpp"
 	#include "IDisplay.hpp"
 
 namespace arc {

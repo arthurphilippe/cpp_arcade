@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2018
 ** cpp_arcade
 ** File description:
-** SpriteParser
+** ItemParser
 */
 
 #ifndef SRPITEPARSER_H_
@@ -13,13 +13,13 @@
 	#include "Arc.hpp"
 
 namespace arc {
-	class SpriteParser;
+	class ItemParser;
 };
 
-class arc::SpriteParser {
+class arc::ItemParser {
 public:
-	SpriteParser() = delete;
-	~SpriteParser() = delete;
+	ItemParser() = delete;
+	~ItemParser() = delete;
 	static arc::SpriteList parser(const std::string &filename);
 	static const std::string &getErrorLine();
 	static const int &getErrorLineNb();

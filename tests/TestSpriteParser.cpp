@@ -1,6 +1,6 @@
 #include <criterion/criterion.h>
 #include <criterion/assert.h>
-#include "SpriteParser.hpp"
+#include "ItemParser.hpp"
 #include "Error.hpp"
 
 constexpr auto REAL_CONF_FILE("tests/SpriteConfigurationFiles/RealConfigurationFile.conf");
@@ -15,9 +15,9 @@ constexpr auto CONF_FILE_ERR_COLOR(
 	"tests/SpriteConfigurationFiles/ErrorColor.conf");
 
 
-Test(FunctionnalTest, SpriteParser) {
+Test(FunctionnalTest, ItemParser) {
 
-	auto kappa = arc::SpriteParser::parser(REAL_CONF_FILE);
+	auto kappa = arc::ItemParser::parser(REAL_CONF_FILE);
         cr_assert(kappa[0].color() == arc::Color::WHITE);
 	cr_assert(kappa[1].color() == arc::Color::BLUE);
 
@@ -33,24 +33,24 @@ Test(FunctionnalTest, SpriteParser) {
 	cr_assert(kappa.size() == 2);
 }
 
-Test(FileNotExists, SpriteParser) {
-	cr_assert_throw(arc::SpriteParser::parser(NOT_EXISTANT_FILE), arc::ParserError);
+Test(FileNotExists, ItemParser) {
+	cr_assert_throw(arc::ItemParser::parser(NOT_EXISTANT_FILE), arc::ParserError);
 
 }
 
-Test(ErrorName, SpriteParser) {
-	cr_assert_throw(arc::SpriteParser::parser(CONF_FILE_ERR_NAME), arc::ParserError);
+Test(ErrorName, ItemParser) {
+	cr_assert_throw(arc::ItemParser::parser(CONF_FILE_ERR_NAME), arc::ParserError);
 }
 
-Test(ErrorSub, SpriteParser) {
-	cr_assert_throw(arc::SpriteParser::parser(CONF_FILE_ERR_SUB), arc::ParserError);
+Test(ErrorSub, ItemParser) {
+	cr_assert_throw(arc::ItemParser::parser(CONF_FILE_ERR_SUB), arc::ParserError);
 
 }
 
-Test(ErrorPath, SpriteParser) {
-	cr_assert_throw(arc::SpriteParser::parser(CONF_FILE_ERR_PATH), arc::ParserError);
+Test(ErrorPath, ItemParser) {
+	cr_assert_throw(arc::ItemParser::parser(CONF_FILE_ERR_PATH), arc::ParserError);
 }
 
-Test(ErrorColor, SpriteParser) {
-	cr_assert_throw(arc::SpriteParser::parser(CONF_FILE_ERR_COLOR), arc::ParserError);
+Test(ErrorColor, ItemParser) {
+	cr_assert_throw(arc::ItemParser::parser(CONF_FILE_ERR_COLOR), arc::ParserError);
 }

@@ -8,7 +8,7 @@
 #include <algorithm>
 #include "unistd.h"
 #include "GameWraper.hpp"
-#include "SpriteParser.hpp"
+#include "ItemParser.hpp"
 
 const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 	LIB_NEXT, LIB_PREV, GAME_NEXT, GAME_PREV, QUIT
@@ -112,7 +112,7 @@ void arc::GameWraper::_processInteractions()
 void arc::GameWraper::_setItemSprites(Item &item)
 {
 	if (item.spritesPath.length())
-		item.sprites = SpriteParser::parser(item.spritesPath);
+		item.sprites = ItemParser::parser(item.spritesPath);
 }
 
 void arc::GameWraper::_displaySwitch(int mod)

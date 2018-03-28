@@ -6,12 +6,12 @@
 //
 
 #include "Error.hpp"
-#include "SpriteParser.hpp"
+#include "ItemParser.hpp"
 
 arc::ParserError::ParserError(const std::string &what)
 {
 	_what = arc::ERR_CONF + std::to_string(
-		arc::SpriteParser::getErrorLineNb()) + ": "
-		+ arc::SpriteParser::getErrorLine()
+		arc::ItemParser::getErrorLineNb()) + ": "
+		+ arc::ItemParser::getErrorLine()
 		+ what;
 }
