@@ -14,22 +14,6 @@ std::string arc::SolarFox::ItemParser::_line;
 arc::SpriteList arc::SolarFox::ItemParser::_vector;
 arc::Color arc::SolarFox::ItemParser::_color;
 int arc::SolarFox::ItemParser::_nbrline;
-static const arc::Item
-DEF_PACMAN = {"Seal",
-		"tests/SpriteConfigurationFiles/SealConfigurationFile.conf",
-		arc::SpriteList(), 0, 4,100, 220};
-static const arc::Item
-DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 4,30, 30};
-static const arc::Item
-DEF_SHOOT = {"Bullet", "tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 4,20, 20};
-static const arc::Item
-DEF_WALL = {"Wall",
-"tests/SpriteConfigurationFiles/Wall.conf", arc::SpriteList(), 0, 4,20, 20};
-static const arc::Item
-DEF_FRUIT = {"Fruit",
-"sprite/FruitConf.conf", arc::SpriteList(), 0, 4,200, 200};
-static const std::string
-CONF_FILE = "tests/SpriteConfigurationFiles/Wall.conf";
 
 arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
@@ -49,7 +33,7 @@ void arc::SolarFox::setItems(const std::string &path)
 		while (getline(s, SolarFox::ItemParser::_line))
 			createItems();
 	} else {
-		throw ParserError("Error: can't open '" + CONF_FILE + "'.");
+		throw ParserError("Error: can't open '" + path + "'.");
 	}
 }
 
