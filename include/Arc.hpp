@@ -49,6 +49,7 @@ namespace arc {
 		std::string	spritesPath;
 		SpriteList	sprites;
 		int		currSpriteIdx;
+		int		maxSpriteIdx;
 		int		x;
 		int		y;
 	};

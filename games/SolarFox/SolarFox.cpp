@@ -6,31 +6,88 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include "Arc.hpp"
 #include "SolarFox.hpp"
 
+std::string arc::SolarFox::ItemParser::_line;
+arc::SpriteList arc::SolarFox::ItemParser::_vector;
+arc::Color arc::SolarFox::ItemParser::_color;
+int arc::SolarFox::ItemParser::_nbrline;
 static const arc::Item
 DEF_PACMAN = {"Seal",
 		"tests/SpriteConfigurationFiles/SealConfigurationFile.conf",
-		arc::SpriteList(), 0, 100, 220};
+		arc::SpriteList(), 0, 4,100, 220};
 static const arc::Item
-DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 30, 30};
+DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 4,30, 30};
 static const arc::Item
-DEF_SHOOT = {"Bullet", "tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 20, 20};
+DEF_SHOOT = {"Bullet", "tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 4,20, 20};
 static const arc::Item
 DEF_WALL = {"Wall",
-"tests/SpriteConfigurationFiles/Wall.conf", arc::SpriteList(), 0, 20, 20};
+"tests/SpriteConfigurationFiles/Wall.conf", arc::SpriteList(), 0, 4,20, 20};
 static const arc::Item
 DEF_FRUIT = {"Fruit",
-"sprite/FruitConf.conf", arc::SpriteList(), 0, 200, 200};
+"sprite/FruitConf.conf", arc::SpriteList(), 0, 4,200, 200};
+static const std::string
+CONF_FILE = "tests/SpriteConfigurationFiles/Wall.conf";
 
 arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
-	_items.push_back(DEF_PACMAN);
-	_items.push_back(DEF_SHOOT);
-	_items.push_back(DEF_WALL);
-	_items.push_back(DEF_FRUIT);
+	setItems("tests/SpriteConfigurationFiles/Wall.conf");
+	setItems("tests/SpriteConfigurationFiles/Bullets.conf");
+	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
+//	_items.push_back(DEF_PACMAN);
+//	_items.push_back(DEF_SHOOT);
+//	_items.push_back(DEF_WALL);
+//	_items.push_back(DEF_FRUIT);
+}
+
+void arc::SolarFox::setItems(const std::string &path)
+{
+	std::ifstream s(path);
+	std::string tmp;
+
+	if (s.is_open()) {
+		while (getline(s, SolarFox::ItemParser::_line))
+			createItems();
+	} else {
+		throw ParserError("Error: can't open '" + CONF_FILE + "'.");
+	}
+}
+
+void arc::SolarFox::createItems()
+{
+	if (ItemParser::_line.length() > 0 && ItemParser::_line[0] != '#') {
+		if (ItemParser::getAttribute() == "UNIQUE")
+			_items.push_back(ItemParser::createItem());
+		else if (ItemParser::getAttribute() == "APPEND")
+			createSprite();
+	}
+}
+
+void arc::SolarFox::createSprite()
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == ItemParser::setName()) {
+			i->sprites.push_back(ItemParser::createSprite());
+			return;
+		}
+	}
+	_items.push_back(ItemParser::createItem());
+}
+
+arc::Item arc::SolarFox::ItemParser::createItem()
+{
+	arc::Item tmp;
+	tmp.name = setName();
+	std::cout << tmp.name << std::endl;
+	tmp.sprites.push_back(createSprite());
+	tmp.spritesPath = setPath();
+	tmp.x = std::stoi(getInfo("X"));
+	tmp.y = std::stoi(getInfo("Y"));
+	tmp.currSpriteIdx = 0;
+	return tmp;
 }
 
 void arc::SolarFox::dump() const noexcept
@@ -258,11 +315,6 @@ void arc::SolarFox::envUpdate() noexcept
 		a += 1;
 	}
 }
-#include <fstream>
-std::string arc::SolarFox::ItemParser::_line;
-arc::SpriteList arc::SolarFox::ItemParser::_vector;
-int arc::SolarFox::ItemParser::_nbrline;
-arc::Color arc::SolarFox::ItemParser::_color;
 
 static const std::unordered_map<std::string, int> COREMAP = {
 	{"Name", 0},
@@ -372,9 +424,13 @@ char arc::SolarFox::ItemParser::setSubstitute()
 
 void arc::SolarFox::ItemParser::parseLine()
 {
-	if (_line.length() > 0 && _line[0] != '#')
-		_vector.push_back(createSprite());
-	_nbrline += 1;
+	// if (_line.length() > 0 && _line[0] != '#') {
+	// 	std::cout << getAttribute() << std::endl;
+	// 	if (getAttribute() == "UNIQUE")
+	// 		getItems().push_back(createUnique());
+	// 	else if (getAttribute() == "APPEND")
+
+	// }
 }
 
 void arc::SolarFox::ItemParser::readFile(const std::string &filename)

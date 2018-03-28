@@ -44,11 +44,11 @@ public:
 	void envUpdate() noexcept;
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
+	void createItems();
 	arc::Action canMove(const std::string &name, int x, int y);
 	arc::Action moveDirectionPars(arc::Item, const struct Position &pos, const std::string &name);
 	arc::Action canMoveDirectionX(const arc::Sprite &, const int &x, const std::string &name);
 	arc::Action canMoveDirectionY(const arc::Sprite &, const int &y, const std::string &name);
-
 	class ItemParser {
 	public:
 		ItemParser() = delete;
@@ -60,15 +60,16 @@ public:
 		using MapColor = std::unordered_map<std::string, arc::Color>;
 		static const std::string getAttribute();
 		static std::string _line;
-	private:
-		static Sprite createSprite();
-		static std::string modifyFolder(std::string foldername);
 		static void parseLine();
+		static arc::Item createItem();
+		static std::string setName();
+		static Sprite createSprite();
+	private:
+		static std::string modifyFolder(std::string foldername);
 		static void readFile(const std::string &name);
 		static int getIndex(const std::string &what);
 		static std::string getInfo(const std::string &what);
 		static arc::Action setFlag();
-		static std::string setName();
 		static std::string setPath();
 		static char setSubstitute();
 		static Color setColor();
@@ -83,6 +84,8 @@ private:
 	ItemList	_items;
 	ItemList	_todraw;
 	Specs		_info;
+	void setItems(const std::string &path);
+	void createSprite();
 	void changeItemsPositionFromName(const std::string &name, int a, int b);
 	std::chrono::high_resolution_clock::time_point _startTime;
 	void changeSpritePosition(SpriteList &spritelist, int x, int y) noexcept;

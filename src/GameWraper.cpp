@@ -25,8 +25,8 @@ arc::GameWraper::GameWraper(const Startup &startup)
 	_currDisplay(_displayEntry.get()),
 	_running(true)
 {
-	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
-			 _setItemSprites);
+//	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
+//			 _setItemSprites);
 	_currGame->dump();
 	_currDisplay->clear();
 	_currDisplay->putstr("kapa", 0, 0);
@@ -146,7 +146,7 @@ void arc::GameWraper::_gameSwitch(int mod)
 	_currGame->~IGame();
 	_currGame.release();
 	_currGame.reset(_gameEntry.reset(_games[_currGameIdx]));
-	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
-			 _setItemSprites);
+//	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
+//			 _setItemSprites);
 	_currDisplay->setStep(_currGame->getSpecs().pixelStep);
 }
