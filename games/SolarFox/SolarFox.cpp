@@ -37,10 +37,7 @@ arc::SolarFox::SolarFox()
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/Bullets.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
-//	_items.push_back(DEF_PACMAN);
-//	_items.push_back(DEF_SHOOT);
-//	_items.push_back(DEF_WALL);
-//	_items.push_back(DEF_FRUIT);
+	setItems("sprite/FruitConf.conf");
 }
 
 void arc::SolarFox::setItems(const std::string &path)
