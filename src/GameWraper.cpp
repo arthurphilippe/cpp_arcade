@@ -100,6 +100,7 @@ void arc::GameWraper::_processInteractions()
 	}
 	_currDisplay->clear();
 	_currDisplay->putItem(_currGame->getItemFromName("Seal"));
+	_currDisplay->putItem(_currGame->getItemFromName("Fruit"));
 	_currDisplay->putSpritePosition(
 		_currGame->getItemFromName("Bullet"),
 		_currGame->getBulletPos());

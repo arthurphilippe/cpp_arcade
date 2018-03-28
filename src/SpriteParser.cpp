@@ -25,7 +25,16 @@ static const std::unordered_map<std::string, int> COREMAP = {
 	{"Rotation", 3},
 	{"Substitute", 4},
 	{"Color", 5},
-	{"Path", 6},
+	{"Flag", 6},
+	{"Path", 7},
+};
+
+static const arc::SpriteParser::FlagMap _flagMap = {
+	{"BLOCK", arc::Action::BLOCK},
+	{"DIE", arc::Action::DIE},
+	{"EAT", arc::Action::EAT},
+	{"MOVE", arc::Action::MOVE},
+	{"PLAYER", arc::Action::PLAYER},
 };
 
 static const arc::SpriteParser::MapColor _mapColor = {
@@ -62,7 +71,18 @@ arc::Sprite arc::SpriteParser::createSprite()
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.rotation = std::stoi(getInfo("Rotation"));
 	tmp.color = setColor();
+	tmp.flag = setFlag();
 	return tmp;
+}
+
+arc::Action arc::SpriteParser::setFlag()
+{
+	for (auto i = _flagMap.begin() ; i != _flagMap.end() ; i++) {
+		if (i->first == getInfo("Flag")) {
+			return i->second;
+		}
+	}
+	return arc::Action::DFT;
 }
 
 std::string arc::SpriteParser::setName()

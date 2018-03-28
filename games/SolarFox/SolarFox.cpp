@@ -12,15 +12,17 @@
 static const arc::Item
 DEF_PACMAN = {"Seal",
 		"tests/SpriteConfigurationFiles/SealConfigurationFile.conf",
-		arc::SpriteList(), 0, 20, 20};
+		arc::SpriteList(), 0, 100, 220};
 static const arc::Item
 DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 30, 30};
 static const arc::Item
-DEF_SHOOT = {"Bullet",
-"tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 20, 20};
+DEF_SHOOT = {"Bullet", "tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 20, 20};
 static const arc::Item
 DEF_WALL = {"Wall",
 "tests/SpriteConfigurationFiles/Wall.conf", arc::SpriteList(), 0, 20, 20};
+static const arc::Item
+DEF_FRUIT = {"Fruit",
+"sprite/FruitConf.conf", arc::SpriteList(), 0, 200, 200};
 
 arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
@@ -28,6 +30,7 @@ arc::SolarFox::SolarFox()
 	_items.push_back(DEF_PACMAN);
 	_items.push_back(DEF_SHOOT);
 	_items.push_back(DEF_WALL);
+	_items.push_back(DEF_FRUIT);
 }
 
 void arc::SolarFox::dump() const noexcept
@@ -49,30 +52,62 @@ void arc::SolarFox::_dumpItems() const noexcept
 
 using millisec = std::chrono::duration<double, std::milli>;
 
+bool arc::SolarFox::_vectorIsCollided(Vectori a, Vectori b)
+{
+	int diffx = a.v_x - b.v_x;
+	int diffy = a.v_y - b.v_y;
+
+	diffx = std::abs(diffx);
+	diffy = std::abs(diffy);
+	if (diffx < GRID_STEP && diffy < GRID_STEP)
+		return true;
+	return false;
+}
+
+arc::Action arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
+{
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->name != item.name &&
+			_vectorIsCollided(pos, (Vectori){it->x, it->y}))
+			return BLOCK;
+	}
+	return DFT;
+}
+
+void arc::SolarFox::_itemMove(const std::string &name, Vectori mod)
+{
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->name == name)
+			_itemMove(*it, mod);
+	}
+}
+
+void arc::SolarFox::_itemMove(Item &item, Vectori mod)
+{
+	Vectori newPos {item.x + mod.v_x, item.y + mod.v_y};
+
+	if (_vectorCollide(item, newPos) != BLOCK) {
+		item.x = newPos.v_x;
+		item.y = newPos.v_y;
+	}
+}
 
 void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
-	switch (interact) {
-	case MOVE_LEFT:
-		changeItemsPositionFromName("Seal", -1, 0);
-		break;
-	case MOVE_RIGHT:
-		changeItemsPositionFromName("Seal", 1, 0);
-		break;
-	case MOVE_UP:
-		changeItemsPositionFromName("Seal", 0, -1);
-		break;
-	case MOVE_DOWN:
-		changeItemsPositionFromName("Seal", 0, 1);
-		break;
-	case ACTION_1:
-		shoot("Seal");
-		break;
-	default:
-		break;
+	auto move = MOVE_BINDS.find(interact);
+	if (move != MOVE_BINDS.end()) {
+		_itemMove("Seal" , move->second);
+	} else {
+	switch (interact)
+	{
+		case ACTION_1:
+			shoot("Seal");
+			break;
+		default:
+			break;
 	}
-	if (interact == MOVE_LEFT || interact == MOVE_RIGHT || interact == MOVE_UP ||
-	    interact == MOVE_DOWN)
+	}
+	if (interact == MOVE_LEFT || interact == MOVE_RIGHT || interact == MOVE_UP || interact == MOVE_DOWN)
 		_keystate = interact;
 }
 
@@ -80,13 +115,13 @@ void arc::SolarFox::shoot(const std::string &name)
 {
 	auto mainchar = getItemFromName(name);
 	auto splist = mainchar.sprites;
-        struct Position tmp;
+	struct Position tmp;
 	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
 		if (i->x == mainchar.x && i->y == mainchar.y)
 			return;
 	}
-	tmp.x = mainchar.x;
-	tmp.y = mainchar.y;
+	tmp.x = splist[0].x;
+	tmp.y = splist[0].y;
 	tmp.interact = _keystate;
 	_bulletpos.push_back(tmp);
 }
@@ -114,7 +149,7 @@ void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, 
 					i->currSpriteIdx = 0;
 				else
 				i->currSpriteIdx += 1;
-			_startTime = std::chrono::high_resolution_clock::now();
+				_startTime = std::chrono::high_resolution_clock::now();
 			}
 		}
 	}
