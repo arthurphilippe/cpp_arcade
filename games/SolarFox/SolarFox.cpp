@@ -59,8 +59,8 @@ arc::Action arc::SolarFox::canMoveDirectionY(const Sprite &sprite, const int &y,
 		for (auto i = _items.begin(); i != _items.end(); i++) {
 			for (auto z = i->sprites.begin(); z != i->sprites.end(); z++) {
 				if ((z->x >= sprite.x - GRID_STEP / 2
-				&& z->x <= sprite.x + GRID_STEP / 2)
-				&& z->y - sprite.y <= (GRID_STEP) && z->y - sprite.y >= 0
+					&& z->x <= sprite.x + GRID_STEP / 2)
+					&& z->y - sprite.y <= (GRID_STEP) && z->y - sprite.y >= 0
 				&& z->name != name) {
 					 return arc::Action::BLOCK;
 				 }
