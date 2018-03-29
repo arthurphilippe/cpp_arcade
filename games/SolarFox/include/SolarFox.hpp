@@ -46,7 +46,6 @@ public:
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 	void createItems();
-
 	class ItemParser {
 	public:
 		ItemParser() = delete;
@@ -58,6 +57,7 @@ public:
 		static arc::Item createItem();
 		static std::string setName();
 		static Sprite createSprite();
+		static arc::Item createItem(const std::string &path, int x, int y);
 	private:
 		static int getIndex(const std::string &what);
 		static std::string getInfo(const std::string &what);

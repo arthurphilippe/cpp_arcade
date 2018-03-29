@@ -22,7 +22,6 @@ arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
-	setItems("tests/SpriteConfigurationFiles/Bullets.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
 	setItems("sprite/FruitConf.conf");
 }
@@ -69,6 +68,24 @@ arc::Item arc::SolarFox::ItemParser::createItem()
 	tmp.spritesPath = setPath();
 	tmp.x = std::stoi(getInfo("X"));
 	tmp.y = std::stoi(getInfo("Y"));
+	tmp.currSpriteIdx = 0;
+	return tmp;
+}
+
+arc::Item arc::SolarFox::ItemParser::createItem(const std::string &path, int x, int y)
+{
+	std::ifstream s(path);
+	if (s.is_open()) {
+		getline(s, SolarFox::ItemParser::_line);
+	} else {
+		throw ParserError("Error: can't open '" + path + "'.");
+	}
+	arc::Item tmp;
+	tmp.name = setName();
+	tmp.sprites.push_back(createSprite());
+	tmp.spritesPath = setPath();
+	tmp.x = x;
+	tmp.y = y;
 	tmp.currSpriteIdx = 0;
 	return tmp;
 }
@@ -153,17 +170,8 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 
 void arc::SolarFox::shoot(const std::string &name)
 {
-	auto mainchar = getItemFromName(name);
-	auto splist = mainchar.sprites;
-	struct Position tmp;
-	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
-		if (i->x == mainchar.x && i->y == mainchar.y)
-			return;
-	}
-	tmp.x = splist[0].x;
-	tmp.y = splist[0].y;
-	tmp.interact = _keystate;
-	_bulletpos.push_back(tmp);
+	auto item = getItemFromName(name);
+	ItemParser::createItem(DEF_BULLETCONF, item.x, item.y);
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -206,36 +214,6 @@ arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
 
 void arc::SolarFox::envUpdate() noexcept
 {
-	std::vector<int> count;
-	int a = 0;
-
-	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
-		switch (i->interact) {
-		case MOVE_UP:
-			i->y -= 1;
-			break;
-		case MOVE_DOWN:
-			i->y += 1;
-			break;
-		case MOVE_LEFT:
-			i->x -= 1;
-			break;
-		case MOVE_RIGHT:
-			i->x += 1;
-			break;
-		default:
-			break;
-		}
-	}
-	/*
-	**	a => emplecement dans le vecteur de la valeur à supprimer.
-	*/
-	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
-		if (i->x > W_WIDTH || i->x < 0 || i->y > W_HEIGHT || i->y < 0) {
-			count.push_back(a);
-		}
-		a += 1;
-	}
 }
 
 static const std::unordered_map<std::string, int> COREMAP = {

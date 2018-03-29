@@ -12,15 +12,15 @@
 static const arc::Item
 DEF_PACMAN = {"pacman",
 		"tests/SpriteConfigurationFiles/SealConfigurationFile.conf",
-		arc::SpriteList(), 0, 0, 20, 20};
+		arc::SpriteList(), 0, 20, 20};
 static const arc::Item
-DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 0, 30, 30};
+DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 30, 30};
 static const arc::Item
-DEF_GHOSTB = {"ghost b", "", arc::SpriteList(), 0, 0, 40, 30};
+DEF_GHOSTB = {"ghost b", "", arc::SpriteList(), 0, 40, 30};
 static const arc::Item
-DEF_GHOSTC = {"ghost c", "", arc::SpriteList(), 0, 0, 50, 30};
+DEF_GHOSTC = {"ghost c", "", arc::SpriteList(), 0, 50, 30};
 static const arc::Item
-DEF_GHOSTD = {"ghost d", "", arc::SpriteList(), 0, 0, 60, 30};
+DEF_GHOSTD = {"ghost d", "", arc::SpriteList(), 0, 60, 30};
 
 arc::Pacman::Pacman()
 	: _name("Pacman"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
