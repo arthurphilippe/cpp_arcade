@@ -104,12 +104,6 @@ void arc::GameWraper::_processInteractions()
 	_currDisplay->refresh();
 }
 
-void arc::GameWraper::_setItemSprites(Item &item)
-{
-	// if (item.spritesPath.length())
-	// 	item.sprites = ItemParser::parser(item.spritesPath);
-}
-
 void arc::GameWraper::_displaySwitch(int mod)
 {
 	if (mod >= 0) {
