@@ -10,7 +10,6 @@
 #include <memory>
 #include "IGame.hpp"
 #include "IDisplay.hpp"
-#include "ItemParser.hpp"
 #include "Error.hpp"
 #include "Startup.hpp"
 #include "GameWraper.hpp"
