@@ -23,7 +23,7 @@ public:
 	static arc::SpriteList parser(const std::string &filename);
 	static const std::string &getErrorLine();
 	static const int &getErrorLineNb();
-	using FlagMap = std::unordered_map<std::string, arc::Action>;
+	using FlagMap = std::unordered_map<std::string, arc::Attribute>;
 	using MapColor = std::unordered_map<std::string, arc::Color>;
 	static const std::string getAttribute();
 private:
@@ -33,7 +33,7 @@ private:
 	static void readFile(const std::string &name);
 	static int getIndex(const std::string &what);
 	static std::string getInfo(const std::string &what);
-	static arc::Action setFlag();
+	static arc::Attribute setFlag();
 	static std::string setName();
 	static std::string setPath();
 	static char setSubstitute();
