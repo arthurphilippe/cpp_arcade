@@ -98,7 +98,8 @@ void arc::GameWraper::_processInteractions()
 		inter.pop();
 	}
 	_currDisplay->clear();
-	for(auto i = _currGame->getItems().begin(); i != _currGame->getItems().end(); i++)
+	for (auto i = _currGame->getItems().begin();
+		i != _currGame->getItems().end(); i++)
 		_currDisplay->putItem(*i);
 	_currGame->envUpdate();
 	_currDisplay->refresh();
