@@ -8,7 +8,6 @@
 #include <algorithm>
 #include "unistd.h"
 #include "GameWraper.hpp"
-#include "SpriteParser.hpp"
 
 const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 	LIB_NEXT, LIB_PREV, GAME_NEXT, GAME_PREV, QUIT
@@ -25,8 +24,8 @@ arc::GameWraper::GameWraper(const Startup &startup)
 	_currDisplay(_displayEntry.get()),
 	_running(true)
 {
-	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
-			 _setItemSprites);
+//	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
+//			 _setItemSprites);
 	_currGame->dump();
 	_currDisplay->clear();
 	_currDisplay->putstr("kapa", 0, 0);
@@ -99,20 +98,11 @@ void arc::GameWraper::_processInteractions()
 		inter.pop();
 	}
 	_currDisplay->clear();
-	_currDisplay->putItem(_currGame->getItemFromName("Seal"));
-	_currDisplay->putItem(_currGame->getItemFromName("Fruit"));
-	_currDisplay->putSpritePosition(
-		_currGame->getItemFromName("Bullet"),
-		_currGame->getBulletPos());
-	_currDisplay->putSpriteList(_currGame->getSpriteListFromName("Wall"));
+	for (auto i = _currGame->getItems().begin();
+		i != _currGame->getItems().end(); i++)
+		_currDisplay->putItem(*i);
 	_currGame->envUpdate();
 	_currDisplay->refresh();
-}
-
-void arc::GameWraper::_setItemSprites(Item &item)
-{
-	if (item.spritesPath.length())
-		item.sprites = SpriteParser::parser(item.spritesPath);
 }
 
 void arc::GameWraper::_displaySwitch(int mod)
@@ -146,7 +136,7 @@ void arc::GameWraper::_gameSwitch(int mod)
 	_currGame->~IGame();
 	_currGame.release();
 	_currGame.reset(_gameEntry.reset(_games[_currGameIdx]));
-	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
-			 _setItemSprites);
+//	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
+//			 _setItemSprites);
 	_currDisplay->setStep(_currGame->getSpecs().pixelStep);
 }

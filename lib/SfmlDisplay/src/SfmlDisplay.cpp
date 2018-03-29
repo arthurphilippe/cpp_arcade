@@ -56,16 +56,15 @@ void arc::SfmlDisplay::putstr(const std::string &str, int x, int y)
 	_window.draw(text);
 }
 
-sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
+sf::Sprite &arc::SfmlDisplay::findSprite(const Item &item)
 {
 	for (auto i = _spriteVector.begin(); i != _spriteVector.end(); i++) {
-		if (currSprite.path == (*i)->path())
+		if (item.sprites[item.currSpriteIdx].path == (*i)->path())
 			return i->get()->getSprite();
 	}
 	_spriteVector.push_back(
 		std::unique_ptr<SpriteStorage>(
-			new SpriteStorage(
-				currSprite.path, currSprite.rotation)));
+			new SpriteStorage(item)));
 	return _spriteVector[
 		_spriteVector.size() - 1].
 		get()->getSprite();
@@ -73,37 +72,10 @@ sf::Sprite &arc::SfmlDisplay::findSprite(const Sprite &currSprite)
 
 void arc::SfmlDisplay::putItem(const Item &item)
 {
-	auto &currSprite = item.sprites[item.currSpriteIdx];
-	sf::Sprite &sprite = findSprite(currSprite);
+	sf::Sprite &sprite = findSprite(item);
 	sprite.setPosition(item.x, item.y);
+	sprite.setRotation(item.sprites[item.currSpriteIdx].rotation);
 	_window.draw(sprite);
-}
-
-void arc::SfmlDisplay::putItem(const Item &item, int x, int y)
-{
-	auto &currSprite = item.sprites[item.currSpriteIdx];
-	sf::Sprite &sprite = findSprite(currSprite);
-	sprite.setPosition(x, y);
-	_window.draw(sprite);
-}
-
-void arc::SfmlDisplay::putSpriteList(const SpriteList &splist)
-{
-	for (auto i = splist.begin(); i != splist.end(); i++)
-	{
-		auto currSprite = i;
-		auto sprite = findSprite(*currSprite);
-		sprite.setPosition(currSprite->x, currSprite->y);
-		sprite.setRotation(currSprite->rotation);
-		_window.draw(sprite);
-	}
-}
-
-void arc::SfmlDisplay::putSpritePosition(const Item &item, const std::vector<struct Position> &poslist)
-{
-	for (auto i  = poslist.begin(); i != poslist.end(); i++) {
-		putItem(item, i->x, i->y);
-	}
 }
 
 void arc::SfmlDisplay::waitEvent()
