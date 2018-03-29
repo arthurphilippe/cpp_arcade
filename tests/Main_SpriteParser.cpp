@@ -1,12 +1,10 @@
 #include <iostream>
 #include <functional>
 #include <memory>
-#include "IGame.hpp"
-#include "DynamicFunc.hpp"
 #include "IDisplay.hpp"
 #include "SpriteParser.hpp"
 #include "Error.hpp"
-#include "GameWarper.hpp"
+#include "GameWraper.hpp"
 
 
 int main(int ac, char **av)

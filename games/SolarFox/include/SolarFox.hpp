@@ -13,6 +13,7 @@
 	#include <cmath>
 	#include "Arc.hpp"
 	#include "IGame.hpp"
+	#define PLAYER_ITEM "Seal"
 
 namespace arc {
 	class SolarFox;

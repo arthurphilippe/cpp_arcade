@@ -10,7 +10,7 @@
 #include "SolarFox.hpp"
 
 static const arc::Item
-DEF_PACMAN = {"Seal",
+DEF_PACMAN = {PLAYER_ITEM,
 		"tests/SpriteConfigurationFiles/SealConfigurationFile.conf",
 		arc::SpriteList(), 0, 100, 220};
 static const arc::Item
@@ -68,7 +68,7 @@ arc::Action arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
 {
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != item.name &&
-			_vectorIsCollided(pos, (Vectori){it->x, it->y}))
+			_vectorIsCollided(pos, (Vectori) {it->x, it->y}))
 			return BLOCK;
 	}
 	return DFT;
@@ -96,12 +96,12 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-		_itemMove("Seal" , move->second);
+		_itemMove(PLAYER_ITEM, move->second);
 	} else {
 	switch (interact)
 	{
 		case ACTION_1:
-			shoot("Seal");
+			shoot(PLAYER_ITEM);
 			break;
 		default:
 			break;
