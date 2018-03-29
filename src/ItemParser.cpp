@@ -31,11 +31,11 @@ static const std::unordered_map<std::string, int> COREMAP = {
 };
 
 static const arc::ItemParser::FlagMap _flagMap = {
-	{"BLOCK", arc::Action::BLOCK},
-	{"DIE", arc::Action::DIE},
-	{"EAT", arc::Action::EAT},
-	{"MOVE", arc::Action::MOVE},
-	{"PLAYER", arc::Action::PLAYER},
+	{"BLOCK", arc::Attribute::BLOCK},
+	{"FOE", arc::Attribute::FOE},
+	{"DROP", arc::Attribute::DROP},
+	{"MOVE", arc::Attribute::MOVE},
+	{"PLAYER", arc::Attribute::PLAYER},
 };
 
 static const arc::ItemParser::MapColor _mapColor = {
@@ -76,14 +76,14 @@ arc::Sprite arc::ItemParser::createSprite()
 	return tmp;
 }
 
-arc::Action arc::ItemParser::setFlag()
+arc::Attribute arc::ItemParser::setFlag()
 {
 	for (auto i = _flagMap.begin() ; i != _flagMap.end() ; i++) {
 		if (i->first == getInfo("Flag")) {
 			return i->second;
 		}
 	}
-	return arc::Action::DFT;
+	return arc::Attribute::UNK;
 }
 
 std::string arc::ItemParser::setName()

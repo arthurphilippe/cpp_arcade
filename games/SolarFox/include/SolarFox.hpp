@@ -51,7 +51,7 @@ public:
 	public:
 		ItemParser() = delete;
 		~ItemParser() = delete;
-		using FlagMap = std::unordered_map<std::string, arc::Action>;
+		using FlagMap = std::unordered_map<std::string, arc::Attribute>;
 		using MapColor = std::unordered_map<std::string, arc::Color>;
 		static const std::string getAttribute();
 		static std::string _line;
@@ -61,7 +61,7 @@ public:
 	private:
 		static int getIndex(const std::string &what);
 		static std::string getInfo(const std::string &what);
-		static arc::Action setFlag();
+		static arc::Attribute setFlag();
 		static std::string setPath();
 		static char setSubstitute();
 		static Color setColor();
@@ -90,7 +90,7 @@ private:
 	void _itemMove(const std::string &, Vectori);
 	void _itemMove(Item &, Vectori);
 	bool _vectorIsCollided(Vectori, Vectori);
-	Action _vectorCollide(Item &, Vectori);
+	Attribute _vectorCollide(Item &, Vectori);
 };
 
 #endif /* !SOLARFOX_HPP_ */

@@ -104,14 +104,14 @@ bool arc::SolarFox::_vectorIsCollided(Vectori a, Vectori b)
 	return false;
 }
 
-arc::Action arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
+arc::Attribute arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
 {
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != item.name &&
 			_vectorIsCollided(pos, (Vectori){it->x, it->y}))
 			return BLOCK;
 	}
-	return DFT;
+	return UNK;
 }
 
 void arc::SolarFox::_itemMove(const std::string &name, Vectori mod)
@@ -251,11 +251,11 @@ static const std::unordered_map<std::string, int> COREMAP = {
 };
 
 static const arc::SolarFox::ItemParser::FlagMap _flagMap = {
-	{"BLOCK", arc::Action::BLOCK},
-	{"DIE", arc::Action::DIE},
-	{"EAT", arc::Action::EAT},
-	{"MOVE", arc::Action::MOVE},
-	{"PLAYER", arc::Action::PLAYER},
+	{"BLOCK", arc::Attribute::BLOCK},
+	{"FOE", arc::Attribute::FOE},
+	{"DROP", arc::Attribute::DROP},
+	{"MOVE", arc::Attribute::MOVE},
+	{"PLAYER", arc::Attribute::PLAYER},
 };
 
 static const arc::SolarFox::ItemParser::MapColor _mapColor = {
@@ -285,14 +285,14 @@ arc::Sprite arc::SolarFox::ItemParser::createSprite()
 	return tmp;
 }
 
-arc::Action arc::SolarFox::ItemParser::setFlag()
+arc::Attribute arc::SolarFox::ItemParser::setFlag()
 {
 	for (auto i = _flagMap.begin() ; i != _flagMap.end() ; i++) {
 		if (i->first == getInfo("Flag")) {
 			return i->second;
 		}
 	}
-	return arc::Action::DFT;
+	return arc::Attribute::UNK;
 }
 
 std::string arc::SolarFox::ItemParser::setName()
