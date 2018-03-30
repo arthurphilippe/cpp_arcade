@@ -13,6 +13,8 @@
 	#include <cmath>
 	#include "Arc.hpp"
 	#include "IGame.hpp"
+	#include "Error.hpp"
+	#include "ItemParser.hpp"
 	#define PLAYER_ITEM "Seal"
 
 namespace arc {
@@ -45,7 +47,7 @@ public:
 	void envUpdate() noexcept;
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
-
+	void createItems();
 private:
 	Interaction _keystate;
 	std::vector<struct Position> _bulletpos;
@@ -53,6 +55,8 @@ private:
 	ItemList	_items;
 	ItemList	_todraw;
 	Specs		_info;
+	void setItems(const std::string &path);
+	void createSprite();
 	void changeItemsPositionFromName(const std::string &name, int a, int b);
 	std::chrono::high_resolution_clock::time_point _startTime;
 	void changeSpritePosition(SpriteList &spritelist,
@@ -65,7 +69,7 @@ private:
 	void _itemMove(const std::string &, Vectori);
 	void _itemMove(Item &, Vectori);
 	bool _vectorIsCollided(Vectori, Vectori);
-	Action _vectorCollide(Item &, Vectori);
+	Attribute _vectorCollide(Item &, Vectori);
 };
 
 #endif /* !SOLARFOX_HPP_ */

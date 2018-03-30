@@ -6,31 +6,53 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include "Arc.hpp"
 #include "SolarFox.hpp"
 
-static const arc::Item
-DEF_PACMAN = {PLAYER_ITEM,
-		"tests/SpriteConfigurationFiles/SealConfigurationFile.conf",
-		arc::SpriteList(), 0, 100, 220};
-static const arc::Item
-DEF_GHOSTA = {"ghost a", "", arc::SpriteList(), 0, 30, 30};
-static const arc::Item
-DEF_SHOOT = {"Bullet", "tests/SpriteConfigurationFiles/Bullets.conf", arc::SpriteList(), 0, 20, 20};
-static const arc::Item
-DEF_WALL = {"Wall",
-"tests/SpriteConfigurationFiles/Wall.conf", arc::SpriteList(), 0, 20, 20};
-static const arc::Item
-DEF_FRUIT = {"Fruit",
-"sprite/FruitConf.conf", arc::SpriteList(), 0, 200, 200};
+const std::string
+DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
 
 arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
-	_items.push_back(DEF_PACMAN);
-	_items.push_back(DEF_SHOOT);
-	_items.push_back(DEF_WALL);
-	_items.push_back(DEF_FRUIT);
+	setItems("tests/SpriteConfigurationFiles/Wall.conf");
+	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
+	setItems("sprite/FruitConf.conf");
+}
+
+void arc::SolarFox::setItems(const std::string &path)
+{
+	std::ifstream s(path);
+	std::string tmp;
+
+	if (s.is_open()) {
+		while (getline(s, ItemParser::_line))
+			createItems();
+	} else {
+		throw ParserError("Error: can't open '" + path + "'.");
+	}
+}
+
+void arc::SolarFox::createItems()
+{
+	if (ItemParser::_line.length() > 0 && ItemParser::_line[0] != '#') {
+		if (ItemParser::getAttribute() == "UNIQUE")
+			_items.push_back(ItemParser::createItem());
+		else if (ItemParser::getAttribute() == "APPEND")
+			createSprite();
+	}
+}
+
+void arc::SolarFox::createSprite()
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == ItemParser::setName()) {
+			i->sprites.push_back(ItemParser::createSprite());
+			return;
+		}
+	}
+	_items.push_back(ItemParser::createItem());
 }
 
 void arc::SolarFox::dump() const noexcept
@@ -64,14 +86,14 @@ bool arc::SolarFox::_vectorIsCollided(Vectori a, Vectori b)
 	return false;
 }
 
-arc::Action arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
+arc::Attribute arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
 {
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != item.name &&
 			_vectorIsCollided(pos, (Vectori) {it->x, it->y}))
 			return BLOCK;
 	}
-	return DFT;
+	return UNK;
 }
 
 void arc::SolarFox::_itemMove(const std::string &name, Vectori mod)
@@ -113,25 +135,8 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 
 void arc::SolarFox::shoot(const std::string &name)
 {
-	auto mainchar = getItemFromName(name);
-	auto splist = mainchar.sprites;
-	struct Position tmp;
-	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
-		if (i->x == mainchar.x && i->y == mainchar.y)
-			return;
-	}
-	tmp.x = splist[0].x;
-	tmp.y = splist[0].y;
-	tmp.interact = _keystate;
-	_bulletpos.push_back(tmp);
-}
-
-void arc::SolarFox::changeSpritePosition(SpriteList &spritelist, int x, int y) noexcept
-{
-	for (auto i = spritelist.begin(); i != spritelist.end(); i++) {
-		i->x = i->x + x;
-		i->y = i->y + y;
-	}
+	auto item = getItemFromName(name);
+	ItemParser::createItem(DEF_BULLETCONF, item.x, item.y);
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -140,10 +145,8 @@ void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, 
 	millisec elapsed = finish - _startTime;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == name) {
-			changeSpritePosition(i->sprites, x, y);
 			i->x += x;
 			i->y += y;
-			changeSpritePosition(i->sprites, x, y);
 			if (elapsed.count() > 200) {
 				if (i->currSpriteIdx > 4)
 					i->currSpriteIdx = 0;
@@ -176,34 +179,4 @@ arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
 
 void arc::SolarFox::envUpdate() noexcept
 {
-	std::vector<int> count;
-	int a = 0;
-
-	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
-		switch (i->interact) {
-		case MOVE_UP:
-			i->y -= 1;
-			break;
-		case MOVE_DOWN:
-			i->y += 1;
-			break;
-		case MOVE_LEFT:
-			i->x -= 1;
-			break;
-		case MOVE_RIGHT:
-			i->x += 1;
-			break;
-		default:
-			break;
-		}
-	}
-	/*
-	**	a => emplecement dans le vecteur de la valeur à supprimer.
-	*/
-	for (auto i = _bulletpos.begin(); i != _bulletpos.end(); i++) {
-		if (i->x > W_WIDTH || i->x < 0 || i->y > W_HEIGHT || i->y < 0) {
-			count.push_back(a);
-		}
-		a += 1;
-	}
 }
