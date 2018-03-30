@@ -136,7 +136,5 @@ void arc::GameWraper::_gameSwitch(int mod)
 	_currGame->~IGame();
 	_currGame.release();
 	_currGame.reset(_gameEntry.reset(_games[_currGameIdx]));
-//	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
-//			 _setItemSprites);
 	_currDisplay->setStep(_currGame->getSpecs().pixelStep);
 }

@@ -183,6 +183,34 @@ arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
+bool arc::SolarFox::_checkPlayerContact(Item &player)
+{
+	Vectori pos {player.x, player.y};
+	bool restart = false;
+
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->name != player.name
+			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})
+			&& it->attribute == DROP) {
+			_items.erase(it);
+			it = _items.begin();
+			restart = true;
+		}
+	}
+	return restart;
+}
+
+void arc::SolarFox::_checkItemsContact()
+{
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->attribute == PLAYER) {
+			if (_checkPlayerContact(*it))
+				it = _items.begin();
+		}
+	}
+}
+
 void arc::SolarFox::envUpdate() noexcept
 {
+	_checkItemsContact();
 }

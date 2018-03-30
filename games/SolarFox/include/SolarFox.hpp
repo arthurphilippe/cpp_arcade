@@ -11,6 +11,7 @@
 	#include <chrono>
 	#include <string>
 	#include <cmath>
+	#include <functional>
 	#include "Arc.hpp"
 	#include "IGame.hpp"
 	#include "Error.hpp"
@@ -70,6 +71,10 @@ private:
 	void _itemMove(Item &, Vectori);
 	bool _vectorIsCollided(Vectori, Vectori);
 	bool _itemBlock(Item &, Vectori);
+
+	// Item Collisions on update
+	bool _checkPlayerContact(Item &player);
+	void _checkItemsContact();
 };
 
 #endif /* !SOLARFOX_HPP_ */
