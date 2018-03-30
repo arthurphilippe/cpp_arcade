@@ -8,7 +8,6 @@
 #include <algorithm>
 #include "unistd.h"
 #include "GameWraper.hpp"
-#include "ItemParser.hpp"
 
 const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 	LIB_NEXT, LIB_PREV, GAME_NEXT, GAME_PREV, QUIT
@@ -99,16 +98,11 @@ void arc::GameWraper::_processInteractions()
 		inter.pop();
 	}
 	_currDisplay->clear();
-	for(auto i = _currGame->getItems().begin(); i != _currGame->getItems().end(); i++)
+	for (auto i = _currGame->getItems().begin();
+		i != _currGame->getItems().end(); i++)
 		_currDisplay->putItem(*i);
 	_currGame->envUpdate();
 	_currDisplay->refresh();
-}
-
-void arc::GameWraper::_setItemSprites(Item &item)
-{
-	if (item.spritesPath.length())
-		item.sprites = ItemParser::parser(item.spritesPath);
 }
 
 void arc::GameWraper::_displaySwitch(int mod)

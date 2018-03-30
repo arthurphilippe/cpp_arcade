@@ -44,7 +44,6 @@ private:
 	void _processWraperInter(Interaction &iter);
 	void _processInteractions();
 	static const std::vector<Interaction> _sysInteractions;
-	static void _setItemSprites(Item &item);
 	void _waitCycle(unsigned int fps);
 	void _displaySwitch(int mod);
 	void _gameSwitch(int mod);

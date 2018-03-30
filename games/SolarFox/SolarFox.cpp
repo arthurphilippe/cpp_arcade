@@ -13,11 +13,6 @@
 const std::string
 DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
 
-std::string arc::SolarFox::ItemParser::_line;
-arc::SpriteList arc::SolarFox::ItemParser::_vector;
-arc::Color arc::SolarFox::ItemParser::_color;
-int arc::SolarFox::ItemParser::_nbrline;
-
 arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
@@ -32,7 +27,7 @@ void arc::SolarFox::setItems(const std::string &path)
 	std::string tmp;
 
 	if (s.is_open()) {
-		while (getline(s, SolarFox::ItemParser::_line))
+		while (getline(s, ItemParser::_line))
 			createItems();
 	} else {
 		throw ParserError("Error: can't open '" + path + "'.");
@@ -42,9 +37,9 @@ void arc::SolarFox::setItems(const std::string &path)
 void arc::SolarFox::createItems()
 {
 	if (ItemParser::_line.length() > 0 && ItemParser::_line[0] != '#') {
-		if (ItemParser::getAttribute() == "UNIQUE")
+		if (ItemParser::getFlag() == "UNIQUE")
 			_items.push_back(ItemParser::createItem());
-		else if (ItemParser::getAttribute() == "APPEND")
+		else if (ItemParser::getFlag() == "APPEND")
 			createSprite();
 	}
 }
@@ -58,36 +53,6 @@ void arc::SolarFox::createSprite()
 		}
 	}
 	_items.push_back(ItemParser::createItem());
-}
-
-arc::Item arc::SolarFox::ItemParser::createItem()
-{
-	arc::Item tmp;
-	tmp.name = setName();
-	tmp.sprites.push_back(createSprite());
-	tmp.spritesPath = setPath();
-	tmp.x = std::stoi(getInfo("X"));
-	tmp.y = std::stoi(getInfo("Y"));
-	tmp.currSpriteIdx = 0;
-	return tmp;
-}
-
-arc::Item arc::SolarFox::ItemParser::createItem(const std::string &path, int x, int y)
-{
-	std::ifstream s(path);
-	if (s.is_open()) {
-		getline(s, SolarFox::ItemParser::_line);
-	} else {
-		throw ParserError("Error: can't open '" + path + "'.");
-	}
-	arc::Item tmp;
-	tmp.name = setName();
-	tmp.sprites.push_back(createSprite());
-	tmp.spritesPath = setPath();
-	tmp.x = x;
-	tmp.y = y;
-	tmp.currSpriteIdx = 0;
-	return tmp;
 }
 
 void arc::SolarFox::dump() const noexcept
@@ -125,7 +90,7 @@ arc::Attribute arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
 {
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != item.name &&
-			_vectorIsCollided(pos, (Vectori){it->x, it->y}))
+			_vectorIsCollided(pos, (Vectori) {it->x, it->y}))
 			return BLOCK;
 	}
 	return UNK;
@@ -153,12 +118,12 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-		_itemMove("Seal" , move->second);
+		_itemMove(PLAYER_ITEM, move->second);
 	} else {
 	switch (interact)
 	{
 		case ACTION_1:
-			shoot("Seal");
+			shoot(PLAYER_ITEM);
 			break;
 		default:
 			break;
@@ -214,119 +179,4 @@ arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
 
 void arc::SolarFox::envUpdate() noexcept
 {
-}
-
-static const std::unordered_map<std::string, int> COREMAP = {
-	{"Name", 0},
-	{"X", 1},
-	{"Y", 2},
-	{"Rotation", 3},
-	{"Substitute", 4},
-	{"Color", 5},
-	{"Flag", 6},
-	{"Attribute", 7},
-	{"Path", 8},
-};
-
-static const arc::SolarFox::ItemParser::FlagMap _flagMap = {
-	{"BLOCK", arc::Attribute::BLOCK},
-	{"FOE", arc::Attribute::FOE},
-	{"DROP", arc::Attribute::DROP},
-	{"MOVE", arc::Attribute::MOVE},
-	{"PLAYER", arc::Attribute::PLAYER},
-};
-
-static const arc::SolarFox::ItemParser::MapColor _mapColor = {
-	{"BLUE", arc::Color::BLUE},
-	{"RED", arc::Color::RED},
-	{"GREEN", arc::Color::GREEN},
-	{"BLACK", arc::Color::BLACK},
-	{"YELLOW", arc::Color::YELLOW},
-	{"CYAN", arc::Color::CYAN},
-	{"MAGENTA", arc::Color::MAGENTA},
-	{"WHITE", arc::Color::WHITE},
-	{"BLACK", arc::Color::BLACK},
-	{"UNDEFINED", arc::Color::UNDEFINED},
-};
-
-arc::Sprite arc::SolarFox::ItemParser::createSprite()
-{
-	Sprite tmp;
-	tmp.name = setName();
-	tmp.path = setPath();
-	tmp.substitute = setSubstitute();
-	tmp.x = std::stoi(getInfo("X"));
-	tmp.y = std::stoi(getInfo("Y"));
-	tmp.rotation = std::stoi(getInfo("Rotation"));
-	tmp.color = setColor();
-	tmp.flag = setFlag();
-	return tmp;
-}
-
-arc::Attribute arc::SolarFox::ItemParser::setFlag()
-{
-	for (auto i = _flagMap.begin() ; i != _flagMap.end() ; i++) {
-		if (i->first == getInfo("Flag")) {
-			return i->second;
-		}
-	}
-	return arc::Attribute::UNK;
-}
-
-std::string arc::SolarFox::ItemParser::setName()
-{
-	return getInfo("Name");
-}
-
-arc::Color arc::SolarFox::ItemParser::setColor()
-{
-	std::string tmp = getInfo("Color");
-	arc::Color color = arc::Color::DFT_COLOR_RET_ERROR;
-
-	for (auto i = _mapColor.begin(); i != _mapColor.end(); i++) {
-		if (i->first == tmp)
-			color = i->second;
-	}
-	if (color == arc::Color::DFT_COLOR_RET_ERROR)
-		throw ParserError(ERR_COLOR);
-	return color;
-}
-
-const std::string arc::SolarFox::ItemParser::getAttribute()
-{
-	return getInfo("Attribute");
-}
-
-std::string arc::SolarFox::ItemParser::setPath()
-{
-	return getInfo("Path");
-}
-
-char arc::SolarFox::ItemParser::setSubstitute()
-{
-	std::string tmp = getInfo("Substitute");
-
-	if (tmp.length() > 1)
-		throw ParserError(arc::ERR_SUB);
-	return tmp[0];
-}
-
-int arc::SolarFox::ItemParser::getIndex(const std::string &what)
-{
-	for (auto i = COREMAP.begin(); i != COREMAP.end(); i++) {
-		if (what == i->first)
-			return i->second;
-	}
-	return -1;
-}
-
-std::string arc::SolarFox::ItemParser::getInfo(const std::string &what)
-{
-	std::string tmp = _line;
-
-	for (int i = 0; i < getIndex(what); i ++) {
-		tmp = tmp.substr(tmp.find(":") + 1, tmp.length());
-	}
-	tmp = tmp.substr(0, tmp.find(":"));
-	return tmp;
 }

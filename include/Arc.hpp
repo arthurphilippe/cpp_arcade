@@ -37,7 +37,6 @@ namespace arc {
 		int y;
 		int rotation;
 		char substitute;
-		arc::Attribute flag;
 		std::string name;
 		std::string path;
 		arc::Color color;
@@ -48,6 +47,7 @@ namespace arc {
 		std::string	name;
 		std::string	spritesPath;
 		SpriteList	sprites;
+		arc::Attribute	attribute;
 		int		currSpriteIdx;
 		int		x;
 		int		y;

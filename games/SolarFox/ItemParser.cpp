@@ -1,36 +1,20 @@
-//
-// EPITECH PROJECT, 2018
-// Arcade
-// File description:
-// ItemParser
-//
+/*
+** EPITECH PROJECT, 2018
+** cpp_arcade
+** File description:
+** ItemParser
+*/
 
-#include <fstream>
 #include <iostream>
-#include <sys/types.h>
-#include <unistd.h>
-#include <dirent.h>
-#include "Error.hpp"
-#include "ItemParser.hpp"
+#include <fstream>
+#include "SolarFox.hpp"
 
 std::string arc::ItemParser::_line;
 arc::SpriteList arc::ItemParser::_vector;
-int arc::ItemParser::_nbrline;
 arc::Color arc::ItemParser::_color;
+int arc::ItemParser::_nbrline;
 
-static const std::unordered_map<std::string, int> COREMAP = {
-	{"Name", 0},
-	{"X", 1},
-	{"Y", 2},
-	{"Rotation", 3},
-	{"Substitute", 4},
-	{"Color", 5},
-	{"Flag", 6},
-	{"Attribute", 7},
-	{"Path", 8},
-};
-
-static const arc::ItemParser::FlagMap _flagMap = {
+static const arc::ItemParser::AttributeMap _attributeMap = {
 	{"BLOCK", arc::Attribute::BLOCK},
 	{"FOE", arc::Attribute::FOE},
 	{"DROP", arc::Attribute::DROP},
@@ -51,15 +35,47 @@ static const arc::ItemParser::MapColor _mapColor = {
 	{"UNDEFINED", arc::Color::UNDEFINED},
 };
 
+static const std::unordered_map<std::string, int> COREMAP = {
+	{"Name", 0},
+	{"X", 1},
+	{"Y", 2},
+	{"Rotation", 3},
+	{"Substitute", 4},
+	{"Color", 5},
+	{"Attribute", 6},
+	{"Flag", 7},
+	{"Path", 8},
+};
 
-const std::string &arc::ItemParser::getErrorLine()
+arc::Item arc::ItemParser::createItem()
 {
-	return (_line);
+	arc::Item tmp;
+	tmp.name = setName();
+	tmp.sprites.push_back(createSprite());
+	tmp.spritesPath = setPath();
+	tmp.x = std::stoi(getInfo("X"));
+	tmp.y = std::stoi(getInfo("Y"));
+	tmp.currSpriteIdx = 0;
+	return tmp;
 }
 
-const int &arc::ItemParser::getErrorLineNb()
+arc::Item arc::ItemParser::createItem(const std::string &path, int x, int y)
 {
-	return (_nbrline);
+	std::ifstream s(path);
+	if (s.is_open()) {
+		getline(s, ItemParser::_line);
+	} else {
+		throw ParserError("Error: can't open '" + path + "'.");
+	}
+	arc::Item tmp;
+	tmp.name = setName();
+	tmp.sprites.push_back(createSprite());
+	tmp.spritesPath = setPath();
+	tmp.x = x;
+	tmp.y = y;
+	tmp.attribute = setAttribute();
+	tmp.currSpriteIdx = 0;
+	return tmp;
 }
 
 arc::Sprite arc::ItemParser::createSprite()
@@ -72,14 +88,13 @@ arc::Sprite arc::ItemParser::createSprite()
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.rotation = std::stoi(getInfo("Rotation"));
 	tmp.color = setColor();
-	tmp.flag = setFlag();
 	return tmp;
 }
 
-arc::Attribute arc::ItemParser::setFlag()
+arc::Attribute arc::ItemParser::setAttribute()
 {
-	for (auto i = _flagMap.begin() ; i != _flagMap.end() ; i++) {
-		if (i->first == getInfo("Flag")) {
+	for (auto i = _attributeMap.begin() ; i != _attributeMap.end() ; i++) {
+		if (i->first == getInfo("Attribute")) {
 			return i->second;
 		}
 	}
@@ -105,9 +120,9 @@ arc::Color arc::ItemParser::setColor()
 	return color;
 }
 
-const std::string arc::ItemParser::getAttribute()
+const std::string arc::ItemParser::getFlag()
 {
-	return getInfo("Attribute");
+	return getInfo("Flag");
 }
 
 std::string arc::ItemParser::setPath()
@@ -122,30 +137,6 @@ char arc::ItemParser::setSubstitute()
 	if (tmp.length() > 1)
 		throw ParserError(arc::ERR_SUB);
 	return tmp[0];
-}
-
-void arc::ItemParser::parseLine()
-{
-	if (_line.length() > 0 && _line[0] != '#')
-		_vector.push_back(createSprite());
-	_nbrline += 1;
-}
-
-void arc::ItemParser::readFile(const std::string &filename)
-{
-	std::ifstream s(filename);
-	std::string tmp;
-
-	if (s.is_open()) {
-		while (getline(s, _line)) {
-			parseLine();
-		}
-	} else {
-		std::string _s("Error: can't open '");
-		_s += filename;
-		_s += "'.";
-		throw ParserError(_s);
-	}
 }
 
 int arc::ItemParser::getIndex(const std::string &what)
@@ -166,13 +157,4 @@ std::string arc::ItemParser::getInfo(const std::string &what)
 	}
 	tmp = tmp.substr(0, tmp.find(":"));
 	return tmp;
-}
-
-arc::SpriteList arc::ItemParser::parser(const std::string &filename)
-{
-	_line.clear();
-	_vector.clear();
-	_nbrline = 1;
-	readFile(filename);
-	return _vector;
 }

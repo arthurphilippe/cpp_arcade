@@ -15,8 +15,7 @@ NAME		=	arcade
 
 MAIN		=	src/Main.cpp
 
-SRCS		=	src/ItemParser.cpp	\
-			src/Error.cpp		\
+SRCS		=	src/Error.cpp		\
 			src/GameWraper.cpp	\
 			src/Startup.cpp
 
