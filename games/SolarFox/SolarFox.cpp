@@ -88,12 +88,19 @@ bool arc::SolarFox::_vectorIsCollided(Vectori a, Vectori b)
 
 arc::Attribute arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
 {
+	bool coll;
+	Attribute ret = UNK;
+
 	for (auto it = _items.begin(); it != _items.end(); it++) {
-		if (it->name != item.name &&
-			_vectorIsCollided(pos, (Vectori) {it->x, it->y}))
+		coll = _vectorIsCollided(pos, (Vectori) {it->x, it->y});
+		if (coll && it->name != item.name && it->attribute == BLOCK)
 			return BLOCK;
+		// if (it->attribute == BLOCK && ret != FOE)
+		// 	ret = it->attribute;
+		// else if (it->attribute == FOE)
+		// 	ret = it->attribute;
 	}
-	return UNK;
+	return ret;
 }
 
 void arc::SolarFox::_itemMove(const std::string &name, Vectori mod)
