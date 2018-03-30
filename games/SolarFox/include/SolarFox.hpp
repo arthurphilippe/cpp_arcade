@@ -49,36 +49,13 @@ public:
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 	void createItems();
-	class ItemParser {
-	public:
-		ItemParser() = delete;
-		~ItemParser() = delete;
-		using FlagMap = std::unordered_map<std::string, arc::Attribute>;
-		using MapColor = std::unordered_map<std::string, arc::Color>;
-		static const std::string getAttribute();
-		static std::string _line;
-		static arc::Item createItem();
-		static std::string setName();
-		static Sprite createSprite();
-		static arc::Item createItem(const std::string &path, int x, int y);
-	private:
-		static int getIndex(const std::string &what);
-		static std::string getInfo(const std::string &what);
-		static arc::Attribute setFlag();
-		static std::string setPath();
-		static char setSubstitute();
-		static Color setColor();
-		static SpriteList _vector;
-		static int _nbrline;
-		static Color _color;
-	};
 	class Bullet {
 	public:
 		Bullet(Interaction direction, int x, int y)
 			: _direction(direction) {
 				_bullet = ItemParser::createItem(DEF_BULLETCONF, x, y);
 			}
-		~Bullet();
+		~Bullet() {}
 		arc::Item &getBullet() {return _bullet;}
 		Interaction &getDirection() {return _direction;}
 	private:
