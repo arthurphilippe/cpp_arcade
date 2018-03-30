@@ -37,9 +37,9 @@ void arc::SolarFox::setItems(const std::string &path)
 void arc::SolarFox::createItems()
 {
 	if (ItemParser::_line.length() > 0 && ItemParser::_line[0] != '#') {
-		if (ItemParser::getAttribute() == "UNIQUE")
+		if (ItemParser::getFlag() == "UNIQUE")
 			_items.push_back(ItemParser::createItem());
-		else if (ItemParser::getAttribute() == "APPEND")
+		else if (ItemParser::getFlag() == "APPEND")
 			createSprite();
 	}
 }

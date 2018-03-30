@@ -42,8 +42,8 @@ static const std::unordered_map<std::string, int> COREMAP = {
 	{"Rotation", 3},
 	{"Substitute", 4},
 	{"Color", 5},
-	{"Flag", 6},
-	{"Attribute", 7},
+	{"Attribute", 6},
+	{"Flag", 7},
 	{"Path", 8},
 };
 
@@ -120,9 +120,9 @@ arc::Color arc::ItemParser::setColor()
 	return color;
 }
 
-const std::string arc::ItemParser::getAttribute()
+const std::string arc::ItemParser::getFlag()
 {
-	return getInfo("Attribute");
+	return getInfo("Flag");
 }
 
 std::string arc::ItemParser::setPath()

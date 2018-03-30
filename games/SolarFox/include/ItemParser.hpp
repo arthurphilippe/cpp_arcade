@@ -20,7 +20,7 @@ public:
 	~ItemParser() = delete;
 	using FlagMap = std::unordered_map<std::string, arc::Attribute>;
 	using MapColor = std::unordered_map<std::string, arc::Color>;
-	static const std::string getAttribute();
+	static const std::string getFlag();
 	static std::string _line;
 	static arc::Item createItem();
 	static std::string setName();
