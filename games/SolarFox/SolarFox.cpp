@@ -86,7 +86,7 @@ bool arc::SolarFox::_vectorIsCollided(Vectori a, Vectori b)
 	return false;
 }
 
-bool arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
+bool arc::SolarFox::_itemBlock(Item &item, Vectori pos)
 {
 	bool coll;
 
@@ -114,7 +114,7 @@ void arc::SolarFox::_itemMove(Item &item, Vectori mod)
 {
 	Vectori newPos {item.x + mod.v_x, item.y + mod.v_y};
 
-	if (_vectorCollide(item, newPos) != BLOCK) {
+	if (_itemBlock(item, newPos) != BLOCK) {
 		item.x = newPos.v_x;
 		item.y = newPos.v_y;
 	}

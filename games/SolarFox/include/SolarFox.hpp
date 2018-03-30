@@ -69,7 +69,7 @@ private:
 	void _itemMove(const std::string &, Vectori);
 	void _itemMove(Item &, Vectori);
 	bool _vectorIsCollided(Vectori, Vectori);
-	bool _vectorCollide(Item &, Vectori);
+	bool _itemBlock(Item &, Vectori);
 };
 
 #endif /* !SOLARFOX_HPP_ */
