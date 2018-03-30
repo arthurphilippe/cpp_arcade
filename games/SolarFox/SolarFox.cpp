@@ -12,7 +12,7 @@
 
 
 arc::SolarFox::SolarFox()
-	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
+	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
@@ -117,10 +117,10 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
 		_itemMove(PLAYER_ITEM, move->second);
+		_keystate = interact;
 	} else {
 	switch (interact) {
 		case ACTION_1:
-			_keystate = interact;
 			shoot("Seal");
 			break;
 		default:
@@ -132,13 +132,9 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 void arc::SolarFox::shoot(const std::string &name)
 {
 	auto item = getItemFromName(name);
-	std::cout << _keystate << std::endl;
-	std::cout << item.name << std::endl;
-	Bullet bullet(_keystate, item.x, item.y);
-	std::cout << bullet.getDirection() << std::endl;
+	_items.push_back(ItemParser::createItem(DEF_BULLETCONF, item.x, item.y));
+	Bullet bullet(_keystate, &_items[_items.size() -1]);
 	_bulletlist.push_back(bullet);
-	std::cout << _bulletlist.size() - 1 << std::endl;
-	_items.push_back(_bulletlist[_bulletlist.size() - 1].getBullet());
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -183,11 +179,17 @@ void arc::SolarFox::envUpdate() noexcept
 {
 	for (auto i = _bulletlist.begin(); i != _bulletlist.end(); i ++) {
 		switch (i->getDirection()) {
-			case MOVE_UP:
-				i->getBullet().y -= 1;
+			case arc::MOVE_UP:
+				i->getBullet()->y -= 1;
 				break;
-			case MOVE_DOWN:
-				i->getBullet().y += 1;
+			case arc::MOVE_DOWN:
+				i->getBullet()->y += 1;
+				break;
+			case arc::MOVE_LEFT:
+				i->getBullet()->x -= 1;
+				break;
+			case arc::MOVE_RIGHT:
+				i->getBullet()->x += 1;
 				break;
 			default:
 				break;

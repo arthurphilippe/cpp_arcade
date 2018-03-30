@@ -83,6 +83,7 @@ void arc::GameWraper::_processInteractions()
 {
 	auto inter = _currDisplay->getInteractions();
 	while (inter.size() != 0) {
+		_currGame->envUpdate();
 		bool had_action_1 = false;
 		if (had_action_1 && inter.front() == ACTION_1) {
 			inter.pop();
@@ -101,7 +102,6 @@ void arc::GameWraper::_processInteractions()
 	for (auto i = _currGame->getItems().begin();
 		i != _currGame->getItems().end(); i++)
 		_currDisplay->putItem(*i);
-	_currGame->envUpdate();
 	_currDisplay->refresh();
 }
 

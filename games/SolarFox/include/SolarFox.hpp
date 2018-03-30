@@ -8,6 +8,7 @@
 #ifndef SOLARFOX_HPP_
 	#define SOLARFOX_HPP_
 
+	#include <memory>
 	#include <chrono>
 	#include <string>
 	#include <cmath>
@@ -48,18 +49,19 @@ public:
 	void envUpdate() noexcept;
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
+	using ItemRef = Item *;
 	void createItems();
 	class Bullet {
 	public:
-		Bullet(Interaction direction, int x, int y)
+		Bullet(Interaction direction, ItemRef bullet)
 			: _direction(direction) {
-				_bullet = ItemParser::createItem(DEF_BULLETCONF, x, y);
+				_bullet = bullet;
 			}
 		~Bullet() {}
-		arc::Item &getBullet() {return _bullet;}
+		ItemRef getBullet() {return _bullet;}
 		Interaction &getDirection() {return _direction;}
 	private:
-		arc::Item _bullet;
+		ItemRef _bullet;
 		Interaction _direction;
 	};
 private:
@@ -67,12 +69,6 @@ private:
 	std::vector<struct Position> _bulletpos;
 	std::string	_name;
 	ItemList	_items;
-	using ItemListRef = std::vector<Item *>;
-	ItemListRef	_bulletRight;
-	ItemListRef	_bulletLeft;
-	ItemListRef	_bulletUp;
-	ItemListRef	_bulletDown;
-	ItemListRef	_todraw;
 	Specs		_info;
 	void setItems(const std::string &path);
 	void createSprite();
