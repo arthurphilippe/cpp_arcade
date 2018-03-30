@@ -14,7 +14,7 @@ arc::SpriteList arc::ItemParser::_vector;
 arc::Color arc::ItemParser::_color;
 int arc::ItemParser::_nbrline;
 
-static const arc::ItemParser::FlagMap _flagMap = {
+static const arc::ItemParser::AttributeMap _attributeMap = {
 	{"BLOCK", arc::Attribute::BLOCK},
 	{"FOE", arc::Attribute::FOE},
 	{"DROP", arc::Attribute::DROP},
@@ -73,6 +73,7 @@ arc::Item arc::ItemParser::createItem(const std::string &path, int x, int y)
 	tmp.spritesPath = setPath();
 	tmp.x = x;
 	tmp.y = y;
+	tmp.attribute = setAttribute();
 	tmp.currSpriteIdx = 0;
 	return tmp;
 }
@@ -87,14 +88,13 @@ arc::Sprite arc::ItemParser::createSprite()
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.rotation = std::stoi(getInfo("Rotation"));
 	tmp.color = setColor();
-	tmp.flag = setFlag();
 	return tmp;
 }
 
-arc::Attribute arc::ItemParser::setFlag()
+arc::Attribute arc::ItemParser::setAttribute()
 {
-	for (auto i = _flagMap.begin() ; i != _flagMap.end() ; i++) {
-		if (i->first == getInfo("Flag")) {
+	for (auto i = _attributeMap.begin() ; i != _attributeMap.end() ; i++) {
+		if (i->first == getInfo("Attribute")) {
 			return i->second;
 		}
 	}
