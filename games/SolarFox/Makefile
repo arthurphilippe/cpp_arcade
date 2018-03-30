@@ -5,7 +5,7 @@
 ## makefile
 ##
 
-CXX		=	g++
+CXX		=	g++ -ggdb
 
 NAME		=	libSolarFox.so
 

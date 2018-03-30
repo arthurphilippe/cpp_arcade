@@ -10,8 +10,6 @@
 #include "Arc.hpp"
 #include "SolarFox.hpp"
 
-const std::string
-DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
 
 arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
@@ -53,6 +51,37 @@ void arc::SolarFox::createSprite()
 		}
 	}
 	_items.push_back(ItemParser::createItem());
+}
+
+arc::Item arc::SolarFox::ItemParser::createItem()
+{
+	arc::Item tmp;
+	tmp.name = setName();
+	tmp.sprites.push_back(createSprite());
+	tmp.spritesPath = setPath();
+	tmp.x = std::stoi(getInfo("X"));
+	tmp.y = std::stoi(getInfo("Y"));
+	tmp.currSpriteIdx = 0;
+	return tmp;
+}
+
+arc::Item arc::SolarFox::ItemParser::createItem(const std::string &path, int x, int y)
+{
+	std::ifstream s(path);
+	_line.clear();
+	if (s.is_open()) {
+		getline(s, SolarFox::ItemParser::_line);
+	} else {
+		throw ParserError("Error: can't open '" + path + "'.");
+	}
+	arc::Item tmp;
+	tmp.name = setName();
+	tmp.sprites.push_back(createSprite());
+	tmp.spritesPath = setPath();
+	tmp.x = x;
+	tmp.y = y;
+	tmp.currSpriteIdx = 0;
+	return tmp;
 }
 
 void arc::SolarFox::dump() const noexcept
@@ -120,23 +149,36 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 	if (move != MOVE_BINDS.end()) {
 		_itemMove(PLAYER_ITEM, move->second);
 	} else {
-	switch (interact)
-	{
+	switch (interact) {
 		case ACTION_1:
-			shoot(PLAYER_ITEM);
+			_keystate = interact;
+			shoot("Seal");
 			break;
 		default:
 			break;
 	}
 	}
-	if (interact == MOVE_LEFT || interact == MOVE_RIGHT || interact == MOVE_UP || interact == MOVE_DOWN)
-		_keystate = interact;
 }
 
 void arc::SolarFox::shoot(const std::string &name)
 {
 	auto item = getItemFromName(name);
-	ItemParser::createItem(DEF_BULLETCONF, item.x, item.y);
+	std::cout << _keystate << std::endl;
+	auto bullet = Bullet(_keystate, item.x, item.y);
+	std::cout << bullet.getDirection() << std::endl;
+	//std::cout << "kek " << std::endl;
+//	_bulletlist.push_back(bullet);
+//	std::cout << _bulletlist.size() - 1 << std::endl;
+//	_items.push_back(_bulletlist[_bulletlist.size() - 1].getBullet());
+	// _items.push_back(ItemParser::createItem(DEF_BULLETCONF, item.x, item.y));
+	// if (_keystate == MOVE_DOWN)
+	// 	_bulletDown.push_back(&_items[_items.size() - 1]);
+	// if (_keystate == MOVE_UP)
+	// 	_bulletUp.push_back(&_items[_items.size() - 1]);
+	// if (_keystate == MOVE_LEFT)
+	// 	_bulletLeft.push_back(&_items[_items.size() - 1]);
+	// if (_keystate == MOVE_RIGHT)
+	// 	_bulletRight.push_back(&_items[_items.size() - 1]);
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -179,4 +221,17 @@ arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
 
 void arc::SolarFox::envUpdate() noexcept
 {
+	for (auto i = _bulletlist.begin(); i != _bulletlist.end(); i ++) {
+		switch (i->getDirection()) {
+			case MOVE_UP:
+				i->getBullet().y -= 1;
+				break;
+			case MOVE_DOWN:
+				i->getBullet().y += 1;
+				break;
+			default:
+				break;
+
+		}
+	}
 }

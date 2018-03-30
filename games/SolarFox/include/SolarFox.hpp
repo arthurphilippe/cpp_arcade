@@ -25,6 +25,7 @@ namespace arc {
 	constexpr auto FPS = 56;
 	constexpr auto W_HEIGHT = 720;
 	constexpr auto W_WIDTH = 1280;
+	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
 }
 
 class arc::SolarFox : public arc::IGame {
@@ -48,12 +49,53 @@ public:
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 	void createItems();
+	class ItemParser {
+	public:
+		ItemParser() = delete;
+		~ItemParser() = delete;
+		using FlagMap = std::unordered_map<std::string, arc::Attribute>;
+		using MapColor = std::unordered_map<std::string, arc::Color>;
+		static const std::string getAttribute();
+		static std::string _line;
+		static arc::Item createItem();
+		static std::string setName();
+		static Sprite createSprite();
+		static arc::Item createItem(const std::string &path, int x, int y);
+	private:
+		static int getIndex(const std::string &what);
+		static std::string getInfo(const std::string &what);
+		static arc::Attribute setFlag();
+		static std::string setPath();
+		static char setSubstitute();
+		static Color setColor();
+		static SpriteList _vector;
+		static int _nbrline;
+		static Color _color;
+	};
+	class Bullet {
+	public:
+		Bullet(Interaction direction, int x, int y)
+			: _direction(direction) {
+				_bullet = ItemParser::createItem(DEF_BULLETCONF, x, y);
+			}
+		~Bullet();
+		arc::Item &getBullet() {return _bullet;}
+		Interaction &getDirection() {return _direction;}
+	private:
+		arc::Item _bullet;
+		Interaction _direction;
+	};
 private:
 	Interaction _keystate;
 	std::vector<struct Position> _bulletpos;
 	std::string	_name;
 	ItemList	_items;
-	ItemList	_todraw;
+	using ItemListRef = std::vector<Item *>;
+	ItemListRef	_bulletRight;
+	ItemListRef	_bulletLeft;
+	ItemListRef	_bulletUp;
+	ItemListRef	_bulletDown;
+	ItemListRef	_todraw;
 	Specs		_info;
 	void setItems(const std::string &path);
 	void createSprite();
@@ -68,6 +110,7 @@ private:
 	// Item Moves
 	void _itemMove(const std::string &, Vectori);
 	void _itemMove(Item &, Vectori);
+	std::vector<class Bullet> _bulletlist;
 	bool _vectorIsCollided(Vectori, Vectori);
 	Attribute _vectorCollide(Item &, Vectori);
 };
