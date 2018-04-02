@@ -10,7 +10,6 @@
 #include "Arc.hpp"
 #include "SolarFox.hpp"
 
-
 arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
@@ -116,12 +115,12 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-		_itemMove(PLAYER_ITEM, move->second);
+//		_itemMove(PLAYER_ITEM, move->second);
 		_keystate = interact;
 	} else {
 		switch (interact) {
 			case ACTION_1:
-				shoot("Seal");
+				shoot(PLAYER_ITEM);
 				break;
 			default:
 				break;
@@ -211,8 +210,33 @@ void arc::SolarFox::updateBullets() noexcept
 	}
 }
 
+void arc::SolarFox::updateAutoMoveMain()
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == PLAYER_ITEM) {
+			switch (_keystate) {
+			case MOVE_LEFT:
+				i->x -= 1;
+				break;
+			case MOVE_RIGHT:
+				i->x += 1;
+				break;
+			case MOVE_DOWN:
+				i->y += 1;
+				break;
+			case MOVE_UP:
+				i->y -= 1;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
 void arc::SolarFox::envUpdate() noexcept
 {
+	updateAutoMoveMain();
 	updateChar();
 	updateBullets();
 }
