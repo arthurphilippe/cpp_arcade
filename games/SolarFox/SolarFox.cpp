@@ -151,16 +151,14 @@ void arc::SolarFox::shoot(const std::string &name)
 	}
 }
 
-void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
+void arc::SolarFox::updateChar()
 {
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startTime;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
-		if (i->name == name) {
-			i->x += x;
-			i->y += y;
+		if (i->sprites.size() > 1) {
 			if (elapsed.count() > 200) {
-				if (i->currSpriteIdx > 4)
+				if (i->currSpriteIdx >= (int) (i->sprites.size() - 1))
 					i->currSpriteIdx = 0;
 				else
 				i->currSpriteIdx += 1;
@@ -215,5 +213,6 @@ void arc::SolarFox::updateBullets() noexcept
 
 void arc::SolarFox::envUpdate() noexcept
 {
+	updateChar();
 	updateBullets();
 }

@@ -72,7 +72,7 @@ private:
 	Specs		_info;
 	void setItems(const std::string &path);
 	void createSprite();
-	void changeItemsPositionFromName(const std::string &name, int a, int b);
+	void updateChar();
 	std::chrono::high_resolution_clock::time_point _startTime;
 	void changeSpritePosition(SpriteList &spritelist,
 					int x, int y) noexcept;
