@@ -44,11 +44,20 @@ namespace arc {
 	};
 	using SpriteList = std::vector<Sprite>;
 
+	enum SecondAttribute {
+		LEFT,
+		RIGHT,
+		DOWN,
+		UP,
+		NONE,
+	};
+
 	struct Item {
 		std::string	name;
 		std::string	spritesPath;
 		SpriteList	sprites;
 		arc::Attribute	attribute;
+		arc::SecondAttribute	secondattribute;
 		int		currSpriteIdx;
 		int		x;
 		int		y;

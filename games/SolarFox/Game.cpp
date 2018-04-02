@@ -10,11 +10,9 @@
 #include "Arc.hpp"
 #include "Game.hpp"
 
-const std::string
-DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
 
-arc::Game::Game()
-	: _name("Game"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
+arc::SolarFox::SolarFox()
+	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
@@ -125,24 +123,38 @@ void arc::Game::proccessIteraction(Interaction &interact) noexcept
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
 		_itemMove(PLAYER_ITEM, move->second);
-	} else {
-	switch (interact)
-	{
-		case ACTION_1:
-			shoot(PLAYER_ITEM);
-			break;
-		default:
-			break;
-	}
-	}
-	if (interact == MOVE_LEFT || interact == MOVE_RIGHT || interact == MOVE_UP || interact == MOVE_DOWN)
 		_keystate = interact;
+	} else {
+		switch (interact) {
+			case ACTION_1:
+				shoot("Seal");
+				break;
+			default:
+				break;
+		}
+	}
 }
 
 void arc::Game::shoot(const std::string &name)
 {
 	auto item = getItemFromName(name);
-	ItemParser::createItem(DEF_BULLETCONF, item.x, item.y);
+	_items.push_back(ItemParser::createItem(DEF_BULLETCONF, item.x, item.y));
+	switch (_keystate) {
+		case MOVE_LEFT:
+			_items[_items.size() -1].secondattribute = arc::LEFT;
+			break;
+		case MOVE_RIGHT:
+			_items[_items.size() -1].secondattribute = arc::RIGHT;
+			break;
+		case MOVE_DOWN:
+			_items[_items.size() -1].secondattribute = arc::DOWN;
+			break;
+		case MOVE_UP:
+			_items[_items.size() -1].secondattribute = arc::UP;
+			break;
+		default:
+			break;
+	}
 }
 
 void arc::Game::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -183,6 +195,7 @@ arc::SpriteList &arc::Game::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
+<<<<<<< HEAD:games/SolarFox/Game.cpp
 bool arc::Game::_checkPlayerContact(Item &player)
 {
 	Vectori pos {player.x, player.y};
@@ -206,11 +219,39 @@ void arc::Game::_checkItemsContact()
 		if (it->attribute == PLAYER) {
 			if (_checkPlayerContact(*it))
 				it = _items.begin();
+=======
+void arc::SolarFox::updateBullets() noexcept
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == "Bullet") {
+			switch (i->secondattribute) {
+			case LEFT:
+				i->x -= 1;
+				break;
+			case RIGHT:
+				i->x += 1;
+				break;
+			case DOWN:
+				i->y += 1;
+				break;
+			case UP:
+				i->y -= 1;
+				break;
+			default:
+				break;
+			}
+>>>>>>> bd9a692a8cc3ccaa05594e482e7117ed5a75b2bd:games/SolarFox/SolarFox.cpp
 		}
 	}
 }
 
+<<<<<<< HEAD:games/SolarFox/Game.cpp
 void arc::Game::envUpdate() noexcept
 {
 	_checkItemsContact();
+=======
+void arc::SolarFox::envUpdate() noexcept
+{
+	updateBullets();
+>>>>>>> bd9a692a8cc3ccaa05594e482e7117ed5a75b2bd:games/SolarFox/SolarFox.cpp
 }

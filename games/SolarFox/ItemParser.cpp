@@ -57,6 +57,7 @@ arc::Item arc::ItemParser::createItem()
 	tmp.x = std::stoi(getInfo("X"));
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.currSpriteIdx = 0;
+	tmp.secondattribute = NONE;
 	return tmp;
 }
 
@@ -74,6 +75,7 @@ arc::Item arc::ItemParser::createItem(const std::string &path, int x, int y)
 	tmp.spritesPath = setPath();
 	tmp.x = x;
 	tmp.y = y;
+	tmp.secondattribute = NONE;
 	tmp.attribute = setAttribute();
 	tmp.currSpriteIdx = 0;
 	return tmp;

@@ -5,7 +5,7 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
-                "${workspaceFolder}"
+                "${workspaceRoot}"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
@@ -13,7 +13,7 @@
                 "path": [
                     "/usr/include",
                     "/usr/local/include",
-                    "${workspaceFolder}"
+                    "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
@@ -26,27 +26,33 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}",
-                "/usr/include/c++/7.3.1",
-                "/usr/include/c++/7.3.1/x86_64-pc-linux-gnu",
-                "/usr/include/c++/7.3.1/backward",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/../../../../include/c++/7.3.1",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/../../../../include/c++/7.3.1/x86_64-pc-linux-gnu",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/../../../../include/c++/7.3.1/backward",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include",
                 "/usr/local/include",
-                "/usr/lib/clang/6.0.0/include",
+                "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include-fixed",
                 "/usr/include",
-                "${workspaceFolder}/include",
-                "${workspaceFolder}/games/SolarFox/include"
+                "${workspaceRoot}",
+                "${workspaceRoot}/include",
+                "${workspaceRoot}/games/DefaultGame/include",
+                "${workspaceRoot}/lib/CacaDisplay/include",
+                "${workspaceRoot}/games/Pacman/include",
+                "${workspaceRoot}/lib/SfmlDisplay/include",
+                "${workspaceRoot}/games/SolarFox/include"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
-                    "${workspaceFolder}",
-                    "/usr/include/c++/7.3.1",
-                    "/usr/include/c++/7.3.1/x86_64-pc-linux-gnu",
-                    "/usr/include/c++/7.3.1/backward",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/../../../../include/c++/7.3.1",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/../../../../include/c++/7.3.1/x86_64-pc-linux-gnu",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/../../../../include/c++/7.3.1/backward",
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include",
                     "/usr/local/include",
-                    "/usr/lib/clang/6.0.0/include",
-                    "/usr/include"
+                    "/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.1/include-fixed",
+                    "/usr/include",
+                    "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
@@ -59,7 +65,7 @@
             "name": "Win32",
             "includePath": [
                 "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
-                "${workspaceFolder}"
+                "${workspaceRoot}"
             ],
             "defines": [
                 "_DEBUG",
@@ -70,7 +76,7 @@
             "browse": {
                 "path": [
                     "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
-                    "${workspaceFolder}"
+                    "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""

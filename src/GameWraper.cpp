@@ -24,8 +24,6 @@ arc::GameWraper::GameWraper(const Startup &startup)
 	_currDisplay(_displayEntry.get()),
 	_running(true)
 {
-//	for_each(_currGame->getItems().begin(), _currGame->getItems().end(),
-//			 _setItemSprites);
 	_currGame->dump();
 	_currDisplay->clear();
 	_currDisplay->putstr("kapa", 0, 0);
@@ -82,14 +80,16 @@ void arc::GameWraper::_processWraperInter(Interaction &inter)
 void arc::GameWraper::_processInteractions()
 {
 	auto inter = _currDisplay->getInteractions();
+	bool had_action_1 = false;
+
 	while (inter.size() != 0) {
-		bool had_action_1 = false;
+		_currGame->envUpdate();
 		if (had_action_1 && inter.front() == ACTION_1) {
 			inter.pop();
 			continue;
 		}
 		if (find(_sysInteractions.begin(), _sysInteractions.end(),
-			 inter.front()) != _sysInteractions.end())
+			inter.front()) != _sysInteractions.end())
 			_processWraperInter(inter.front());
 		else {
 			had_action_1 = (inter.front() == ACTION_1) ? true : false;
@@ -101,7 +101,6 @@ void arc::GameWraper::_processInteractions()
 	for (auto i = _currGame->getItems().begin();
 		i != _currGame->getItems().end(); i++)
 		_currDisplay->putItem(*i);
-	_currGame->envUpdate();
 	_currDisplay->refresh();
 }
 
