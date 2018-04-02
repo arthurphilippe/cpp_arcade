@@ -11,7 +11,7 @@
 #include "Game.hpp"
 
 
-arc::SolarFox::SolarFox()
+arc::Game::Game()
 	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
@@ -195,7 +195,6 @@ arc::SpriteList &arc::Game::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
-<<<<<<< HEAD:games/SolarFox/Game.cpp
 bool arc::Game::_checkPlayerContact(Item &player)
 {
 	Vectori pos {player.x, player.y};
@@ -219,8 +218,12 @@ void arc::Game::_checkItemsContact()
 		if (it->attribute == PLAYER) {
 			if (_checkPlayerContact(*it))
 				it = _items.begin();
-=======
-void arc::SolarFox::updateBullets() noexcept
+
+		}
+	}
+}
+
+void arc::Game::updateBullets() noexcept
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == "Bullet") {
@@ -240,18 +243,12 @@ void arc::SolarFox::updateBullets() noexcept
 			default:
 				break;
 			}
->>>>>>> bd9a692a8cc3ccaa05594e482e7117ed5a75b2bd:games/SolarFox/SolarFox.cpp
 		}
 	}
 }
 
-<<<<<<< HEAD:games/SolarFox/Game.cpp
 void arc::Game::envUpdate() noexcept
 {
 	_checkItemsContact();
-=======
-void arc::SolarFox::envUpdate() noexcept
-{
 	updateBullets();
->>>>>>> bd9a692a8cc3ccaa05594e482e7117ed5a75b2bd:games/SolarFox/SolarFox.cpp
 }
