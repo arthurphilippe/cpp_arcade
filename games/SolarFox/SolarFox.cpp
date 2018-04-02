@@ -16,6 +16,7 @@ arc::SolarFox::SolarFox()
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
 	setItems("sprite/FruitConf.conf");
+	setItems("sprite/Pacgum.conf");
 }
 
 void arc::SolarFox::setItems(const std::string &path)
@@ -150,7 +151,7 @@ void arc::SolarFox::shoot(const std::string &name)
 	}
 }
 
-void arc::SolarFox::updateChar()
+void arc::SolarFox::_updateChar()
 {
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startTime;
@@ -186,7 +187,7 @@ arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
-void arc::SolarFox::updateBullets() noexcept
+void arc::SolarFox::_updateBullets() noexcept
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == "Bullet") {
@@ -210,7 +211,39 @@ void arc::SolarFox::updateBullets() noexcept
 	}
 }
 
-void arc::SolarFox::updateAutoMoveMain()
+void arc::SolarFox::_updateRotation(Item &item, int rotation)
+{
+	for (auto i = item.sprites.begin(); i != item.sprites.end(); i++) {
+		i->rotation = rotation;
+	}
+}
+
+void arc::SolarFox::_updateRotateMain()
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == PLAYER_ITEM) {
+			switch (_keystate) {
+			case MOVE_LEFT:
+				_updateRotation(*i, 270);
+				break;
+			case MOVE_RIGHT:
+				_updateRotation(*i, 90);
+				break;
+			case MOVE_DOWN:
+				_updateRotation(*i, 180);
+				break;
+			case MOVE_UP:
+				_updateRotation(*i, 0);
+				break;
+			default:
+				break;
+			}
+			return;
+		}
+	}
+}
+
+void arc::SolarFox::_updateAutoMoveMain()
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == PLAYER_ITEM) {
@@ -236,7 +269,8 @@ void arc::SolarFox::updateAutoMoveMain()
 
 void arc::SolarFox::envUpdate() noexcept
 {
-//	updateAutoMoveMain();
-	updateChar();
-	updateBullets();
+	_updateRotateMain();
+	_updateAutoMoveMain();
+	_updateChar();
+	_updateBullets();
 }

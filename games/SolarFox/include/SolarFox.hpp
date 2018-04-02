@@ -72,15 +72,19 @@ private:
 	Specs		_info;
 	void setItems(const std::string &path);
 	void createSprite();
-	void updateChar();
-	void updateAutoMoveMain();
-	std::chrono::high_resolution_clock::time_point _startTime;
 	void changeSpritePosition(SpriteList &spritelist,
 					int x, int y) noexcept;
 	static ItemList defaultItems;
 	void _dumpItems() const noexcept;
 	SpriteList &getSpriteListFromName(const std::string &name);
-	void updateBullets() noexcept;
+	//update
+	void _updateBullets() noexcept;
+	void _updateChar();
+	void _updateAutoMoveMain();
+	void _updateRotateMain();
+	void _updateRotation(Item &item, int rotation);
+
+	std::chrono::high_resolution_clock::time_point _startTime;
 	// Item Moves
 	void _itemMove(const std::string &, Vectori);
 	void _itemMove(Item &, Vectori);
