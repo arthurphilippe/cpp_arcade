@@ -22,7 +22,7 @@ namespace arc {
 	class SolarFox;
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
-	constexpr auto GRID_STEP = 12;
+	constexpr auto GRID_STEP = 48;
 	constexpr auto FPS = 56;
 	constexpr auto W_HEIGHT = 720;
 	constexpr auto W_WIDTH = 1280;
