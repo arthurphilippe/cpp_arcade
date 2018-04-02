@@ -37,17 +37,26 @@ namespace arc {
 		int y;
 		int rotation;
 		char substitute;
-		arc::Attribute flag;
 		std::string name;
 		std::string path;
 		arc::Color color;
 	};
 	using SpriteList = std::vector<Sprite>;
 
+	enum SecondAttribute {
+		LEFT,
+		RIGHT,
+		DOWN,
+		UP,
+		NONE,
+	};
+
 	struct Item {
 		std::string	name;
 		std::string	spritesPath;
 		SpriteList	sprites;
+		arc::Attribute	attribute;
+		arc::SecondAttribute	secondattribute;
 		int		currSpriteIdx;
 		int		x;
 		int		y;

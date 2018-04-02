@@ -14,7 +14,7 @@ arc::SpriteList arc::ItemParser::_vector;
 arc::Color arc::ItemParser::_color;
 int arc::ItemParser::_nbrline;
 
-static const arc::ItemParser::FlagMap _flagMap = {
+static const arc::ItemParser::AttributeMap _attributeMap = {
 	{"BLOCK", arc::Attribute::BLOCK},
 	{"FOE", arc::Attribute::FOE},
 	{"DROP", arc::Attribute::DROP},
@@ -42,8 +42,8 @@ static const std::unordered_map<std::string, int> COREMAP = {
 	{"Rotation", 3},
 	{"Substitute", 4},
 	{"Color", 5},
-	{"Flag", 6},
-	{"Attribute", 7},
+	{"Attribute", 6},
+	{"Flag", 7},
 	{"Path", 8},
 };
 
@@ -56,6 +56,7 @@ arc::Item arc::ItemParser::createItem()
 	tmp.x = std::stoi(getInfo("X"));
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.currSpriteIdx = 0;
+	tmp.secondattribute = NONE;
 	return tmp;
 }
 
@@ -73,6 +74,8 @@ arc::Item arc::ItemParser::createItem(const std::string &path, int x, int y)
 	tmp.spritesPath = setPath();
 	tmp.x = x;
 	tmp.y = y;
+	tmp.secondattribute = NONE;
+	tmp.attribute = setAttribute();
 	tmp.currSpriteIdx = 0;
 	return tmp;
 }
@@ -87,14 +90,13 @@ arc::Sprite arc::ItemParser::createSprite()
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.rotation = std::stoi(getInfo("Rotation"));
 	tmp.color = setColor();
-	tmp.flag = setFlag();
 	return tmp;
 }
 
-arc::Attribute arc::ItemParser::setFlag()
+arc::Attribute arc::ItemParser::setAttribute()
 {
-	for (auto i = _flagMap.begin() ; i != _flagMap.end() ; i++) {
-		if (i->first == getInfo("Flag")) {
+	for (auto i = _attributeMap.begin() ; i != _attributeMap.end() ; i++) {
+		if (i->first == getInfo("Attribute")) {
 			return i->second;
 		}
 	}
@@ -120,9 +122,9 @@ arc::Color arc::ItemParser::setColor()
 	return color;
 }
 
-const std::string arc::ItemParser::getAttribute()
+const std::string arc::ItemParser::getFlag()
 {
-	return getInfo("Attribute");
+	return getInfo("Flag");
 }
 
 std::string arc::ItemParser::setPath()

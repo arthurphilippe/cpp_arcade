@@ -10,11 +10,9 @@
 #include "Arc.hpp"
 #include "SolarFox.hpp"
 
-const std::string
-DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
 
 arc::SolarFox::SolarFox()
-	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
+	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
@@ -37,9 +35,9 @@ void arc::SolarFox::setItems(const std::string &path)
 void arc::SolarFox::createItems()
 {
 	if (ItemParser::_line.length() > 0 && ItemParser::_line[0] != '#') {
-		if (ItemParser::getAttribute() == "UNIQUE")
+		if (ItemParser::getFlag() == "UNIQUE")
 			_items.push_back(ItemParser::createItem());
-		else if (ItemParser::getAttribute() == "APPEND")
+		else if (ItemParser::getFlag() == "APPEND")
 			createSprite();
 	}
 }
@@ -90,7 +88,7 @@ arc::Attribute arc::SolarFox::_vectorCollide(Item &item, Vectori pos)
 {
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != item.name &&
-			_vectorIsCollided(pos, (Vectori){it->x, it->y}))
+			_vectorIsCollided(pos, (Vectori) {it->x, it->y}))
 			return BLOCK;
 	}
 	return UNK;
@@ -118,25 +116,39 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-		_itemMove("Seal" , move->second);
-	} else {
-	switch (interact)
-	{
-		case ACTION_1:
-			shoot("Seal");
-			break;
-		default:
-			break;
-	}
-	}
-	if (interact == MOVE_LEFT || interact == MOVE_RIGHT || interact == MOVE_UP || interact == MOVE_DOWN)
+		_itemMove(PLAYER_ITEM, move->second);
 		_keystate = interact;
+	} else {
+		switch (interact) {
+			case ACTION_1:
+				shoot("Seal");
+				break;
+			default:
+				break;
+		}
+	}
 }
 
 void arc::SolarFox::shoot(const std::string &name)
 {
 	auto item = getItemFromName(name);
-	ItemParser::createItem(DEF_BULLETCONF, item.x, item.y);
+	_items.push_back(ItemParser::createItem(DEF_BULLETCONF, item.x, item.y));
+	switch (_keystate) {
+		case MOVE_LEFT:
+			_items[_items.size() -1].secondattribute = arc::LEFT;
+			break;
+		case MOVE_RIGHT:
+			_items[_items.size() -1].secondattribute = arc::RIGHT;
+			break;
+		case MOVE_DOWN:
+			_items[_items.size() -1].secondattribute = arc::DOWN;
+			break;
+		case MOVE_UP:
+			_items[_items.size() -1].secondattribute = arc::UP;
+			break;
+		default:
+			break;
+	}
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -177,6 +189,31 @@ arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
+void arc::SolarFox::updateBullets() noexcept
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == "Bullet") {
+			switch (i->secondattribute) {
+			case LEFT:
+				i->x -= 1;
+				break;
+			case RIGHT:
+				i->x += 1;
+				break;
+			case DOWN:
+				i->y += 1;
+				break;
+			case UP:
+				i->y -= 1;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
 void arc::SolarFox::envUpdate() noexcept
 {
+	updateBullets();
 }

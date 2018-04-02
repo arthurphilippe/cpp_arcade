@@ -8,6 +8,7 @@
 #ifndef SOLARFOX_HPP_
 	#define SOLARFOX_HPP_
 
+	#include <memory>
 	#include <chrono>
 	#include <string>
 	#include <cmath>
@@ -15,6 +16,7 @@
 	#include "IGame.hpp"
 	#include "Error.hpp"
 	#include "ItemParser.hpp"
+	#define PLAYER_ITEM "Seal"
 
 namespace arc {
 	class SolarFox;
@@ -24,6 +26,7 @@ namespace arc {
 	constexpr auto FPS = 56;
 	constexpr auto W_HEIGHT = 720;
 	constexpr auto W_WIDTH = 1280;
+	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
 }
 
 class arc::SolarFox : public arc::IGame {
@@ -46,13 +49,26 @@ public:
 	void envUpdate() noexcept;
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
+	using ItemRef = Item *;
 	void createItems();
+	class Bullet {
+	public:
+		Bullet(Interaction direction, ItemRef bullet)
+			: _direction(direction) {
+				_bullet = bullet;
+			}
+		~Bullet() {}
+		ItemRef getBullet() {return _bullet;}
+		Interaction &getDirection() {return _direction;}
+	private:
+		ItemRef _bullet;
+		Interaction _direction;
+	};
 private:
-	Interaction _keystate;
 	std::vector<struct Position> _bulletpos;
 	std::string	_name;
+	Interaction _keystate;
 	ItemList	_items;
-	ItemList	_todraw;
 	Specs		_info;
 	void setItems(const std::string &path);
 	void createSprite();
@@ -63,10 +79,11 @@ private:
 	static ItemList defaultItems;
 	void _dumpItems() const noexcept;
 	SpriteList &getSpriteListFromName(const std::string &name);
-
+	void updateBullets() noexcept;
 	// Item Moves
 	void _itemMove(const std::string &, Vectori);
 	void _itemMove(Item &, Vectori);
+	std::vector<class Bullet> _bulletlist;
 	bool _vectorIsCollided(Vectori, Vectori);
 	Attribute _vectorCollide(Item &, Vectori);
 };

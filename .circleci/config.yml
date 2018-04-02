@@ -56,7 +56,7 @@ workflows:
   commit:
     jobs:
       - full_test
-      - build_clang
+      # - build_clang
   planned:
     triggers:
       - schedule:
