@@ -65,9 +65,9 @@ public:
 		Interaction _direction;
 	};
 private:
-	Interaction _keystate;
 	std::vector<struct Position> _bulletpos;
 	std::string	_name;
+	Interaction _keystate;
 	ItemList	_items;
 	Specs		_info;
 	void setItems(const std::string &path);
@@ -79,7 +79,7 @@ private:
 	static ItemList defaultItems;
 	void _dumpItems() const noexcept;
 	SpriteList &getSpriteListFromName(const std::string &name);
-
+	void updateBullets() noexcept;
 	// Item Moves
 	void _itemMove(const std::string &, Vectori);
 	void _itemMove(Item &, Vectori);

@@ -133,8 +133,22 @@ void arc::SolarFox::shoot(const std::string &name)
 {
 	auto item = getItemFromName(name);
 	_items.push_back(ItemParser::createItem(DEF_BULLETCONF, item.x, item.y));
-	Bullet bullet(_keystate, &_items[_items.size() -1]);
-	_bulletlist.push_back(bullet);
+	switch (_keystate) {
+		case MOVE_LEFT:
+			_items[_items.size() -1].secondattribute = arc::LEFT;
+			break;
+		case MOVE_RIGHT:
+			_items[_items.size() -1].secondattribute = arc::RIGHT;
+			break;
+		case MOVE_DOWN:
+			_items[_items.size() -1].secondattribute = arc::DOWN;
+			break;
+		case MOVE_UP:
+			_items[_items.size() -1].secondattribute = arc::UP;
+			break;
+		default:
+			break;
+	}
 }
 
 void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
@@ -175,25 +189,31 @@ arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
-void arc::SolarFox::envUpdate() noexcept
+void arc::SolarFox::updateBullets() noexcept
 {
-	for (auto i = _bulletlist.begin(); i != _bulletlist.end(); i ++) {
-		switch (i->getDirection()) {
-			case arc::MOVE_UP:
-				i->getBullet()->y -= 1;
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == "Bullet") {
+			switch (i->secondattribute) {
+			case LEFT:
+				i->x -= 1;
 				break;
-			case arc::MOVE_DOWN:
-				i->getBullet()->y += 1;
+			case RIGHT:
+				i->x += 1;
 				break;
-			case arc::MOVE_LEFT:
-				i->getBullet()->x -= 1;
+			case DOWN:
+				i->y += 1;
 				break;
-			case arc::MOVE_RIGHT:
-				i->getBullet()->x += 1;
+			case UP:
+				i->y -= 1;
 				break;
 			default:
 				break;
-
+			}
 		}
 	}
+}
+
+void arc::SolarFox::envUpdate() noexcept
+{
+	updateBullets();
 }
