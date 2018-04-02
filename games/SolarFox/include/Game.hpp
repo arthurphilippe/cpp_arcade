@@ -73,6 +73,7 @@ private:
 	bool _itemBlock(Item &, Vectori);
 
 	// Item Collisions on update
+	bool _playerActionContact(Item &drop);
 	bool _checkPlayerContact(Item &player);
 	void _checkItemsContact();
 };
