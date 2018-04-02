@@ -236,7 +236,7 @@ void arc::SolarFox::updateAutoMoveMain()
 
 void arc::SolarFox::envUpdate() noexcept
 {
-	updateAutoMoveMain();
+//	updateAutoMoveMain();
 	updateChar();
 	updateBullets();
 }
