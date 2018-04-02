@@ -6,7 +6,7 @@
 ##
 
 ## Commands
-CXX		=	g++ -ggdb
+CXX		=	g++
 
 RM		=	rm -vf
 
