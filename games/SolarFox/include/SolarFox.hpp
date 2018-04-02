@@ -16,7 +16,7 @@
 	#include "IGame.hpp"
 	#include "Error.hpp"
 	#include "ItemParser.hpp"
-	#define PLAYER_ITEM "Seal"
+	#define PLAYER_ITEM "Pacman"
 
 namespace arc {
 	class SolarFox;
@@ -73,6 +73,7 @@ private:
 	void setItems(const std::string &path);
 	void createSprite();
 	void updateChar();
+	void updateAutoMoveMain();
 	std::chrono::high_resolution_clock::time_point _startTime;
 	void changeSpritePosition(SpriteList &spritelist,
 					int x, int y) noexcept;
