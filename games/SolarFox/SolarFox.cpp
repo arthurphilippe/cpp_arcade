@@ -119,13 +119,13 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 		_itemMove(PLAYER_ITEM, move->second);
 		_keystate = interact;
 	} else {
-	switch (interact) {
-		case ACTION_1:
-			shoot("Seal");
-			break;
-		default:
-			break;
-	}
+		switch (interact) {
+			case ACTION_1:
+				shoot("Seal");
+				break;
+			default:
+				break;
+		}
 	}
 }
 
