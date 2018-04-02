@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "SolarFox.hpp"
+#include "Game.hpp"
 
 std::string arc::ItemParser::_line;
 arc::SpriteList arc::ItemParser::_vector;

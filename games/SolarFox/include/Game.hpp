@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2018
 ** cpp_arcade
 ** File description:
-** SolarFox
+** Game
 */
 
 #ifndef SOLARFOX_HPP_
@@ -19,7 +19,7 @@
 	#define PLAYER_ITEM "Seal"
 
 namespace arc {
-	class SolarFox;
+	class Game;
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 12;
@@ -28,10 +28,10 @@ namespace arc {
 	constexpr auto W_WIDTH = 1280;
 }
 
-class arc::SolarFox : public arc::IGame {
+class arc::Game : public arc::IGame {
 public:
-	SolarFox();
-	~SolarFox() {
+	Game();
+	~Game() {
 		_startTime = std::chrono::high_resolution_clock::now();
 	};
 	void dump() const noexcept override;

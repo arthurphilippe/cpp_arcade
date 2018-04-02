@@ -2,26 +2,26 @@
 ** EPITECH PROJECT, 2018
 ** cpp_arcade
 ** File description:
-** SolarFox
+** Game
 */
 
 #include <iostream>
 #include <fstream>
 #include "Arc.hpp"
-#include "SolarFox.hpp"
+#include "Game.hpp"
 
 const std::string
 DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
 
-arc::SolarFox::SolarFox()
-	: _name("SolarFox"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
+arc::Game::Game()
+	: _name("Game"), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
 	setItems("sprite/FruitConf.conf");
 }
 
-void arc::SolarFox::setItems(const std::string &path)
+void arc::Game::setItems(const std::string &path)
 {
 	std::ifstream s(path);
 	std::string tmp;
@@ -34,7 +34,7 @@ void arc::SolarFox::setItems(const std::string &path)
 	}
 }
 
-void arc::SolarFox::createItems()
+void arc::Game::createItems()
 {
 	if (ItemParser::_line.length() > 0 && ItemParser::_line[0] != '#') {
 		if (ItemParser::getFlag() == "UNIQUE")
@@ -44,7 +44,7 @@ void arc::SolarFox::createItems()
 	}
 }
 
-void arc::SolarFox::createSprite()
+void arc::Game::createSprite()
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == ItemParser::setName()) {
@@ -55,7 +55,7 @@ void arc::SolarFox::createSprite()
 	_items.push_back(ItemParser::createItem());
 }
 
-void arc::SolarFox::dump() const noexcept
+void arc::Game::dump() const noexcept
 {
 	std::cout << "Dumping game " << _name << "." << std::endl;
 	std::cout << "Grid size: " << _info.x << "*" << _info.y;
@@ -63,7 +63,7 @@ void arc::SolarFox::dump() const noexcept
 	_dumpItems();
 }
 
-void arc::SolarFox::_dumpItems() const noexcept
+void arc::Game::_dumpItems() const noexcept
 {
 	for (auto it = _items.begin(); it != _items.end(); ++it) {
 		std::cout << "Item: " << it->name << " -- Sprite count:";
@@ -74,7 +74,7 @@ void arc::SolarFox::_dumpItems() const noexcept
 
 using millisec = std::chrono::duration<double, std::milli>;
 
-bool arc::SolarFox::_vectorIsCollided(Vectori a, Vectori b)
+bool arc::Game::_vectorIsCollided(Vectori a, Vectori b)
 {
 	int diffx = a.v_x - b.v_x;
 	int diffy = a.v_y - b.v_y;
@@ -86,7 +86,7 @@ bool arc::SolarFox::_vectorIsCollided(Vectori a, Vectori b)
 	return false;
 }
 
-bool arc::SolarFox::_itemBlock(Item &item, Vectori pos)
+bool arc::Game::_itemBlock(Item &item, Vectori pos)
 {
 	bool coll;
 
@@ -102,7 +102,7 @@ bool arc::SolarFox::_itemBlock(Item &item, Vectori pos)
 	return false;
 }
 
-void arc::SolarFox::_itemMove(const std::string &name, Vectori mod)
+void arc::Game::_itemMove(const std::string &name, Vectori mod)
 {
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name == name)
@@ -110,7 +110,7 @@ void arc::SolarFox::_itemMove(const std::string &name, Vectori mod)
 	}
 }
 
-void arc::SolarFox::_itemMove(Item &item, Vectori mod)
+void arc::Game::_itemMove(Item &item, Vectori mod)
 {
 	Vectori newPos {item.x + mod.v_x, item.y + mod.v_y};
 
@@ -120,7 +120,7 @@ void arc::SolarFox::_itemMove(Item &item, Vectori mod)
 	}
 }
 
-void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
+void arc::Game::proccessIteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
@@ -139,13 +139,13 @@ void arc::SolarFox::proccessIteraction(Interaction &interact) noexcept
 		_keystate = interact;
 }
 
-void arc::SolarFox::shoot(const std::string &name)
+void arc::Game::shoot(const std::string &name)
 {
 	auto item = getItemFromName(name);
 	ItemParser::createItem(DEF_BULLETCONF, item.x, item.y);
 }
 
-void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, int y)
+void arc::Game::changeItemsPositionFromName(const std::string &name, int x, int y)
 {
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startTime;
@@ -164,7 +164,7 @@ void arc::SolarFox::changeItemsPositionFromName(const std::string &name, int x, 
 	}
 }
 
-arc::Item &arc::SolarFox::getItemFromName(const std::string &name)
+arc::Item &arc::Game::getItemFromName(const std::string &name)
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == name)
@@ -173,7 +173,7 @@ arc::Item &arc::SolarFox::getItemFromName(const std::string &name)
 	return _items[0];
 }
 
-arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
+arc::SpriteList &arc::Game::getSpriteListFromName(const std::string &name)
 {
 
 	for (auto i = _items.begin(); i != _items.end(); i++) {
@@ -183,7 +183,7 @@ arc::SpriteList &arc::SolarFox::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
-bool arc::SolarFox::_checkPlayerContact(Item &player)
+bool arc::Game::_checkPlayerContact(Item &player)
 {
 	Vectori pos {player.x, player.y};
 	bool restart = false;
@@ -200,7 +200,7 @@ bool arc::SolarFox::_checkPlayerContact(Item &player)
 	return restart;
 }
 
-void arc::SolarFox::_checkItemsContact()
+void arc::Game::_checkItemsContact()
 {
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->attribute == PLAYER) {
@@ -210,7 +210,7 @@ void arc::SolarFox::_checkItemsContact()
 	}
 }
 
-void arc::SolarFox::envUpdate() noexcept
+void arc::Game::envUpdate() noexcept
 {
 	_checkItemsContact();
 }

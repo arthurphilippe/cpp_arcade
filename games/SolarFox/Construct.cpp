@@ -7,11 +7,11 @@
 
 #include <iostream>
 #include <memory>
-#include "SolarFox.hpp"
+#include "Game.hpp"
 
 extern "C" {
 	arc::IGame *Construct()
 	{
-		return new arc::SolarFox();
+		return new arc::Game();
 	}
 }
