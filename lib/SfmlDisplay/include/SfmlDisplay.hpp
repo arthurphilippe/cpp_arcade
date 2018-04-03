@@ -24,7 +24,7 @@ namespace arc {
 
 class arc::SfmlDisplay : public arc::IDisplay {
 public:
-	SfmlDisplay(int x = 1280, int y = 720, const std::string &name = "Arcade");
+	SfmlDisplay(int x = 1500, int y = 1000, const std::string &name = "Arcade");
 	~SfmlDisplay();
 
 	void clear();

@@ -10,13 +10,13 @@
 #include "Arc.hpp"
 #include "Game.hpp"
 
-
-arc::Game::Game()
+arc::SolarFox::SolarFox()
 	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
 	setItems("sprite/FruitConf.conf");
+	setItems("sprite/Pacgum.conf");
 }
 
 void arc::Game::setItems(const std::string &path)
@@ -122,12 +122,12 @@ void arc::Game::proccessIteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-		_itemMove(PLAYER_ITEM, move->second);
+//		_itemMove(PLAYER_ITEM, move->second);
 		_keystate = interact;
 	} else {
 		switch (interact) {
 			case ACTION_1:
-				shoot("Seal");
+				shoot(PLAYER_ITEM);
 				break;
 			default:
 				break;
@@ -157,16 +157,14 @@ void arc::Game::shoot(const std::string &name)
 	}
 }
 
-void arc::Game::changeItemsPositionFromName(const std::string &name, int x, int y)
+void arc::SolarFox::_updateChar()
 {
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startTime;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
-		if (i->name == name) {
-			i->x += x;
-			i->y += y;
+		if (i->sprites.size() > 1) {
 			if (elapsed.count() > 200) {
-				if (i->currSpriteIdx > 4)
+				if (i->currSpriteIdx >= (int) (i->sprites.size() - 1))
 					i->currSpriteIdx = 0;
 				else
 				i->currSpriteIdx += 1;
@@ -195,7 +193,7 @@ arc::SpriteList &arc::Game::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
-bool arc::Game::_checkPlayerContact(Item &player)
+void arc::SolarFox::_updateBullets() noexcept
 {
 	Vectori pos {player.x, player.y};
 	bool restart = false;
@@ -247,8 +245,67 @@ void arc::Game::updateBullets() noexcept
 	}
 }
 
-void arc::Game::envUpdate() noexcept
+void arc::SolarFox::_updateRotation(Item &item, int rotation)
 {
+	for (auto i = item.sprites.begin(); i != item.sprites.end(); i++) {
+		i->rotation = rotation;
+	}
+}
+
+void arc::SolarFox::_updateRotateMain()
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == PLAYER_ITEM) {
+			switch (_keystate) {
+			case MOVE_LEFT:
+				_updateRotation(*i, 270);
+				break;
+			case MOVE_RIGHT:
+				_updateRotation(*i, 90);
+				break;
+			case MOVE_DOWN:
+				_updateRotation(*i, 180);
+				break;
+			case MOVE_UP:
+				_updateRotation(*i, 0);
+				break;
+			default:
+				break;
+			}
+			return;
+		}
+	}
+}
+
+void arc::SolarFox::_updateAutoMoveMain()
+{
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->name == PLAYER_ITEM) {
+			switch (_keystate) {
+			case MOVE_LEFT:
+				i->x -= 1;
+				break;
+			case MOVE_RIGHT:
+				i->x += 1;
+				break;
+			case MOVE_DOWN:
+				i->y += 1;
+				break;
+			case MOVE_UP:
+				i->y -= 1;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
+void arc::SolarFox::envUpdate() noexcept
+{
+	_updateRotateMain();
+	_updateAutoMoveMain();
+	_updateChar();
+	_updateBullets();
 	_checkItemsContact();
-	updateBullets();
 }
