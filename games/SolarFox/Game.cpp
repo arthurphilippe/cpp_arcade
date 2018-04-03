@@ -279,25 +279,29 @@ void arc::Game::_updateRotateMain()
 
 void arc::Game::_updateAutoMoveMain()
 {
+	auto move = MOVE_BINDS.find(_keystate);
+
 	for (auto i = _items.begin(); i != _items.end(); i++) {
-		if (i->name == PLAYER_ITEM) {
-			switch (_keystate) {
-			case MOVE_LEFT:
-				i->x -= 1;
-				break;
-			case MOVE_RIGHT:
-				i->x += 1;
-				break;
-			case MOVE_DOWN:
-				i->y += 1;
-				break;
-			case MOVE_UP:
-				i->y -= 1;
-				break;
-			default:
-				break;
-			}
-		}
+		if (i->name == PLAYER_ITEM && move != MOVE_BINDS.end())
+			_itemMove(PLAYER_ITEM, move->second);
+
+		// 	switch (_keystate) {
+		// 	case MOVE_LEFT:
+		// 		i->x -= 1;
+		// 		break;
+		// 	case MOVE_RIGHT:
+		// 		i->x += 1;
+		// 		break;
+		// 	case MOVE_DOWN:
+		// 		i->y += 1;
+		// 		break;
+		// 	case MOVE_UP:
+		// 		i->y -= 1;
+		// 		break;
+		// 	default:
+		// 		break;
+		// 	}
+		// }
 	}
 }
 
