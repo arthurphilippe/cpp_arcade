@@ -12,7 +12,7 @@ NAME		=	libSolarFox.so
 RM		=	rm -vf
 
 SRCS		=	Construct.cpp	\
-			SolarFox.cpp	\
+			Game.cpp	\
 			ItemParser.cpp
 
 OBJ_MAIN	=	$(MAIN:.cpp=.o)

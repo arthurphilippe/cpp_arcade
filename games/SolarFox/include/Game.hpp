@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2018
 ** cpp_arcade
 ** File description:
-** SolarFox
+** Game
 */
 
 #ifndef SOLARFOX_HPP_
@@ -12,6 +12,7 @@
 	#include <chrono>
 	#include <string>
 	#include <cmath>
+	#include <functional>
 	#include "Arc.hpp"
 	#include "IGame.hpp"
 	#include "Error.hpp"
@@ -19,7 +20,7 @@
 	#define PLAYER_ITEM "Pacman"
 
 namespace arc {
-	class SolarFox;
+	class Game;
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 48;
@@ -29,10 +30,10 @@ namespace arc {
 	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
 }
 
-class arc::SolarFox : public arc::IGame {
+class arc::Game : public arc::IGame {
 public:
-	SolarFox();
-	~SolarFox() {
+	Game();
+	~Game() {
 		_startTime = std::chrono::high_resolution_clock::now();
 	};
 	void dump() const noexcept override;
@@ -90,7 +91,12 @@ private:
 	void _itemMove(Item &, Vectori);
 	std::vector<class Bullet> _bulletlist;
 	bool _vectorIsCollided(Vectori, Vectori);
-	Attribute _vectorCollide(Item &, Vectori);
+	bool _itemBlock(Item &, Vectori);
+
+	// Item Collisions on update
+	bool _playerActionContact(Item &drop);
+	bool _checkPlayerContact(Item &player);
+	void _checkItemsContact();
 };
 
 #endif /* !SOLARFOX_HPP_ */

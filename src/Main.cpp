@@ -14,8 +14,6 @@
 #include "Startup.hpp"
 #include "GameWraper.hpp"
 
-#include "../games/SolarFox/include/SolarFox.hpp"
-
 int main()
 {
 	arc::Startup start;
