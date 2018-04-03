@@ -10,7 +10,7 @@
 #include "Arc.hpp"
 #include "Game.hpp"
 
-arc::SolarFox::SolarFox()
+arc::Game::Game()
 	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
@@ -157,7 +157,7 @@ void arc::Game::shoot(const std::string &name)
 	}
 }
 
-void arc::SolarFox::_updateChar()
+void arc::Game::_updateChar()
 {
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startTime;
@@ -193,7 +193,7 @@ arc::SpriteList &arc::Game::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
-void arc::SolarFox::_updateBullets() noexcept
+bool arc::Game::_checkPlayerContact(Item &player)
 {
 	Vectori pos {player.x, player.y};
 	bool restart = false;
@@ -221,7 +221,7 @@ void arc::Game::_checkItemsContact()
 	}
 }
 
-void arc::Game::updateBullets() noexcept
+void arc::Game::_updateBullets() noexcept
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == "Bullet") {
@@ -245,14 +245,14 @@ void arc::Game::updateBullets() noexcept
 	}
 }
 
-void arc::SolarFox::_updateRotation(Item &item, int rotation)
+void arc::Game::_updateRotation(Item &item, int rotation)
 {
 	for (auto i = item.sprites.begin(); i != item.sprites.end(); i++) {
 		i->rotation = rotation;
 	}
 }
 
-void arc::SolarFox::_updateRotateMain()
+void arc::Game::_updateRotateMain()
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == PLAYER_ITEM) {
@@ -277,7 +277,7 @@ void arc::SolarFox::_updateRotateMain()
 	}
 }
 
-void arc::SolarFox::_updateAutoMoveMain()
+void arc::Game::_updateAutoMoveMain()
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == PLAYER_ITEM) {
@@ -301,7 +301,7 @@ void arc::SolarFox::_updateAutoMoveMain()
 	}
 }
 
-void arc::SolarFox::envUpdate() noexcept
+void arc::Game::envUpdate() noexcept
 {
 	_updateRotateMain();
 	_updateAutoMoveMain();
