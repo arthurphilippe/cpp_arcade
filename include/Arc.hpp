@@ -10,6 +10,7 @@
 
 	#include <queue>
 	#include <unordered_map>
+	#include <chrono>
 
 namespace arc {
 	enum Color {
@@ -96,6 +97,9 @@ namespace arc {
 		{MOVE_LEFT, {-1, 0}},
 		{MOVE_RIGHT, {1, 0}}
 	};
+
+	using millisec = std::chrono::duration<double, std::milli>;
+
 }
 
 #endif /* !ARC_HPP_ */

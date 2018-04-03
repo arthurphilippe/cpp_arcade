@@ -21,7 +21,6 @@
 
 namespace arc {
 	class GameWraper;
-	using millisec = std::chrono::duration<double, std::milli>;
 }
 
 class arc::GameWraper {

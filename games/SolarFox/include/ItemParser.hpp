@@ -8,7 +8,7 @@
 #ifndef ITEMPARSER_HPP_
 	#define ITEMPARSER_HPP_
 
-	#include "SolarFox.hpp"
+	#include "Game.hpp"
 
 namespace arc {
 	class ItemParser;

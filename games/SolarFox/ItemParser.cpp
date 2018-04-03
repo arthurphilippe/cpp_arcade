@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "SolarFox.hpp"
+#include "Game.hpp"
 
 std::string arc::ItemParser::_line;
 arc::SpriteList arc::ItemParser::_vector;
@@ -53,6 +53,7 @@ arc::Item arc::ItemParser::createItem()
 	tmp.name = setName();
 	tmp.sprites.push_back(createSprite());
 	tmp.spritesPath = setPath();
+	tmp.attribute = setAttribute();
 	tmp.x = std::stoi(getInfo("X"));
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.currSpriteIdx = 0;
