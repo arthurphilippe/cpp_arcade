@@ -5,6 +5,8 @@
 ** Game
 */
 
+#include <unistd.h>
+#include <time.h>
 #include <iostream>
 #include <fstream>
 #include "Arc.hpp"
@@ -17,6 +19,7 @@ arc::Game::Game()
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
 	setItems("sprite/FruitConf.conf");
 	setItems("sprite/Pacgum.conf");
+	setItems("sprite/Foe.conf");
 }
 
 void arc::Game::setItems(const std::string &path)
@@ -24,6 +27,7 @@ void arc::Game::setItems(const std::string &path)
 	std::ifstream s(path);
 	std::string tmp;
 
+	srandom(time(NULL) * getpid());
 	if (s.is_open()) {
 		while (getline(s, ItemParser::_line))
 			createItems();
@@ -164,6 +168,7 @@ void arc::Game::_updateChar()
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->sprites.size() > 1) {
 			if (elapsed.count() > 200) {
+				_updateFoe();
 				if (i->currSpriteIdx >= (int) (i->sprites.size() - 1))
 					i->currSpriteIdx = 0;
 				else
@@ -302,6 +307,24 @@ void arc::Game::_updateAutoMoveMain()
 		// 		break;
 		// 	}
 		// }
+	}
+}
+
+void arc::Game::_updateFoe()
+{
+	int u = 0;
+	int x = 1;
+	int y = 1;
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		u = random() % 2;
+		if (u)
+			x = x * (-1);
+		u = random() % 2;
+			y = y * (-1);
+		if (i->attribute == FOE) {
+			i->x += x;
+			i->y += y;
+		}
 	}
 }
 

@@ -78,6 +78,10 @@ private:
 	static ItemList defaultItems;
 	void _dumpItems() const noexcept;
 	SpriteList &getSpriteListFromName(const std::string &name);
+
+	//update for Foe
+	void _updateFoe();
+
 	//update
 	void _updateBullets() noexcept;
 	void _updateChar();
