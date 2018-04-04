@@ -200,11 +200,14 @@ bool arc::Game::_checkPlayerContact(Item &player)
 
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != player.name
-			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})
-			&& it->attribute == DROP) {
-			_items.erase(it);
-			it = _items.begin();
-			restart = true;
+			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
+			if (it->attribute == DROP) {
+				_items.erase(it);
+				it = _items.begin();
+				restart = true;
+			} else if (it->attribute == FOE) {
+				exit(10);
+			}
 		}
 	}
 	return restart;
@@ -216,7 +219,6 @@ void arc::Game::_checkItemsContact()
 		if (it->attribute == PLAYER) {
 			if (_checkPlayerContact(*it))
 				it = _items.begin();
-
 		}
 	}
 }

@@ -5,6 +5,7 @@
 ** GameWraper
 */
 
+#include <iostream>
 #include <algorithm>
 #include "unistd.h"
 #include "GameWraper.hpp"
@@ -42,7 +43,11 @@ int arc::GameWraper::loop()
 		_currGame->envUpdate();
 		_currDisplay->refresh();
 		_waitCycle(_currGame->getSpecs().fps);
+		if (_currGame->isOver()) {
+			_running = false;
+		}
 	}
+	std::cout << "score " << _currGame->getScore() << std::endl;
 	return 0;
 }
 

@@ -13,7 +13,11 @@
 #include "Game.hpp"
 
 arc::Game::Game()
-	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
+	: _name("SolarFox"),
+	_keystate(MOVE_LEFT),
+	_info({GRID_H, GRID_L, GRID_STEP, FPS}),
+	_isOver(false),
+	_score(0)
 {
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
@@ -200,11 +204,15 @@ bool arc::Game::_checkPlayerContact(Item &player)
 
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != player.name
-			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})
-			&& it->attribute == DROP) {
-			_items.erase(it);
-			it = _items.begin();
-			restart = true;
+			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
+			if (it->attribute == DROP) {
+				_items.erase(it);
+				it = _items.begin();
+				restart = true;
+				_score += 1;
+			} else if (it->attribute == FOE) {
+				_isOver = true;
+			}
 		}
 	}
 	return restart;
@@ -216,7 +224,6 @@ void arc::Game::_checkItemsContact()
 		if (it->attribute == PLAYER) {
 			if (_checkPlayerContact(*it))
 				it = _items.begin();
-
 		}
 	}
 }

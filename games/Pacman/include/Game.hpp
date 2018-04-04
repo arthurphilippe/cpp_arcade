@@ -48,10 +48,19 @@ public:
 	}
 	void proccessIteraction(Interaction &) noexcept;
 	void envUpdate() noexcept;
+	bool isOver() const noexcept
+	{
+		return _isOver;
+	}
+	int getScore() const noexcept
+	{
+		return _score;
+	}
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 	using ItemRef = Item *;
 	void createItems();
+
 	class Bullet {
 	public:
 		Bullet(Interaction direction, ItemRef bullet)
@@ -65,6 +74,7 @@ public:
 		ItemRef _bullet;
 		Interaction _direction;
 	};
+
 private:
 	std::vector<struct Position> _bulletpos;
 	std::string	_name;
@@ -101,6 +111,10 @@ private:
 	bool _playerActionContact(Item &drop);
 	bool _checkPlayerContact(Item &player);
 	void _checkItemsContact();
+
+	// Game status
+	bool _isOver;
+	int _score;
 };
 
 #endif /* !SOLARFOX_HPP_ */
