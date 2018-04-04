@@ -53,6 +53,8 @@ int arc::GameWraper::loop()
 
 void arc::GameWraper::_waitCycle(unsigned int fps)
 {
+	if (fps > 60)
+		fps = 60;
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startTime;
 	millisec tempo(((61 - fps) * 100 / 60) - elapsed.count());

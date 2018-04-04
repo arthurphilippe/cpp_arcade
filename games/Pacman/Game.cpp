@@ -13,7 +13,7 @@
 #include "Game.hpp"
 
 arc::Game::Game()
-	: _name("SolarFox"),
+	: _name("Pacman"),
 	_keystate(MOVE_LEFT),
 	_info({GRID_H, GRID_L, GRID_STEP, FPS}),
 	_isOver(false),
@@ -24,6 +24,17 @@ arc::Game::Game()
 	setItems("sprite/FruitConf.conf");
 	setItems("sprite/Pacgum.conf");
 	setItems("sprite/Foe.conf");
+}
+
+void arc::Game::_nextLevel()
+{
+	_items.clear();
+	setItems("tests/SpriteConfigurationFiles/Wall.conf");
+	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
+	setItems("sprite/FruitConf.conf");
+	setItems("sprite/Pacgum.conf");
+	setItems("sprite/Foe.conf");
+	_info.fps += 10;
 }
 
 void arc::Game::setItems(const std::string &path)

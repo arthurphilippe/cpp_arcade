@@ -33,9 +33,7 @@ namespace arc {
 class arc::Game : public arc::IGame {
 public:
 	Game();
-	~Game() {
-		_startTime = std::chrono::high_resolution_clock::now();
-	};
+	~Game() {};
 	void dump() const noexcept override;
 	ItemList &getItems() noexcept override
 	{

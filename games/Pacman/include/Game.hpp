@@ -24,7 +24,7 @@ namespace arc {
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 48;
-	constexpr auto FPS = 56;
+	constexpr auto FPS = 50;
 	constexpr auto W_HEIGHT = 1200;
 	constexpr auto W_WIDTH = 1550;
 	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
@@ -33,9 +33,7 @@ namespace arc {
 class arc::Game : public arc::IGame {
 public:
 	Game();
-	~Game() {
-		_startTime = std::chrono::high_resolution_clock::now();
-	};
+	~Game() {};
 	void dump() const noexcept override;
 	ItemList &getItems() noexcept override
 	{
@@ -88,6 +86,8 @@ private:
 	static ItemList defaultItems;
 	void _dumpItems() const noexcept;
 	SpriteList &getSpriteListFromName(const std::string &name);
+
+	void _nextLevel();
 
 	//update for Foe
 	void _updateFoe();
