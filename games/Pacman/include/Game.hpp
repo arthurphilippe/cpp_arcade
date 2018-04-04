@@ -81,6 +81,10 @@ private:
 
 	//update for Foe
 	void _updateFoe();
+	void _moveFoe();
+	void _dirFoe(Item &);
+	void _horizontalDir(Item &);
+	void _verticalDir(Item &);
 
 	//update
 	void _updateBullets() noexcept;
@@ -92,7 +96,7 @@ private:
 	std::chrono::high_resolution_clock::time_point _startTime;
 	// Item Moves
 	void _itemMove(const std::string &, Vectori);
-	void _itemMove(Item &, Vectori);
+	bool _itemMove(Item &, Vectori);
 	std::vector<class Bullet> _bulletlist;
 	bool _vectorIsCollided(Vectori, Vectori);
 	bool _itemBlock(Item &, Vectori);

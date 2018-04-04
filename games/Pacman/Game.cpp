@@ -15,6 +15,7 @@
 arc::Game::Game()
 	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
 {
+	srandom(time(NULL) * getpid());
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
 	setItems("sprite/FruitConf.conf");
@@ -27,7 +28,6 @@ void arc::Game::setItems(const std::string &path)
 	std::ifstream s(path);
 	std::string tmp;
 
-	srandom(time(NULL) * getpid());
 	if (s.is_open()) {
 		while (getline(s, ItemParser::_line))
 			createItems();
@@ -108,14 +108,16 @@ void arc::Game::_itemMove(const std::string &name, Vectori mod)
 	}
 }
 
-void arc::Game::_itemMove(Item &item, Vectori mod)
+bool arc::Game::_itemMove(Item &item, Vectori mod)
 {
 	Vectori newPos {item.x + mod.v_x, item.y + mod.v_y};
 
 	if (_itemBlock(item, newPos) != BLOCK) {
 		item.x = newPos.v_x;
 		item.y = newPos.v_y;
-	}
+		return true;
+	} else
+		return false;
 }
 
 void arc::Game::proccessIteraction(Interaction &interact) noexcept
@@ -287,29 +289,108 @@ void arc::Game::_updateAutoMoveMain()
 	}
 }
 
+
+void arc::Game::_dirFoe(Item &item)
+{
+	switch (item.secondattribute) {
+		case RIGHT:
+			item.secondattribute = LEFT;
+			break;
+		case LEFT:
+			item.secondattribute = RIGHT;
+			break;
+		case UP:
+			item.secondattribute = DOWN;
+			break;
+		case DOWN:
+			item.secondattribute = UP;
+			break;
+		default:
+			break;
+	}
+}
+
+// bool arc::Game::_itemBlock(Item &item, Vectori pos);
+// {{{--@--:-:-:--@--}}}
+void arc::Game::_horizontalDir(Item &item)
+{
+	int u = random() % 2;
+
+	if (_itemMove(item, Vectori {1, 0}) && !u) {
+		item.secondattribute = RIGHT;
+	}
+	if (_itemMove(item, Vectori {-1, 0}) && u) {
+		item.secondattribute = LEFT;
+	}
+}
+
+void arc::Game::_verticalDir(Item &item)
+{
+	int u = random() % 2;
+
+	if (_itemMove(item, Vectori {0, -1}) && u) {
+		item.secondattribute = UP;
+	}
+	if (_itemMove(item, Vectori {0, 1}) && !u) {
+		item.secondattribute = DOWN;
+	}
+}
+
+void arc::Game::_moveFoe()
+{
+	bool move = true;
+	for (auto i = _items.begin(); i != _items.end(); i++) {
+		if (i->attribute == FOE) {
+			switch (i->secondattribute) {
+				case LEFT:
+					move = _itemMove(*i, Vectori {-1, 0});
+					break;
+				case RIGHT:
+					move = _itemMove(*i, Vectori {1, 0});
+					break;
+				case UP:
+					move = _itemMove(*i, Vectori {0, -1});
+					break;
+				case DOWN:
+					move = _itemMove(*i, Vectori {0, 1});
+					break;
+				default:
+				break;
+			}
+			if ((i->x - 24) % 49 == 0 && (i->y - 24) % 49 == 0) {
+				if (i->secondattribute == LEFT || i->secondattribute == RIGHT)
+					_verticalDir(*i);
+				else
+					_horizontalDir(*i);
+			}
+			if (!move) {
+				_dirFoe(*i);
+			}
+		}
+		move = true;
+	}
+}
+
 void arc::Game::_updateFoe()
 {
 	int u = 0;
-	int x = 1;
-	int y = 1;
+	Vectori newPos {-1, 0};
+
 	for (auto i = _items.begin(); i != _items.end(); i++) {
-		u = random() % 2;
-		if (u)
-			x = x * (-1);
-		u = random() % 2;
-			y = y * (-1);
 		if (i->attribute == FOE) {
-			_itemMove(*i, (Vectori) {x, y});
+			std::cout << _itemMove(*i, newPos) << std::endl;
 		}
 	}
+
 }
 
 void arc::Game::envUpdate() noexcept
 {
+//	_updateFoe();
+	_moveFoe();
 	_updateRotateMain();
 	_updateAutoMoveMain();
 	_updateSprite();
 	_updateBullets();
-	_updateFoe();
 	_checkItemsContact();
 }
