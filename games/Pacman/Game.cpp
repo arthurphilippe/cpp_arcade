@@ -124,7 +124,6 @@ void arc::Game::proccessIteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-//		_itemMove(PLAYER_ITEM, move->second);
 		_keystate = interact;
 	} else {
 		switch (interact) {
