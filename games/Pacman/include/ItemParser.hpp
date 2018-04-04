@@ -26,6 +26,7 @@ public:
 	static std::string setName();
 	static Sprite createSprite();
 	static arc::Item createItem(const std::string &path, int x, int y);
+	static void setSecondAttribute(Item &);
 private:
 	static int getIndex(const std::string &what);
 	static std::string getInfo(const std::string &what);

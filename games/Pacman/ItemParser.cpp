@@ -5,6 +5,8 @@
 ** ItemParser
 */
 
+#include <unistd.h>
+#include <time.h>
 #include <iostream>
 #include <fstream>
 #include "Game.hpp"
@@ -47,6 +49,38 @@ static const std::unordered_map<std::string, int> COREMAP = {
 	{"Path", 8},
 };
 
+void arc::ItemParser::setSecondAttribute(arc::Item &item)
+{
+	int u = random() % 2;
+
+	if (u) {
+		u = random() % 2;
+		switch (u) {
+			case 0:
+			item.secondattribute = LEFT;
+			break;
+			case 1:
+			item.secondattribute = RIGHT;
+			break;
+			default:
+			break;
+		}
+	} else {
+		u = random() % 2;
+		switch (u) {
+			case 0:
+			item.secondattribute = UP;
+			break;
+			case 1:
+			item.secondattribute = DOWN;
+			break;
+			default:
+			break;
+		}
+
+	}
+}
+
 arc::Item arc::ItemParser::createItem()
 {
 	arc::Item tmp;
@@ -57,7 +91,10 @@ arc::Item arc::ItemParser::createItem()
 	tmp.x = std::stoi(getInfo("X"));
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.currSpriteIdx = 0;
-	tmp.secondattribute = NONE;
+	if (tmp.attribute)
+		setSecondAttribute(tmp);
+	else
+		tmp.secondattribute = NONE;
 	return tmp;
 }
 
