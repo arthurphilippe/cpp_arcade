@@ -34,6 +34,7 @@ void arc::Game::_nextLevel()
 	setItems("sprite/FruitConf.conf");
 	setItems("sprite/Pacgum.conf");
 	setItems("sprite/Foe.conf");
+	_isOver = false;
 	_info.fps += 10;
 }
 
@@ -137,7 +138,6 @@ void arc::Game::proccessIteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-//		_itemMove(PLAYER_ITEM, move->second);
 		_keystate = interact;
 	} else {
 		switch (interact) {
@@ -330,4 +330,16 @@ void arc::Game::envUpdate() noexcept
 	_updateBullets();
 	_updateFoe();
 	_checkItemsContact();
+	if (_isCleared())
+		_nextLevel();
+}
+
+bool arc::Game::_isCleared()
+{
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->attribute == DROP) {
+			return false;
+		}
+	}
+	return true;
 }

@@ -24,7 +24,7 @@ namespace arc {
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 48;
-	constexpr auto FPS = 50;
+	constexpr auto FPS = 60;
 	constexpr auto W_HEIGHT = 1200;
 	constexpr auto W_WIDTH = 1550;
 	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
@@ -113,6 +113,7 @@ private:
 	void _checkItemsContact();
 
 	// Game status
+	bool _isCleared();
 	bool _isOver;
 	int _score;
 };
