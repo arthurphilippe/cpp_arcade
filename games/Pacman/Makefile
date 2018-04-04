@@ -12,7 +12,7 @@ NAME		=	libPacman.so
 RM		=	rm -vf
 
 SRCS		=	Construct.cpp	\
-			Pacman.cpp
+			Game.cpp
 
 OBJ_MAIN	=	$(MAIN:.cpp=.o)
 
