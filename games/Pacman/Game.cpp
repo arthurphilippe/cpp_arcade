@@ -36,7 +36,7 @@ void arc::Game::_nextLevel()
 	setItems("sprite/Pacgum.conf");
 	setItems("sprite/Foe.conf");
 	_isOver = false;
-	_info.fps += 10;
+	_info.fps += 1;
 }
 
 void arc::Game::setItems(const std::string &path)
