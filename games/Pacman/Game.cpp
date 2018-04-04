@@ -324,6 +324,7 @@ void arc::Game::_updateFoe()
 
 void arc::Game::envUpdate() noexcept
 {
+	_edgeTeleport();
 	_updateRotateMain();
 	_updateAutoMoveMain();
 	_updateSprite();
@@ -332,6 +333,29 @@ void arc::Game::envUpdate() noexcept
 	_checkItemsContact();
 	if (_isCleared())
 		_nextLevel();
+}
+
+void arc::Game::_edgeTeleport(Item &item)
+{
+	if (_vectorIsCollided((Vectori) {item.x, item.y},
+		(Vectori) {-24, 416}))
+		item.x = 906;
+	else if (_vectorIsCollided((Vectori) {item.x, item.y},
+			(Vectori) {906 + 48, 416}))
+		item.x = 24;
+
+}
+
+void arc::Game::_edgeTeleport()
+{
+	uint count = 0;
+
+	for (auto it = _items.begin(); it != _items.end() && count < 5; it++) {
+		if (it->attribute == FOE || it->attribute == PLAYER) {
+			_edgeTeleport(*it);
+			count += 1;
+		}
+	}
 }
 
 bool arc::Game::_isCleared()

@@ -111,6 +111,8 @@ private:
 	bool _playerActionContact(Item &drop);
 	bool _checkPlayerContact(Item &player);
 	void _checkItemsContact();
+	void _edgeTeleport();
+	void _edgeTeleport(Item &);
 
 	// Game status
 	bool _isCleared();
