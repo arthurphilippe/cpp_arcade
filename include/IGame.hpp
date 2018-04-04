@@ -34,6 +34,8 @@ public:
 	virtual void envUpdate() noexcept = 0;
 	virtual const std::vector<struct Position> &getBulletPos() = 0;
 	virtual SpriteList &getSpriteListFromName(const std::string &name) = 0;
+	virtual int getScore() const noexcept = 0;
+	virtual bool isOver() const noexcept = 0;
 };
 
 #endif /* !IGAME_HPP_ */

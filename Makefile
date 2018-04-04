@@ -74,8 +74,8 @@ $(TEST): $(OBJS_TEST)
 games:
 	@$(MAKE) -C games/Pacman/
 	@ln -sf games/Pacman/libPacman.so lib_arcade_pacman.so
-	@$(MAKE) -C games/SolarFox/
-	@ln -sf games/SolarFox/libSolarFox.so lib_arcade_solarfox.so
+#	@$(MAKE) -C games/SolarFox/
+#	@ln -sf games/SolarFox/libSolarFox.so lib_arcade_solarfox.so
 
 
 graphicals:

@@ -13,7 +13,11 @@
 #include "Game.hpp"
 
 arc::Game::Game()
-	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
+	: _name("Pacman"),
+	_keystate(MOVE_LEFT),
+	_info({GRID_H, GRID_L, GRID_STEP, FPS}),
+	_isOver(false),
+	_score(0)
 {
 	srandom(time(NULL) * getpid());
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
@@ -21,6 +25,18 @@ arc::Game::Game()
 	setItems("sprite/FruitConf.conf");
 	setItems("sprite/Pacgum.conf");
 	setItems("sprite/Foe.conf");
+}
+
+void arc::Game::_nextLevel()
+{
+	_items.clear();
+	setItems("tests/SpriteConfigurationFiles/Wall.conf");
+	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
+	setItems("sprite/FruitConf.conf");
+	setItems("sprite/Pacgum.conf");
+	setItems("sprite/Foe.conf");
+	_isOver = false;
+	_info.fps += 1;
 }
 
 void arc::Game::setItems(const std::string &path)
@@ -201,11 +217,15 @@ bool arc::Game::_checkPlayerContact(Item &player)
 
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != player.name
-			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})
-			&& it->attribute == DROP) {
-			_items.erase(it);
-			it = _items.begin();
-			restart = true;
+			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
+			if (it->attribute == DROP) {
+				_items.erase(it);
+				it = _items.begin();
+				restart = true;
+				_score += 1;
+			} else if (it->attribute == FOE) {
+				_isOver = true;
+			}
 		}
 	}
 	return restart;
@@ -217,7 +237,6 @@ void arc::Game::_checkItemsContact()
 		if (it->attribute == PLAYER) {
 			if (_checkPlayerContact(*it))
 				it = _items.begin();
-
 		}
 	}
 }
@@ -374,10 +393,46 @@ void arc::Game::_moveFoe() noexcept
 
 void arc::Game::envUpdate() noexcept
 {
+	_edgeTeleport();
 	_moveFoe();
 	_updateRotateMain();
 	_updateAutoMoveMain();
 	_updateSprite();
 	_updateBullets();
 	_checkItemsContact();
+	if (_isCleared())
+		_nextLevel();
+}
+
+void arc::Game::_edgeTeleport(Item &item)
+{
+	if (_vectorIsCollided((Vectori) {item.x, item.y},
+		(Vectori) {-24, 416}))
+		item.x = 906;
+	else if (_vectorIsCollided((Vectori) {item.x, item.y},
+			(Vectori) {906 + 48, 416}))
+		item.x = 24;
+
+}
+
+void arc::Game::_edgeTeleport()
+{
+	uint count = 0;
+
+	for (auto it = _items.begin(); it != _items.end() && count < 5; it++) {
+		if (it->attribute == FOE || it->attribute == PLAYER) {
+			_edgeTeleport(*it);
+			count += 1;
+		}
+	}
+}
+
+bool arc::Game::_isCleared()
+{
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->attribute == DROP) {
+			return false;
+		}
+	}
+	return true;
 }

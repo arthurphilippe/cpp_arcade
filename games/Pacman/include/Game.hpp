@@ -24,7 +24,7 @@ namespace arc {
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 48;
-	constexpr auto FPS = 56;
+	constexpr auto FPS = 55;
 	constexpr auto W_HEIGHT = 1200;
 	constexpr auto W_WIDTH = 1550;
 	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
@@ -33,9 +33,7 @@ namespace arc {
 class arc::Game : public arc::IGame {
 public:
 	Game();
-	~Game() {
-		_startTime = std::chrono::high_resolution_clock::now();
-	};
+	~Game() {};
 	void dump() const noexcept override;
 	ItemList &getItems() noexcept override
 	{
@@ -48,10 +46,19 @@ public:
 	}
 	void proccessIteraction(Interaction &) noexcept;
 	void envUpdate() noexcept;
+	bool isOver() const noexcept
+	{
+		return _isOver;
+	}
+	int getScore() const noexcept
+	{
+		return _score;
+	}
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 	using ItemRef = Item *;
 	void createItems();
+
 	class Bullet {
 	public:
 		Bullet(Interaction direction, ItemRef bullet)
@@ -65,6 +72,7 @@ public:
 		ItemRef _bullet;
 		Interaction _direction;
 	};
+
 private:
 	std::vector<struct Position> _bulletpos;
 	std::string	_name;
@@ -78,6 +86,8 @@ private:
 	static ItemList defaultItems;
 	void _dumpItems() const noexcept;
 	SpriteList &getSpriteListFromName(const std::string &name);
+
+	void _nextLevel();
 
 	//update for Foe
 	void _moveFoe() noexcept;
@@ -105,6 +115,13 @@ private:
 	bool _playerActionContact(Item &drop);
 	bool _checkPlayerContact(Item &player);
 	void _checkItemsContact();
+	void _edgeTeleport();
+	void _edgeTeleport(Item &);
+
+	// Game status
+	bool _isCleared();
+	bool _isOver;
+	int _score;
 };
 
 #endif /* !SOLARFOX_HPP_ */
