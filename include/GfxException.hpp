@@ -13,6 +13,7 @@
 namespace arc {
 	class GfxException;
 	constexpr auto GFX_ERR_INIT("Failed to init GUI");
+	constexpr auto GFX_ERR_TEXT_LOADING("Failed to load text");
 }
 
 class arc::GfxException {
