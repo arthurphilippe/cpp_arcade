@@ -290,7 +290,7 @@ void arc::Game::_updateAutoMoveMain()
 }
 
 
-void arc::Game::_dirFoe(Item &item)
+void arc::Game::_dirFoe(Item &item) noexcept
 {
 	switch (item.secondattribute) {
 		case RIGHT:
@@ -310,21 +310,17 @@ void arc::Game::_dirFoe(Item &item)
 	}
 }
 
-// bool arc::Game::_itemBlock(Item &item, Vectori pos);
-// {{{--@--:-:-:--@--}}}
-void arc::Game::_horizontalDir(Item &item)
+void arc::Game::_horizontalDir(Item &item) noexcept
 {
 	int u = random() % 2;
 
-	if (_itemMove(item, Vectori {1, 0}) && !u) {
+	if (_itemMove(item, Vectori {1, 0}) && !u)
 		item.secondattribute = RIGHT;
-	}
-	if (_itemMove(item, Vectori {-1, 0}) && u) {
+	if (_itemMove(item, Vectori {-1, 0}) && u)
 		item.secondattribute = LEFT;
-	}
 }
 
-void arc::Game::_verticalDir(Item &item)
+void arc::Game::_verticalDir(Item &item) noexcept
 {
 	int u = random() % 2;
 
@@ -336,7 +332,19 @@ void arc::Game::_verticalDir(Item &item)
 	}
 }
 
-void arc::Game::_moveFoe()
+void arc::Game::_chooseDir(Item &item) noexcept
+{
+	if ((item.x - 24) % 49 == 0
+		&& (item.y - 24) % 49 == 0) {
+		if (item.secondattribute == LEFT ||
+			item.secondattribute == RIGHT)
+			_verticalDir(item);
+		else
+			_horizontalDir(item);
+	}
+}
+
+void arc::Game::_moveFoe() noexcept
 {
 	bool move = true;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
@@ -357,36 +365,16 @@ void arc::Game::_moveFoe()
 				default:
 				break;
 			}
-			if ((i->x - 24) % 49 == 0 && (i->y - 24) % 49 == 0) {
-				if (i->secondattribute == LEFT || i->secondattribute == RIGHT)
-					_verticalDir(*i);
-				else
-					_horizontalDir(*i);
-			}
-			if (!move) {
+			_chooseDir(*i);
+			if (!move)
 				_dirFoe(*i);
-			}
 		}
 		move = true;
 	}
 }
 
-void arc::Game::_updateFoe()
-{
-	int u = 0;
-	Vectori newPos {-1, 0};
-
-	for (auto i = _items.begin(); i != _items.end(); i++) {
-		if (i->attribute == FOE) {
-			std::cout << _itemMove(*i, newPos) << std::endl;
-		}
-	}
-
-}
-
 void arc::Game::envUpdate() noexcept
 {
-//	_updateFoe();
 	_moveFoe();
 	_updateRotateMain();
 	_updateAutoMoveMain();
