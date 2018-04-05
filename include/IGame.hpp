@@ -28,12 +28,12 @@ public:
 	virtual ~IGame() = default;
 	virtual void dump() const noexcept = 0;
 	virtual ItemList &getItems() noexcept = 0;
-	virtual Item &getItemFromName(const std::string &) = 0;
 	virtual const Specs &getSpecs() const noexcept = 0;
-	virtual void proccessIteraction(Interaction &) noexcept = 0;
+	virtual void processInteraction(Interaction &) noexcept = 0;
 	virtual void envUpdate() noexcept = 0;
 	virtual const std::vector<struct Position> &getBulletPos() = 0;
-	virtual SpriteList &getSpriteListFromName(const std::string &name) = 0;
+	virtual int getScore() const noexcept = 0;
+	virtual bool isOver() const noexcept = 0;
 };
 
 #endif /* !IGAME_HPP_ */

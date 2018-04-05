@@ -5,6 +5,7 @@
 ** GameWraper
 */
 
+#include <iostream>
 #include <algorithm>
 #include "unistd.h"
 #include "GameWraper.hpp"
@@ -42,12 +43,18 @@ int arc::GameWraper::loop()
 		_currGame->envUpdate();
 		_currDisplay->refresh();
 		_waitCycle(_currGame->getSpecs().fps);
+		if (_currGame->isOver()) {
+			_running = false;
+		}
 	}
+	std::cout << "score " << _currGame->getScore() << std::endl;
 	return 0;
 }
 
 void arc::GameWraper::_waitCycle(unsigned int fps)
 {
+	if (fps > 60)
+		fps = 60;
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startTime;
 	millisec tempo(((61 - fps) * 100 / 60) - elapsed.count());
@@ -93,10 +100,11 @@ void arc::GameWraper::_processInteractions()
 			_processWraperInter(inter.front());
 		else {
 			had_action_1 = (inter.front() == ACTION_1) ? true : false;
-			_currGame->proccessIteraction(inter.front());
+			_currGame->processInteraction(inter.front());
 		}
 		inter.pop();
 	}
+	_currGame->envUpdate();
 	_currDisplay->clear();
 	for (auto i = _currGame->getItems().begin();
 		i != _currGame->getItems().end(); i++)

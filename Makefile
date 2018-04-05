@@ -72,10 +72,10 @@ $(TEST): $(OBJS_TEST)
 	@printf "[\033[0;36mlinked\033[0m]% 42s\n" $(TEST) | tr " " "."
 
 games:
-#	@$(MAKE) -C games/Pacman/
-#	@ln -sf games/Pacman/libPacman.so lib_arcade_pacman.so
-	@$(MAKE) -C games/SolarFox/
-	@ln -sf games/SolarFox/libSolarFox.so lib_arcade_solarfox.so
+	@$(MAKE) -C games/Pacman/
+	@ln -sf games/Pacman/libPacman.so lib_arcade_pacman.so
+#	@$(MAKE) -C games/SolarFox/
+#	@ln -sf games/SolarFox/libSolarFox.so lib_arcade_solarfox.so
 
 
 graphicals:
