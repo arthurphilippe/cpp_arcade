@@ -30,7 +30,7 @@ void arc::Startup::_parseArguments()
 	if (_ac != 2) {
 		_valid = false;
 	} else {
-		_gfxLibs.push_back(_av[1]);
+		_gfxLibs.insert(_gfxLibs.begin(),_av[1]);
 	}
 }
 
