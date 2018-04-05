@@ -134,8 +134,8 @@ bool arc::Game::_itemMove(Item &item, Vectori mod)
 		item.x = newPos.v_x;
 		item.y = newPos.v_y;
 		return true;
-	} else
-		return false;
+	}
+	return false;
 }
 
 void arc::Game::processInteraction(Interaction &interact) noexcept
