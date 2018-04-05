@@ -124,6 +124,7 @@ bool arc::Game::_itemMove(const std::string &name, Vectori mod)
 		if (it->name == name)
 			return _itemMove(*it, mod);
 	}
+	return false;
 }
 
 bool arc::Game::_itemMove(Item &item, Vectori mod)
