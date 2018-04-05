@@ -20,21 +20,15 @@ arc::Game::Game()
 	_score(0)
 {
 	srandom(time(NULL) * getpid());
-	setItems("tests/SpriteConfigurationFiles/Wall.conf");
-	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
-	setItems("sprite/FruitConf.conf");
-	setItems("sprite/Pacgum.conf");
-	setItems("sprite/Foe.conf");
+	setItems("sprite/solarfox/Wall.conf");
+	setItems("sprite/solarfox/Player.conf");
 }
 
 void arc::Game::_nextLevel()
 {
 	_items.clear();
-	setItems("tests/SpriteConfigurationFiles/Wall.conf");
-	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
-	setItems("sprite/FruitConf.conf");
-	setItems("sprite/Pacgum.conf");
-	setItems("sprite/Foe.conf");
+	setItems("sprite/solarfox/Wall.conf");
+	setItems("sprite/solarfox/Player.conf");
 	_isOver = false;
 	_info.fps += 1;
 }
@@ -268,6 +262,7 @@ void arc::Game::_updateBullets() noexcept
 void arc::Game::_updateRotation(Item &item, int rotation)
 {
 	for (auto i = item.sprites.begin(); i != item.sprites.end(); i++) {
+		std::cout << rotation << std::endl;
 		i->rotation = rotation;
 	}
 }
@@ -400,8 +395,8 @@ void arc::Game::envUpdate() noexcept
 	_updateSprite();
 	_updateBullets();
 	_checkItemsContact();
-	if (_isCleared())
-		_nextLevel();
+	// if (_isCleared())
+	// 	_nextLevel();
 }
 
 void arc::Game::_edgeTeleport(Item &item)

@@ -17,7 +17,7 @@
 	#include "IGame.hpp"
 	#include "Error.hpp"
 	#include "ItemParser.hpp"
-	#define PLAYER_ITEM "Pacman"
+	#define PLAYER_ITEM "Shooter"
 
 namespace arc {
 	class Game;
