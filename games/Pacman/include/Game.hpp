@@ -124,11 +124,13 @@ private:
 	void _edgeTeleport(Item &);
 
 	// Manage fever mode
+	void _setBlueGhost(bool b);
 	void _setFever();
 	void _manageFever();
 	std::chrono::high_resolution_clock::time_point _startFever;
-	void _setBlueGhostSprite(SpriteList &list)
-	void _setBlueGhost(bool blue);
+	void _makeGhostBlue(SpriteList &list);
+	void _makeGhostRed(SpriteList &list);
+
 
 	// Game status
 	bool _isCleared();

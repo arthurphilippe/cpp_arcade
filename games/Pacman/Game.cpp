@@ -223,28 +223,47 @@ void arc::Game::_setFever()
 
 void arc::Game::_manageFever()
 {
-	if (!_fever)
+	if (!_fever) {
+		_setBlueGhost(false);
 		return;
+	}
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startFever;
-	_setBlueGhost();
+	_setBlueGhost(true);
 	if (elapsed.count() > 10000)
 		_fever = false;
 }
 
-void arc::Game::_setBlueGhostSprite(SpriteList &list)
+void arc::Game::_makeGhostRed(SpriteList &list)
 {
+	list[0].path = RED_GHOST1;
+	list[1].path = RED_GHOST2;
+}
 
+void arc::Game::_makeGhostBlue(SpriteList &list)
+{
+	list[0].path = BLUE_GHOST1;
+	list[1].path = BLUE_GHOST2;
 }
 
 void arc::Game::_setBlueGhost(bool blue)
 {
+	static int reset = true;
+
 	if (blue) {
 		for (auto i = _items.begin(); i != _items.end(); i++) {
 			if (i->attribute == FOE) {
-
+				_makeGhostBlue(i->sprites);
+			}
+		reset = false;
+		}
+	} else if (!blue && reset == false) {
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			if (i->attribute == FOE) {
+				_makeGhostRed(i->sprites);
 			}
 		}
+		reset = true;
 	}
 }
 
