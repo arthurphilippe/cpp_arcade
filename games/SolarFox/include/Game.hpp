@@ -118,6 +118,9 @@ private:
 	void _edgeTeleport();
 	void _edgeTeleport(Item &);
 
+	//shoot
+	void _shootOffSet(int &x, int &y);
+
 	// Game status
 	bool _isCleared();
 	bool _isOver;

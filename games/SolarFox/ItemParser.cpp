@@ -20,6 +20,7 @@ static const arc::ItemParser::AttributeMap _attributeMap = {
 	{"DROP", arc::Attribute::DROP},
 	{"MOVE", arc::Attribute::MOVE},
 	{"PLAYER", arc::Attribute::PLAYER},
+	{"MUNITION", arc::Attribute::MUNITION},
 };
 
 static const arc::ItemParser::MapColor _mapColor = {

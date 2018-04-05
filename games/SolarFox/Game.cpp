@@ -22,6 +22,7 @@ arc::Game::Game()
 	srandom(time(NULL) * getpid());
 	setItems("sprite/solarfox/Wall.conf");
 	setItems("sprite/solarfox/Player.conf");
+	setItems("sprite/solarfox/Mine.conf");
 }
 
 void arc::Game::_nextLevel()
@@ -29,6 +30,7 @@ void arc::Game::_nextLevel()
 	_items.clear();
 	setItems("sprite/solarfox/Wall.conf");
 	setItems("sprite/solarfox/Player.conf");
+	setItems("sprite/solarfox/Mine.conf");
 	_isOver = false;
 	_info.fps += 1;
 }
@@ -146,10 +148,34 @@ void arc::Game::processInteraction(Interaction &interact) noexcept
 	}
 }
 
+void arc::Game::_shootOffSet(int &x, int &y)
+{
+
+	switch (_keystate) {
+		case MOVE_LEFT:
+			x -= 20;
+			break;
+		case MOVE_RIGHT:
+			x += 20;
+			break;
+		case MOVE_UP:
+			y -= 20;
+			break;
+		case MOVE_DOWN:
+			y += 20;
+			break;
+		default:
+			break;
+	}
+}
+
 void arc::Game::shoot(const std::string &name)
 {
 	auto item = getItemFromName(name);
-	_items.push_back(ItemParser::createItem(DEF_BULLETCONF, item.x, item.y));
+	int x = item.x;
+	int y = item.y;
+	_shootOffSet(x, y);
+	_items.push_back(ItemParser::createItem(DEF_BULLETCONF, x, y));
 	switch (_keystate) {
 		case MOVE_LEFT:
 			_items[_items.size() -1].secondattribute = arc::LEFT;
@@ -241,16 +267,16 @@ void arc::Game::_updateBullets() noexcept
 		if (i->name == "Bullet") {
 			switch (i->secondattribute) {
 			case LEFT:
-				i->x -= 1;
+				i->x -= 3;
 				break;
 			case RIGHT:
-				i->x += 1;
+				i->x += 3;
 				break;
 			case DOWN:
-				i->y += 1;
+				i->y += 3;
 				break;
 			case UP:
-				i->y -= 1;
+				i->y -= 3;
 				break;
 			default:
 				break;
@@ -262,7 +288,6 @@ void arc::Game::_updateBullets() noexcept
 void arc::Game::_updateRotation(Item &item, int rotation)
 {
 	for (auto i = item.sprites.begin(); i != item.sprites.end(); i++) {
-		std::cout << rotation << std::endl;
 		i->rotation = rotation;
 	}
 }
@@ -273,16 +298,16 @@ void arc::Game::_updateRotateMain()
 		if (i->name == PLAYER_ITEM) {
 			switch (_keystate) {
 			case MOVE_LEFT:
-				_updateRotation(*i, 270);
-				break;
-			case MOVE_RIGHT:
-				_updateRotation(*i, 90);
-				break;
-			case MOVE_DOWN:
 				_updateRotation(*i, 180);
 				break;
-			case MOVE_UP:
+			case MOVE_RIGHT:
 				_updateRotation(*i, 0);
+				break;
+			case MOVE_DOWN:
+				_updateRotation(*i, 90);
+				break;
+			case MOVE_UP:
+				_updateRotation(*i, -90);
 				break;
 			default:
 				break;
@@ -361,7 +386,7 @@ void arc::Game::_moveFoe() noexcept
 {
 	bool move = true;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
-		if (i->attribute == FOE) {
+		if (i->attribute == FOE && i->name == "FOE") {
 			switch (i->secondattribute) {
 				case LEFT:
 					move = _itemMove(*i, Vectori {-1, 0});
