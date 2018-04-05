@@ -13,8 +13,13 @@
 #include "Game.hpp"
 
 arc::Game::Game()
-	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
+	: _name("Pacman"),
+	_keystate(MOVE_LEFT),
+	_info({GRID_H, GRID_L, GRID_STEP, FPS}),
+	_isOver(false),
+	_score(0)
 {
+	srandom(time(NULL) * getpid());
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
 	setItems("sprite/FruitConf.conf");
@@ -22,12 +27,23 @@ arc::Game::Game()
 	setItems("sprite/Foe.conf");
 }
 
+void arc::Game::_nextLevel()
+{
+	_items.clear();
+	setItems("tests/SpriteConfigurationFiles/Wall.conf");
+	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
+	setItems("sprite/FruitConf.conf");
+	setItems("sprite/Pacgum.conf");
+	setItems("sprite/Foe.conf");
+	_isOver = false;
+	_info.fps += 1;
+}
+
 void arc::Game::setItems(const std::string &path)
 {
 	std::ifstream s(path);
 	std::string tmp;
 
-	srandom(time(NULL) * getpid());
 	if (s.is_open()) {
 		while (getline(s, ItemParser::_line))
 			createItems();
@@ -108,21 +124,22 @@ void arc::Game::_itemMove(const std::string &name, Vectori mod)
 	}
 }
 
-void arc::Game::_itemMove(Item &item, Vectori mod)
+bool arc::Game::_itemMove(Item &item, Vectori mod)
 {
 	Vectori newPos {item.x + mod.v_x, item.y + mod.v_y};
 
 	if (_itemBlock(item, newPos) != BLOCK) {
 		item.x = newPos.v_x;
 		item.y = newPos.v_y;
-	}
+		return true;
+	} else
+		return false;
 }
 
 void arc::Game::processInteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-//		_itemMove(PLAYER_ITEM, move->second);
 		_keystate = interact;
 	} else {
 		switch (interact) {
@@ -205,8 +222,9 @@ bool arc::Game::_checkPlayerContact(Item &player)
 				_items.erase(it);
 				it = _items.begin();
 				restart = true;
+				_score += 1;
 			} else if (it->attribute == FOE) {
-				exit(10);
+				_isOver = true;
 			}
 		}
 	}
@@ -289,29 +307,132 @@ void arc::Game::_updateAutoMoveMain()
 	}
 }
 
-void arc::Game::_updateFoe()
+
+void arc::Game::_dirFoe(Item &item) noexcept
 {
-	int u = 0;
-	int x = 1;
-	int y = 1;
+	switch (item.secondattribute) {
+		case RIGHT:
+			item.secondattribute = LEFT;
+			break;
+		case LEFT:
+			item.secondattribute = RIGHT;
+			break;
+		case UP:
+			item.secondattribute = DOWN;
+			break;
+		case DOWN:
+			item.secondattribute = UP;
+			break;
+		default:
+			break;
+	}
+}
+
+void arc::Game::_horizontalDir(Item &item) noexcept
+{
+	int u = random() % 2;
+
+	if (_itemMove(item, Vectori {1, 0}) && !u)
+		item.secondattribute = RIGHT;
+	if (_itemMove(item, Vectori {-1, 0}) && u)
+		item.secondattribute = LEFT;
+}
+
+void arc::Game::_verticalDir(Item &item) noexcept
+{
+	int u = random() % 2;
+
+	if (_itemMove(item, Vectori {0, -1}) && u) {
+		item.secondattribute = UP;
+	}
+	if (_itemMove(item, Vectori {0, 1}) && !u) {
+		item.secondattribute = DOWN;
+	}
+}
+
+void arc::Game::_chooseDir(Item &item) noexcept
+{
+	if ((item.x - 24) % 49 == 0
+		&& (item.y - 24) % 49 == 0) {
+		if (item.secondattribute == LEFT ||
+			item.secondattribute == RIGHT)
+			_verticalDir(item);
+		else
+			_horizontalDir(item);
+	}
+}
+
+void arc::Game::_moveFoe() noexcept
+{
+	bool move = true;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
-		u = random() % 2;
-		if (u)
-			x = x * (-1);
-		u = random() % 2;
-			y = y * (-1);
 		if (i->attribute == FOE) {
-			_itemMove(*i, (Vectori) {x, y});
+			switch (i->secondattribute) {
+				case LEFT:
+					move = _itemMove(*i, Vectori {-1, 0});
+					break;
+				case RIGHT:
+					move = _itemMove(*i, Vectori {1, 0});
+					break;
+				case UP:
+					move = _itemMove(*i, Vectori {0, -1});
+					break;
+				case DOWN:
+					move = _itemMove(*i, Vectori {0, 1});
+					break;
+				default:
+				break;
+			}
+			_chooseDir(*i);
+			if (!move)
+				_dirFoe(*i);
 		}
+		move = true;
 	}
 }
 
 void arc::Game::envUpdate() noexcept
 {
+	_edgeTeleport();
+	_moveFoe();
 	_updateRotateMain();
 	_updateAutoMoveMain();
 	_updateSprite();
 	_updateBullets();
-	_updateFoe();
 	_checkItemsContact();
+	if (_isCleared())
+		_nextLevel();
+}
+
+void arc::Game::_edgeTeleport(Item &item)
+{
+	if (_vectorIsCollided((Vectori) {item.x, item.y},
+		(Vectori) {-24, 416}))
+		item.x = 906;
+	else if (_vectorIsCollided((Vectori) {item.x, item.y},
+			(Vectori) {906 + 48, 416}))
+		item.x = 24;
+
+}
+
+void arc::Game::_edgeTeleport()
+{
+	uint count = 0;
+
+	for (auto it = _items.begin(); it != _items.end() && count < 5; it++) {
+		if (it->attribute == FOE || it->attribute == PLAYER) {
+			_edgeTeleport(*it);
+			count += 1;
+		}
+	}
+}
+
+bool arc::Game::_isCleared()
+{
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->attribute == DROP) {
+			return false;
+		}
+	}
+	return true;
 }
