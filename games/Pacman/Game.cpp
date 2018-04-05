@@ -17,6 +17,7 @@ arc::Game::Game()
 	_keystate(MOVE_LEFT),
 	_info({GRID_H, GRID_L, GRID_STEP, FPS}),
 	_isOver(false),
+	_fever(false),
 	_score(0)
 {
 	srandom(time(NULL) * getpid());
@@ -219,11 +220,13 @@ bool arc::Game::_checkPlayerContact(Item &player)
 		if (it->name != player.name
 			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
 			if (it->attribute == DROP) {
+				if (it->name == "BigPacgum")
+					_fever = true;
 				_items.erase(it);
 				it = _items.begin();
 				restart = true;
 				_score += 1;
-			} else if (it->attribute == FOE) {
+			} else if (it->attribute == FOE && _fever == false) {
 				_isOver = true;
 			}
 		}

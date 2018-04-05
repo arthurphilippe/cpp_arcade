@@ -121,6 +121,7 @@ private:
 	// Game status
 	bool _isCleared();
 	bool _isOver;
+	bool _fever;
 	int _score;
 };
 
