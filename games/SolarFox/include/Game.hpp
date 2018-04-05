@@ -93,9 +93,6 @@ private:
 	//update for Foe
 	void _moveFoe() noexcept;
 	void _dirFoe(Item &) noexcept;
-	void _horizontalDir(Item &) noexcept;
-	void _verticalDir(Item &) noexcept;
-	void _chooseDir(Item &) noexcept;
 
 	//update
 	void _updateBullets() noexcept;

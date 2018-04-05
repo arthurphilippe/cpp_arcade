@@ -23,6 +23,8 @@ arc::Game::Game()
 	setItems("sprite/solarfox/Wall.conf");
 	setItems("sprite/solarfox/Player.conf");
 	setItems("sprite/solarfox/Mine.conf");
+	setItems("sprite/solarfox/Mine2.conf");
+	setItems("sprite/solarfox/Foe.conf");
 }
 
 void arc::Game::_nextLevel()
@@ -31,6 +33,8 @@ void arc::Game::_nextLevel()
 	setItems("sprite/solarfox/Wall.conf");
 	setItems("sprite/solarfox/Player.conf");
 	setItems("sprite/solarfox/Mine.conf");
+	setItems("sprite/solarfox/Mine2.conf");
+	setItems("sprite/solarfox/Foe.conf");
 	_isOver = false;
 	_info.fps += 1;
 }
@@ -355,45 +359,11 @@ void arc::Game::_dirFoe(Item &item) noexcept
 	}
 }
 
-void arc::Game::_horizontalDir(Item &item) noexcept
-{
-	int u = random() % 2;
-
-	if (_itemMove(item, Vectori {1, 0}) && !u)
-		item.secondattribute = RIGHT;
-	if (_itemMove(item, Vectori {-1, 0}) && u)
-		item.secondattribute = LEFT;
-}
-
-void arc::Game::_verticalDir(Item &item) noexcept
-{
-	int u = random() % 2;
-
-	if (_itemMove(item, Vectori {0, -1}) && u) {
-		item.secondattribute = UP;
-	}
-	if (_itemMove(item, Vectori {0, 1}) && !u) {
-		item.secondattribute = DOWN;
-	}
-}
-
-void arc::Game::_chooseDir(Item &item) noexcept
-{
-	if ((item.x - 24) % 49 == 0
-		&& (item.y - 24) % 49 == 0) {
-		if (item.secondattribute == LEFT ||
-			item.secondattribute == RIGHT)
-			_verticalDir(item);
-		else
-			_horizontalDir(item);
-	}
-}
-
 void arc::Game::_moveFoe() noexcept
 {
 	bool move = true;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
-		if (i->attribute == FOE && i->name == "FOE") {
+		if (i->attribute == FOE) {
 			switch (i->secondattribute) {
 				case LEFT:
 					move = _itemMove(*i, Vectori {-1, 0});
@@ -410,7 +380,6 @@ void arc::Game::_moveFoe() noexcept
 				default:
 				break;
 			}
-			_chooseDir(*i);
 			if (!move)
 				_dirFoe(*i);
 		}
@@ -420,7 +389,7 @@ void arc::Game::_moveFoe() noexcept
 
 void arc::Game::envUpdate() noexcept
 {
-	_edgeTeleport();
+//	_edgeTeleport();
 	_moveFoe();
 	_updateRotateMain();
 	_updateAutoMoveMain();
