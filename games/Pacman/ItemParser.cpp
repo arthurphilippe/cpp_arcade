@@ -49,7 +49,7 @@ static const std::unordered_map<std::string, int> COREMAP = {
 	{"Path", 8},
 };
 
-void arc::ItemParser::setSecondAttribute(arc::Item &item)
+void arc::ItemParser::setHeading(arc::Item &item)
 {
 	int u = random() % 2;
 
@@ -92,7 +92,7 @@ arc::Item arc::ItemParser::createItem()
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.currSpriteIdx = 0;
 	if (tmp.attribute)
-		setSecondAttribute(tmp);
+		setHeading(tmp);
 	else
 		tmp.secondattribute = NONE;
 	return tmp;
