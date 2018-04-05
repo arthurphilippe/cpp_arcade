@@ -227,9 +227,27 @@ void arc::Game::_manageFever()
 		return;
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startFever;
+	_setBlueGhost();
 	if (elapsed.count() > 10000)
 		_fever = false;
 }
+
+void arc::Game::_setBlueGhostSprite(SpriteList &list)
+{
+
+}
+
+void arc::Game::_setBlueGhost(bool blue)
+{
+	if (blue) {
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			if (i->attribute == FOE) {
+
+			}
+		}
+	}
+}
+
 
 bool arc::Game::_checkPlayerContact(Item &player)
 {
@@ -333,7 +351,6 @@ void arc::Game::_updateAutoMoveMain()
 			_itemMove(PLAYER_ITEM, move->second);
 	}
 }
-
 
 void arc::Game::_dirFoe(Item &item) noexcept
 {
