@@ -100,7 +100,7 @@ void arc::GameWraper::_processInteractions()
 			_processWraperInter(inter.front());
 		else {
 			had_action_1 = (inter.front() == ACTION_1) ? true : false;
-			_currGame->proccessIteraction(inter.front());
+			_currGame->processInteraction(inter.front());
 		}
 		inter.pop();
 	}
