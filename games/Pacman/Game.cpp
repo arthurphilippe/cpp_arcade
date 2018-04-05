@@ -17,6 +17,7 @@ arc::Game::Game()
 	_keystate(MOVE_LEFT),
 	_info({GRID_H, GRID_L, GRID_STEP, FPS}),
 	_isOver(false),
+	_fever(false),
 	_score(0)
 {
 	srandom(time(NULL) * getpid());
@@ -30,6 +31,7 @@ arc::Game::Game()
 void arc::Game::_nextLevel()
 {
 	_items.clear();
+	_fever = false;
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
 	setItems("sprite/FruitConf.conf");
@@ -116,12 +118,13 @@ bool arc::Game::_itemBlock(Item &item, Vectori pos)
 	return false;
 }
 
-void arc::Game::_itemMove(const std::string &name, Vectori mod)
+bool arc::Game::_itemMove(const std::string &name, Vectori mod)
 {
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name == name)
-			_itemMove(*it, mod);
+			return _itemMove(*it, mod);
 	}
+	return false;
 }
 
 bool arc::Game::_itemMove(Item &item, Vectori mod)
@@ -132,8 +135,8 @@ bool arc::Game::_itemMove(Item &item, Vectori mod)
 		item.x = newPos.v_x;
 		item.y = newPos.v_y;
 		return true;
-	} else
-		return false;
+	}
+	return false;
 }
 
 void arc::Game::processInteraction(Interaction &interact) noexcept
@@ -141,6 +144,8 @@ void arc::Game::processInteraction(Interaction &interact) noexcept
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
 		_keystate = interact;
+		_itemMove(PLAYER_ITEM, move->second);
+		_movedThisTurn = true;
 	} else {
 		switch (interact) {
 			case ACTION_1:
@@ -210,6 +215,59 @@ arc::SpriteList &arc::Game::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
+void arc::Game::_setFever()
+{
+	_startFever = std::chrono::high_resolution_clock::now();
+	_fever = true;
+}
+
+void arc::Game::_manageFever()
+{
+	if (!_fever) {
+		_setBlueGhost(false);
+		return;
+	}
+	auto finish = std::chrono::high_resolution_clock::now();
+	millisec elapsed = finish - _startFever;
+	_setBlueGhost(true);
+	if (elapsed.count() > 10000)
+		_fever = false;
+}
+
+void arc::Game::_makeGhostRed(SpriteList &list)
+{
+	list[0].path = RED_GHOST1;
+	list[1].path = RED_GHOST2;
+}
+
+void arc::Game::_makeGhostBlue(SpriteList &list)
+{
+	list[0].path = BLUE_GHOST1;
+	list[1].path = BLUE_GHOST2;
+}
+
+void arc::Game::_setBlueGhost(bool blue)
+{
+	static int reset = true;
+
+	if (blue) {
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			if (i->attribute == FOE) {
+				_makeGhostBlue(i->sprites);
+			}
+		reset = false;
+		}
+	} else if (!blue && reset == false) {
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			if (i->attribute == FOE) {
+				_makeGhostRed(i->sprites);
+			}
+		}
+		reset = true;
+	}
+}
+
+
 bool arc::Game::_checkPlayerContact(Item &player)
 {
 	Vectori pos {player.x, player.y};
@@ -219,12 +277,18 @@ bool arc::Game::_checkPlayerContact(Item &player)
 		if (it->name != player.name
 			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
 			if (it->attribute == DROP) {
+				if (it->name == "BigPacgum")
+					_setFever();
 				_items.erase(it);
 				it = _items.begin();
 				restart = true;
 				_score += 1;
-			} else if (it->attribute == FOE) {
+			} else if (it->attribute == FOE && _fever == false) {
 				_isOver = true;
+			} else if (it->attribute == FOE) {
+				it->x = 514;
+				it->y = 514;
+				_score += 100;
 			}
 		}
 	}
@@ -306,7 +370,6 @@ void arc::Game::_updateAutoMoveMain()
 			_itemMove(PLAYER_ITEM, move->second);
 	}
 }
-
 
 void arc::Game::_dirFoe(Item &item) noexcept
 {
@@ -396,12 +459,15 @@ void arc::Game::envUpdate() noexcept
 	_edgeTeleport();
 	_moveFoe();
 	_updateRotateMain();
-	_updateAutoMoveMain();
+	if (!_movedThisTurn)
+		_updateAutoMoveMain();
 	_updateSprite();
 	_updateBullets();
 	_checkItemsContact();
+	_manageFever();
 	if (_isCleared())
 		_nextLevel();
+	_movedThisTurn = false;
 }
 
 void arc::Game::_edgeTeleport(Item &item)
