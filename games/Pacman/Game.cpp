@@ -219,6 +219,7 @@ void arc::Game::_setFever()
 {
 	_startFever = std::chrono::high_resolution_clock::now();
 	_fever = true;
+	_setBlueGhost(true);
 }
 
 void arc::Game::_manageFever()
@@ -227,7 +228,6 @@ void arc::Game::_manageFever()
 		return;
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startFever;
-	_setBlueGhost(true);
 	if (elapsed.count() > 10000) {
 		_setBlueGhost(false);
 		_fever = false;
