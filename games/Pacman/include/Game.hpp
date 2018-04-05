@@ -105,11 +105,12 @@ private:
 
 	std::chrono::high_resolution_clock::time_point _startTime;
 	// Item Moves
-	void _itemMove(const std::string &, Vectori);
+	bool _itemMove(const std::string &, Vectori);
 	bool _itemMove(Item &, Vectori);
 	std::vector<class Bullet> _bulletlist;
 	bool _vectorIsCollided(Vectori, Vectori);
 	bool _itemBlock(Item &, Vectori);
+	bool _movedThisTurn;
 
 	// Item Collisions on update
 	bool _playerActionContact(Item &drop);
@@ -122,7 +123,6 @@ private:
 	void _setFever();
 	void _manageFever();
 	std::chrono::high_resolution_clock::time_point _startFever;
-
 
 	// Game status
 	bool _isCleared();

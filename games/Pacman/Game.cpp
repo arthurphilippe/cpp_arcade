@@ -118,11 +118,11 @@ bool arc::Game::_itemBlock(Item &item, Vectori pos)
 	return false;
 }
 
-void arc::Game::_itemMove(const std::string &name, Vectori mod)
+bool arc::Game::_itemMove(const std::string &name, Vectori mod)
 {
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name == name)
-			_itemMove(*it, mod);
+			return _itemMove(*it, mod);
 	}
 }
 
@@ -143,6 +143,8 @@ void arc::Game::processInteraction(Interaction &interact) noexcept
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
 		_keystate = interact;
+		_itemMove(PLAYER_ITEM, move->second);
+		_movedThisTurn = true;
 	} else {
 		switch (interact) {
 			case ACTION_1:
@@ -420,13 +422,15 @@ void arc::Game::envUpdate() noexcept
 	_edgeTeleport();
 	_moveFoe();
 	_updateRotateMain();
-	_updateAutoMoveMain();
+	if (!_movedThisTurn)
+		_updateAutoMoveMain();
 	_updateSprite();
 	_updateBullets();
 	_checkItemsContact();
 	_manageFever();
 	if (_isCleared())
 		_nextLevel();
+	_movedThisTurn = false;
 }
 
 void arc::Game::_edgeTeleport(Item &item)
