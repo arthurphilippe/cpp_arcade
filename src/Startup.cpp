@@ -10,15 +10,28 @@
 #include "Error.hpp"
 #include "Startup.hpp"
 
-arc::Startup::Startup(const std::string &gamepath, const std::string &gfxpath)
+arc::Startup::Startup(int ac, char **av,
+			const std::string &gamepath, const std::string &gfxpath)
+	: _ac(ac),
+	_av(av),
+	_valid(true)
 {
 	setLibs(gfxpath, _gfxLibs);
 	setLibs(gamepath, _gameLibs);
 	startGame();
+	_parseArguments();
 }
 
 arc::Startup::~Startup()
+{}
+
+void arc::Startup::_parseArguments()
 {
+	if (_ac != 2) {
+		_valid = false;
+	} else {
+		_gfxLibs.push_back(_av[1]);
+	}
 }
 
 void arc::Startup::askUserName()
