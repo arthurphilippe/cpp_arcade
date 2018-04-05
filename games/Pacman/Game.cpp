@@ -31,6 +31,7 @@ arc::Game::Game()
 void arc::Game::_nextLevel()
 {
 	_items.clear();
+	_fever = false;
 	setItems("tests/SpriteConfigurationFiles/Wall.conf");
 	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
 	setItems("sprite/FruitConf.conf");
@@ -211,6 +212,22 @@ arc::SpriteList &arc::Game::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
+void arc::Game::_setFever()
+{
+	_startFever = std::chrono::high_resolution_clock::now();
+	_fever = true;
+}
+
+void arc::Game::_manageFever()
+{
+	if (!_fever)
+		return;
+	auto finish = std::chrono::high_resolution_clock::now();
+	millisec elapsed = finish - _startFever;
+	if (elapsed.count() > 10000)
+		_fever = false;
+}
+
 bool arc::Game::_checkPlayerContact(Item &player)
 {
 	Vectori pos {player.x, player.y};
@@ -221,7 +238,7 @@ bool arc::Game::_checkPlayerContact(Item &player)
 			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
 			if (it->attribute == DROP) {
 				if (it->name == "BigPacgum")
-					_fever = true;
+					_setFever();
 				_items.erase(it);
 				it = _items.begin();
 				restart = true;
@@ -229,9 +246,8 @@ bool arc::Game::_checkPlayerContact(Item &player)
 			} else if (it->attribute == FOE && _fever == false) {
 				_isOver = true;
 			} else if (it->attribute == FOE) {
-				_items.erase(it);
-				it = _items.begin();
-				restart = true;
+				it->x = 514;
+				it->y = 514;
 				_score += 100;
 			}
 		}
@@ -408,6 +424,7 @@ void arc::Game::envUpdate() noexcept
 	_updateSprite();
 	_updateBullets();
 	_checkItemsContact();
+	_manageFever();
 	if (_isCleared())
 		_nextLevel();
 }

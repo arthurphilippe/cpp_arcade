@@ -118,6 +118,12 @@ private:
 	void _edgeTeleport();
 	void _edgeTeleport(Item &);
 
+	// Manage fever mode
+	void _setFever();
+	void _manageFever();
+	std::chrono::high_resolution_clock::time_point _startFever;
+
+
 	// Game status
 	bool _isCleared();
 	bool _isOver;
