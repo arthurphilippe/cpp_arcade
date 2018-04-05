@@ -121,6 +121,7 @@ void arc::SdlDisplay::waitEvent()
 
 void arc::SdlDisplay::refresh()
 {
+	SDL_RenderPresent(_render);
 }
 
 void arc::SdlDisplay::setStep(uint step)
