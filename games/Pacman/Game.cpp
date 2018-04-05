@@ -228,6 +228,11 @@ bool arc::Game::_checkPlayerContact(Item &player)
 				_score += 1;
 			} else if (it->attribute == FOE && _fever == false) {
 				_isOver = true;
+			} else if (it->attribute == FOE) {
+				_items.erase(it);
+				it = _items.begin();
+				restart = true;
+				_score += 100;
 			}
 		}
 	}
