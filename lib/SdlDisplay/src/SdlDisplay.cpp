@@ -105,6 +105,18 @@ void arc::SdlDisplay::putItem(const arc::Item &item, int x, int y)
 
 void arc::SdlDisplay::waitEvent()
 {
+	SDL_Event event;
+	bool isOpen = true;
+
+	while (isOpen) {
+		while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT || (event.type == SDL_KEYUP
+				&& event.key.keysym.sym == SDLK_ESCAPE)) {
+				isOpen = false;
+				SDL_DestroyWindow(_window);
+			}
+		}
+	}
 }
 
 void arc::SdlDisplay::refresh()
