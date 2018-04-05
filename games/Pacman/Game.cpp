@@ -136,7 +136,7 @@ bool arc::Game::_itemMove(Item &item, Vectori mod)
 		return false;
 }
 
-void arc::Game::proccessIteraction(Interaction &interact) noexcept
+void arc::Game::processInteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {

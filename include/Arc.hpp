@@ -44,7 +44,7 @@ namespace arc {
 	};
 	using SpriteList = std::vector<Sprite>;
 
-	enum SecondAttribute {
+	enum Heading {
 		LEFT,
 		RIGHT,
 		DOWN,
@@ -57,7 +57,7 @@ namespace arc {
 		std::string	spritesPath;
 		SpriteList	sprites;
 		arc::Attribute	attribute;
-		arc::SecondAttribute	secondattribute;
+		arc::Heading	secondattribute;
 		int		currSpriteIdx;
 		int		x;
 		int		y;

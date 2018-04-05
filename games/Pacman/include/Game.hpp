@@ -44,7 +44,7 @@ public:
 	{
 		return _info;
 	}
-	void proccessIteraction(Interaction &) noexcept;
+	void processInteraction(Interaction &) noexcept;
 	void envUpdate() noexcept;
 	bool isOver() const noexcept
 	{

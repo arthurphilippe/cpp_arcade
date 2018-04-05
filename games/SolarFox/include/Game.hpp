@@ -44,7 +44,7 @@ public:
 	{
 		return _info;
 	}
-	void proccessIteraction(Interaction &) noexcept;
+	void processInteraction(Interaction &) noexcept;
 	void envUpdate() noexcept;
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
