@@ -9,6 +9,7 @@
 
 	#include <SDL2/SDL.h>
 	#include <SDL2/SDL_ttf.h>
+	#include <memory>
 	#include "GfxException.hpp"
 	#include "IDisplay.hpp"
 
@@ -32,10 +33,24 @@ public:
 	InteractionList getInteractions();
 	void putSpritePosition(const Item &item, const std::vector<struct Position> &poslist);
 	void putSpriteList(const SpriteList &list);
-private:
-	SDL_Window *_window;
+	class SpriteStorage;
 	SDL_Renderer *_render;
+private:
+	SDL_Surface *findSurface(const Sprite &currSprite);
+	SDL_Window *_window;
 	TTF_Font *_font;
+	std::vector<std::unique_ptr<SpriteStorage>> _spriteVector;
+};
+
+class arc::SdlDisplay::SpriteStorage {
+public:
+	SpriteStorage(const std::string &path);
+	~SpriteStorage() {};
+	const std::string &getPath() const noexcept;
+	SDL_Surface *getSurface() const noexcept;
+private:
+	SDL_Surface *_surface;
+	const std::string &_path;
 };
 
 #endif /* !SDLDISPLAY_HPP_ */

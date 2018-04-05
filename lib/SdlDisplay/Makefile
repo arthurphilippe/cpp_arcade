@@ -26,9 +26,9 @@ SRCS_TEST	+=	$(OBJS)
 
 OBJS_TEST	=	$(SRCS_TEST:.cpp=.o)
 
-CPPFLAGS	=	-fPIC -W -Wextra -Wall -I../../include/ -Iinclude/ -std=c++17 -g3
+CPPFLAGS	=	-fPIC -W -Wextra -Wall -I../../include/ -Iinclude/ -std=c++17
 
-LDFLAGS		=	-shared `sdl-config --libs` -lSDL2 -lSDL2_ttf
+LDFLAGS		=	-shared `sdl-config --libs` -lSDL2 -lSDL2_ttf -lSDL2_image
 
 %.o: %.cpp
 	@printf "[\033[0;36mcompiling\033[0m]% 39s\r" $< | tr " " "."

@@ -84,6 +84,8 @@ graphicals:
 	@ln -sf lib/CacaDisplay/libcaca.so lib_arcade_caca.so
 	@$(MAKE) -C lib/SfmlDisplay
 	@ln -sf lib/SfmlDisplay/libsfml.so lib_arcade_sfml.so
+	@$(MAKE) -C lib/SdlDisplay
+	@ln -sf lib/SdlDisplay/libsdl.so lib_arcade_sdl.so
 
 clean: artifacts_clean
 	@printf "[\033[0;31mdeletion\033[0m][objects]% 31s\n" `$(RM) $(OBJ_MAIN) $(OBJS) $(OBJS_TEST) | wc -l | tr -d '\n'` | tr " " "."
@@ -95,6 +97,7 @@ fclean: clean
 	@$(MAKE) fclean -C games/Pacman/
 	@$(MAKE) fclean -C lib/SfmlDisplay/
 	@$(MAKE) fclean -C games/SolarFox/
+	@$(MAKE) fclean -C lib/SdlDisplay/
 
 artifacts_clean:
 	@printf "[\033[0;31mdeletion\033[0m][artifacts]% 29s\n" `find -type f \( -name "*.gcno" -o -name "*.gc*" -o -name "*.html" \) -delete -print | wc -l | tr -d '\n'` | tr " " "."
