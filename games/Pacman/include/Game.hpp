@@ -27,7 +27,11 @@ namespace arc {
 	constexpr auto FPS = 55;
 	constexpr auto W_HEIGHT = 1200;
 	constexpr auto W_WIDTH = 1550;
-	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
+	constexpr auto DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
+	constexpr auto BLUE_GHOST1 = "sprite/pacman/BlueGhost1.png";
+	constexpr auto BLUE_GHOST2 = "sprite/pacman/BlueGhost2.png";
+	constexpr auto RED_GHOST1 = "sprite/pacman/Ghost1.png";
+	constexpr auto RED_GHOST2 = "sprite/pacman/Ghost2.png";
 }
 
 class arc::Game : public arc::IGame {
@@ -120,9 +124,13 @@ private:
 	void _edgeTeleport(Item &);
 
 	// Manage fever mode
+	void _setBlueGhost(bool b);
 	void _setFever();
 	void _manageFever();
 	std::chrono::high_resolution_clock::time_point _startFever;
+	void _makeGhostBlue(SpriteList &list);
+	void _makeGhostRed(SpriteList &list);
+
 
 	// Game status
 	bool _isCleared();

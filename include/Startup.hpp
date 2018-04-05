@@ -30,6 +30,7 @@ public:
 	libArray getGameLibs() const;
 	const std::string &getUserName() const noexcept {return _username;}
 private:
+	bool _checkGfxLib(std::string);
 	void _parseArguments();
 	void setLibs(const std::string &path, libArray &list);
 	void dumpScores();
@@ -38,6 +39,7 @@ private:
 	void askUserName();
 	int _ac;
 	char **_av;
+	std::string _startupLib;
 	libArray _gfxLibs;
 	libArray _gameLibs;
 	std::string _username;

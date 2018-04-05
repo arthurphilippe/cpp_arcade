@@ -219,6 +219,7 @@ void arc::Game::_setFever()
 {
 	_startFever = std::chrono::high_resolution_clock::now();
 	_fever = true;
+	_setBlueGhost(true);
 }
 
 void arc::Game::_manageFever()
@@ -227,9 +228,45 @@ void arc::Game::_manageFever()
 		return;
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startFever;
-	if (elapsed.count() > 10000)
+	if (elapsed.count() > 10000) {
+		_setBlueGhost(false);
 		_fever = false;
+	}
 }
+
+void arc::Game::_makeGhostRed(SpriteList &list)
+{
+	list[0].path = RED_GHOST1;
+	list[1].path = RED_GHOST2;
+}
+
+void arc::Game::_makeGhostBlue(SpriteList &list)
+{
+	list[0].path = BLUE_GHOST1;
+	list[1].path = BLUE_GHOST2;
+}
+
+void arc::Game::_setBlueGhost(bool blue)
+{
+	static int reset = true;
+
+	if (blue) {
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			if (i->attribute == FOE) {
+				_makeGhostBlue(i->sprites);
+			}
+		reset = false;
+		}
+	} else if (!blue && reset == false) {
+		for (auto i = _items.begin(); i != _items.end(); i++) {
+			if (i->attribute == FOE) {
+				_makeGhostRed(i->sprites);
+			}
+		}
+		reset = true;
+	}
+}
+
 
 bool arc::Game::_checkPlayerContact(Item &player)
 {
@@ -333,7 +370,6 @@ void arc::Game::_updateAutoMoveMain()
 			_itemMove(PLAYER_ITEM, move->second);
 	}
 }
-
 
 void arc::Game::_dirFoe(Item &item) noexcept
 {
