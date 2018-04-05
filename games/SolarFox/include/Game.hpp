@@ -28,6 +28,7 @@ namespace arc {
 	constexpr auto W_HEIGHT = 1200;
 	constexpr auto W_WIDTH = 1550;
 	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
+	constexpr auto MAX_PLACE = 49 * 1;
 }
 
 class arc::Game : public arc::IGame {

@@ -265,6 +265,13 @@ void arc::Game::_updateBullets() noexcept
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == "Bullet") {
+			if (i->x < 0 + (24 + MAX_PLACE)
+				|| i->x > (906 - 24 - MAX_PLACE)
+				|| i->y > (906 - 24 - MAX_PLACE)
+				|| i->y < 0 + (24 + MAX_PLACE)) {
+					_items.erase(i);
+					i = _items.begin();
+				}
 			switch (i->secondattribute) {
 			case LEFT:
 				i->x -= 3;

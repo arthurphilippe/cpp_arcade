@@ -40,5 +40,6 @@
 		"__config": "cpp",
 		"__nullptr": "cpp",
 		"cmath": "cpp"
-	}
+	},
+	"C_Cpp.errorSquiggles": "Disabled"
 }
