@@ -28,6 +28,7 @@ namespace arc {
 	constexpr auto W_HEIGHT = 1200;
 	constexpr auto W_WIDTH = 1550;
 	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
+	constexpr auto FOE_MUNITION = "sprite/solarfox/FoeMissile.conf";
 	constexpr auto MAX_PLACE = 49 * 1;
 }
 
@@ -118,6 +119,7 @@ private:
 
 	//shoot
 	void _shootOffSet(int &x, int &y);
+	void _foeShoot(Item &);
 
 	// Game status
 	bool _isCleared();

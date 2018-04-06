@@ -93,7 +93,7 @@ arc::Item arc::ItemParser::createItem(const std::string &path, int x, int y)
 	tmp.spritesPath = setPath();
 	tmp.x = x;
 	tmp.y = y;
-	tmp.secondattribute = NONE;
+	tmp.secondattribute = setSecondAttr(tmp.name);
 	tmp.attribute = setAttribute();
 	tmp.currSpriteIdx = 0;
 	return tmp;

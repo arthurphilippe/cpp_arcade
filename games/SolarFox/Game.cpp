@@ -358,12 +358,35 @@ void arc::Game::_dirFoe(Item &item) noexcept
 			break;
 	}
 }
+//	void _foeShoot(Item &);
+
+void arc::Game::_foeShoot(Item &item)
+{
+	 _items.push_back(ItemParser::createItem(DEF_BULLETCONF, 0, 0));
+	// switch (foe.sprites[0].rotation) {
+	// 	case 90:
+	// 		_items[_items.size() -1].secondattribute = arc::DOWN;
+	// 		break;
+	// 	case 0:
+	// 		_items[_items.size() -1].secondattribute = arc::RIGHT;
+	// 		break;
+	// 	case 180:
+	// 		_items[_items.size() -1].secondattribute = arc::LEFT;
+	// 		break;
+	// 	case -90:
+	// 		_items[_items.size() -1].secondattribute = arc::UP;
+	// 		break;
+	// 	default:
+	// 		break;
+	// }
+}
 
 void arc::Game::_moveFoe() noexcept
 {
 	bool move = true;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->attribute == FOE) {
+			_foeShoot(*i);
 			switch (i->secondattribute) {
 				case LEFT:
 					move = _itemMove(*i, Vectori {-1, 0});
