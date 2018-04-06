@@ -42,16 +42,17 @@ void arc::Startup::askUserName()
 {
 	char username[255];
 
-	std::cout << "Please, enter your username: " << std::endl;
+	std::cout << "What's your name ?" << std::endl << "name: ";
 	std::cin.getline(username, 255);
 	_username = username;
 }
 
 void arc::Startup::startGame()
 {
+	std::cout << "Welcome to arcade!" << std::endl << std::endl;
 	dumpLibs();
 	dumpScores();
-//	askUserName();
+	askUserName();
 }
 
 void arc::Startup::dumpScores()
@@ -99,11 +100,11 @@ void arc::Startup::setLibs(const std::string &path, libArray &list)
 
 void arc::Startup::dumpLibs() const
 {
-	std::cout << "Gfx Libraries Path:" << std::endl;
+	std::cout << "Display Libraries found:" << std::endl;
 	for (auto i = _gfxLibs.begin(); i != _gfxLibs.end(); i++) {
 		std::cout << '\t' << *i << std::endl;
 	}
-	std::cout << "Game Libraries Path:" << std::endl;
+	std::cout << "Game Libraries found:" << std::endl;
 		for (auto i = _gameLibs.begin(); i != _gameLibs.end(); i++) {
 		std::cout << '\t' << *i << std::endl;
 	}
