@@ -41,7 +41,7 @@ public:
 	}
 private:
 	std::string		_gameName;
-	std::fstream		_file;
+	std::ifstream		_file;
 	std::list<ScoreEntry>	_scoresList;
 	bool			_modified;
 
