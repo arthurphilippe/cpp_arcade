@@ -395,6 +395,7 @@ void arc::Game::_moveFoe() noexcept
 void arc::Game::envUpdate() noexcept
 {
 	_foeShoot();
+	_foeMoveShoot();
 	_moveFoe();
 	_edgeTeleport();
 	_updateRotateMain();
@@ -405,6 +406,38 @@ void arc::Game::envUpdate() noexcept
 	if (_isCleared())
 		_nextLevel();
 }
+
+void arc::Game::_foeMoveShoot()
+{
+	for (auto i = _items.begin(); i != _items.end(); i ++) {
+		if (i->name == "FoeMissile") {
+			if (i->x < 0 + (24 + MAX_PLACE)
+				|| i->x > (906 - 24 - MAX_PLACE)
+				|| i->y > (906 - 24 - MAX_PLACE)
+				|| i->y < 0 + (24 + MAX_PLACE)) {
+					_items.erase(i);
+					i = _items.begin();
+				}
+			switch (i->secondattribute) {
+			case LEFT:
+				i->x -= 3;
+				break;
+			case RIGHT:
+				i->x += 3;
+				break;
+			case DOWN:
+				i->y += 3;
+				break;
+			case UP:
+				i->y -= 3;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
 
 void arc::Game::_foeDirShoot(Item &item)
 {
@@ -456,9 +489,6 @@ void arc::Game::_foeShoot()
 	_foeDirShoot(foe2);
 	_foeDirShoot(foe3);
 	_foeDirShoot(foe4);
-	// _items.push_back(ItemParser::createItem(FOE_MUNITION, foe2.x, foe2.y));
-	// _items.push_back(ItemParser::createItem(FOE_MUNITION, foe3.x, foe3.y));
-	// _items.push_back(ItemParser::createItem(FOE_MUNITION, foe4.x, foe4.y));
 }
 
 void arc::Game::_edgeTeleport(Item &item)

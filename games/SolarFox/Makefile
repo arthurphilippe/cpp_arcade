@@ -5,7 +5,7 @@
 ## makefile
 ##
 
-CXX		=	g++ -ggdb
+CXX		=	g++
 
 NAME		=	libSolarFox.so
 
@@ -44,7 +44,7 @@ debug: $(NAME)
 
 tests: $(TEST) $(NAME)
 
-tests_run: CXX=g++ -ggdb --coverage
+tests_run: CXX=g++ --coverage
 tests_run: tests
 	@./$(TEST)
 	@bash ./tests/functionals_tests.sh
