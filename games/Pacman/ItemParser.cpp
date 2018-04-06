@@ -192,7 +192,7 @@ std::string arc::ItemParser::getInfo(const std::string &what)
 {
 	std::string tmp = _line;
 
-	for (int i = 0; i < getIndex(what); i ++) {
+	for (int i = 0; i < getIndex(what); i++) {
 		tmp = tmp.substr(tmp.find(":") + 1, tmp.length());
 	}
 	tmp = tmp.substr(0, tmp.find(":"));

@@ -17,7 +17,8 @@ MAIN		=	src/Main.cpp
 
 SRCS		=	src/Error.cpp		\
 			src/GameWraper.cpp	\
-			src/Startup.cpp
+			src/Startup.cpp		\
+			src/Scores.cpp
 
 OBJ_MAIN	=	$(MAIN:.cpp=.o)
 

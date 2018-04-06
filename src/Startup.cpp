@@ -7,6 +7,7 @@
 
 #include <dirent.h>
 #include <iostream>
+#include "Scores.hpp"
 #include "Error.hpp"
 #include "Startup.hpp"
 
@@ -47,27 +48,33 @@ void arc::Startup::askUserName()
 	_username = username;
 }
 
+void arc::Startup::_displayScores() const noexcept
+{
+	for (auto it = _gameLibs.begin(); it != _gameLibs.end(); it++) {
+		Scores currScores(*it);
+
+		std::cout << "In " << *it << " the best player is ";
+		std::cout << currScores.getBestPlayer() << " with a score of ";
+		std::cout << currScores.getHighscore() << std::endl;
+	}
+}
+
 void arc::Startup::startGame()
 {
 	std::cout << "Welcome to arcade!" << std::endl << std::endl;
 	dumpLibs();
-	dumpScores();
+	_displayScores();
 	askUserName();
-}
-
-void arc::Startup::dumpScores()
-{
-	std::cout << "Faudra faire l'affichage du score un jour" << std::endl;
 }
 
 arc::libArray arc::Startup::getGfxLibs() const
 {
-	return (_gfxLibs);
+	return _gfxLibs;
 }
 
 arc::libArray arc::Startup::getGameLibs() const
 {
-	return (_gameLibs);
+	return _gameLibs;
 }
 
 bool arc::Startup::_checkGfxLib(std::string infolder)

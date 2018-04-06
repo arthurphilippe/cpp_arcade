@@ -39,6 +39,10 @@
 		"thread": "cpp",
 		"__config": "cpp",
 		"__nullptr": "cpp",
-		"cmath": "cpp"
+		"cmath": "cpp",
+		"hash_map": "cpp",
+		"condition_variable": "cpp",
+		"mutex": "cpp",
+		"sstream": "cpp"
 	}
 }
