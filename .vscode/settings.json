@@ -39,6 +39,11 @@
 		"thread": "cpp",
 		"__config": "cpp",
 		"__nullptr": "cpp",
-		"cmath": "cpp"
+		"cmath": "cpp",
+		"atomic": "cpp",
+		"iterator": "cpp",
+		"memory_resource": "cpp",
+		"random": "cpp",
+		"unordered_map": "cpp"
 	},
 }

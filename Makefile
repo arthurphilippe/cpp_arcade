@@ -6,7 +6,7 @@
 ##
 
 ## Commands
-CXX		=	g++
+CXX		=	g++ -ggdb
 
 RM		=	rm -vf
 
@@ -57,7 +57,7 @@ debug: $(NAME)
 
 tests: $(TEST) $(NAME)
 
-tests_run: CXX=g++ --coverage
+tests_run: CXX=g++ -ggdb --coverage
 tests_run: tests
 	@./$(TEST)
 

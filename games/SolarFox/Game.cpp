@@ -25,6 +25,7 @@ arc::Game::Game()
 	setItems("sprite/solarfox/Mine.conf");
 	setItems("sprite/solarfox/Mine2.conf");
 	setItems("sprite/solarfox/Foe.conf");
+	_foe = std::chrono::high_resolution_clock::now();
 }
 
 void arc::Game::_nextLevel()
@@ -86,7 +87,11 @@ void arc::Game::_dumpItems() const noexcept
 	for (auto it = _items.begin(); it != _items.end(); ++it) {
 		std::cout << "Item: " << it->name << " -- Sprite count:";
 		std::cout << it->sprites.size() << " -- Pos: " << it->x;
-		std::cout << ", " << it->y << std::endl;
+		std::cout << ", " << it->y;
+		std::cout << " -- SpritePath: " << it->spritesPath
+		<< " -- Attribute: " << it->attribute
+		<< " -- SecondAttribute: " << it->secondattribute
+		<< " -- currSpriteIDX: " << it->currSpriteIdx << std::endl;
 	}
 }
 
@@ -358,35 +363,12 @@ void arc::Game::_dirFoe(Item &item) noexcept
 			break;
 	}
 }
-//	void _foeShoot(Item &);
-
-void arc::Game::_foeShoot(Item &item)
-{
-	 _items.push_back(ItemParser::createItem(DEF_BULLETCONF, 0, 0));
-	// switch (foe.sprites[0].rotation) {
-	// 	case 90:
-	// 		_items[_items.size() -1].secondattribute = arc::DOWN;
-	// 		break;
-	// 	case 0:
-	// 		_items[_items.size() -1].secondattribute = arc::RIGHT;
-	// 		break;
-	// 	case 180:
-	// 		_items[_items.size() -1].secondattribute = arc::LEFT;
-	// 		break;
-	// 	case -90:
-	// 		_items[_items.size() -1].secondattribute = arc::UP;
-	// 		break;
-	// 	default:
-	// 		break;
-	// }
-}
 
 void arc::Game::_moveFoe() noexcept
 {
 	bool move = true;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->attribute == FOE) {
-			_foeShoot(*i);
 			switch (i->secondattribute) {
 				case LEFT:
 					move = _itemMove(*i, Vectori {-1, 0});
@@ -412,15 +394,71 @@ void arc::Game::_moveFoe() noexcept
 
 void arc::Game::envUpdate() noexcept
 {
-//	_edgeTeleport();
+	_foeShoot();
 	_moveFoe();
+	_edgeTeleport();
 	_updateRotateMain();
 	_updateAutoMoveMain();
 	_updateSprite();
 	_updateBullets();
 	_checkItemsContact();
-	// if (_isCleared())
-	// 	_nextLevel();
+	if (_isCleared())
+		_nextLevel();
+}
+
+void arc::Game::_foeDirShoot(Item &item)
+{
+	static int i = 0;
+	auto finish = std::chrono::high_resolution_clock::now();
+	millisec elapsed = finish - _foe;
+	if (elapsed.count() < 1500)
+		return;
+	switch (item.sprites[0].rotation) {
+		case 90:
+			_items.push_back(ItemParser::createItem(FOE_MUNITION, item.x, item.y + MAX_PLACE));
+			_items[_items.size() - 1].sprites[0].rotation = 180;
+			_items[_items.size() - 1].secondattribute = DOWN;
+			break;
+		case 0:
+			_items.push_back(ItemParser::createItem(FOE_MUNITION, item.x + MAX_PLACE, item.y));
+			_items[_items.size() - 1].sprites[0].rotation = 90;
+			_items[_items.size() - 1].secondattribute = RIGHT;
+			break;
+		case -90:
+			_items.push_back(ItemParser::createItem(FOE_MUNITION, item.x, item.y - MAX_PLACE));
+			_items[_items.size() - 1].sprites[0].rotation = 0;
+			_items[_items.size() - 1].secondattribute = UP;
+			break;
+		case 180:
+			_items.push_back(ItemParser::createItem(FOE_MUNITION, item.x - MAX_PLACE, item.y));
+			_items[_items.size() - 1].sprites[0].rotation = -90;
+			_items[_items.size() - 1].secondattribute = LEFT;
+			break;
+		default:
+			break;
+
+	}
+	i += 1;
+	if (i >= 4)
+	{
+		i = 0;
+		_foe = std::chrono::high_resolution_clock::now();
+	}
+}
+
+void arc::Game::_foeShoot()
+{
+	auto foe1 = getItemFromName("Foe1");
+	auto foe2 = getItemFromName("Foe2");
+	auto foe3 = getItemFromName("Foe3");
+	auto foe4 = getItemFromName("Foe4");
+	_foeDirShoot(foe1);
+	_foeDirShoot(foe2);
+	_foeDirShoot(foe3);
+	_foeDirShoot(foe4);
+	// _items.push_back(ItemParser::createItem(FOE_MUNITION, foe2.x, foe2.y));
+	// _items.push_back(ItemParser::createItem(FOE_MUNITION, foe3.x, foe3.y));
+	// _items.push_back(ItemParser::createItem(FOE_MUNITION, foe4.x, foe4.y));
 }
 
 void arc::Game::_edgeTeleport(Item &item)

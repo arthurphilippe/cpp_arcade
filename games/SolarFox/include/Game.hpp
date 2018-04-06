@@ -103,6 +103,7 @@ private:
 	void _updateRotation(Item &item, int rotation);
 
 	std::chrono::high_resolution_clock::time_point _startTime;
+	std::chrono::high_resolution_clock::time_point _foe;
 	// Item Moves
 	void _itemMove(const std::string &, Vectori);
 	bool _itemMove(Item &, Vectori);
@@ -119,7 +120,9 @@ private:
 
 	//shoot
 	void _shootOffSet(int &x, int &y);
-	void _foeShoot(Item &);
+	void _foeShoot();
+	void _foeDirShoot(Item &);
+	void _foeMoveShoot();
 
 	// Game status
 	bool _isCleared();
