@@ -73,8 +73,9 @@ arc::libArray arc::Startup::getGameLibs() const
 bool arc::Startup::_checkGfxLib(std::string infolder)
 {
 	infolder = infolder.substr(3, infolder.length());
-	if (infolder == _startupLib)
-		return false;
+	if (infolder == _startupLib) {
+		_gfxLibs.erase(_gfxLibs.begin());
+	}
 	return true;
 }
 
