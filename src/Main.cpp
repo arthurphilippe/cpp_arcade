@@ -21,8 +21,13 @@ int main(int ac, char **av)
 		std::cout << "There is to few or not enough arguements.";
 		std::cout << std::endl;
 	} else {
-		arc::GameWraper toto(start);
-		toto.loop();
+		try {
+			arc::GameWraper toto(start);
+			toto.loop();
+		} catch (std::exception &err) {
+			std::cout << err.what() << std::endl;
+			return 84;
+		}
 	}
 	return 0;
 }

@@ -7,8 +7,9 @@
 
 #include <iostream>
 #include <algorithm>
-#include "unistd.h"
+#include <unistd.h>
 #include "GameWraper.hpp"
+#include "Scores.hpp"
 
 const std::vector<arc::Interaction> arc::GameWraper::_sysInteractions {
 	LIB_NEXT, LIB_PREV, GAME_NEXT, GAME_PREV, QUIT
@@ -23,6 +24,7 @@ arc::GameWraper::GameWraper(const Startup &startup)
 	_displayEntry(_libs[0]),
 	_currGame(_gameEntry.get()),
 	_currDisplay(_displayEntry.get()),
+	_startup(startup),
 	_running(true)
 {
 	_currGame->dump();
@@ -33,7 +35,8 @@ arc::GameWraper::GameWraper(const Startup &startup)
 }
 
 arc::GameWraper::~GameWraper()
-{}
+{
+}
 
 int arc::GameWraper::loop()
 {
@@ -47,7 +50,7 @@ int arc::GameWraper::loop()
 			_running = false;
 		}
 	}
-	std::cout << "score " << _currGame->getScore() << std::endl;
+	_addScore();
 	return 0;
 }
 
@@ -128,6 +131,7 @@ void arc::GameWraper::_displaySwitch(int mod)
 
 void arc::GameWraper::_gameSwitch(int mod)
 {
+	_addScore();
 	if (mod >= 0) {
 		_currGameIdx += mod;
 		if (_currGameIdx >= _libs.size())
@@ -141,4 +145,12 @@ void arc::GameWraper::_gameSwitch(int mod)
 	_currGame.release();
 	_currGame.reset(_gameEntry.reset(_games[_currGameIdx]));
 	_currDisplay->setStep(_currGame->getSpecs().pixelStep);
+}
+
+void arc::GameWraper::_addScore()
+{
+	auto scoreCount = _currGame->getScore();
+	Scores currScores(_games[_currGameIdx]);
+
+	currScores.addScore(_startup.getUserName(), scoreCount);
 }
