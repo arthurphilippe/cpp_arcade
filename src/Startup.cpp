@@ -18,9 +18,11 @@ arc::Startup::Startup(int ac, char **av,
 	_valid(true)
 {
 	_parseArguments();
-	setLibs(gfxpath, _gfxLibs);
-	setLibs(gamepath, _gameLibs);
-	startGame();
+	if (_valid) {
+		setLibs(gfxpath, _gfxLibs);
+		setLibs(gamepath, _gameLibs);
+		startGame();
+	}
 }
 
 arc::Startup::~Startup()

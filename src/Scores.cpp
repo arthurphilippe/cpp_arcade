@@ -43,14 +43,10 @@ std::string arc::Scores::getGameName(const std::string &libName) noexcept
 
 bool arc::Scores::_loadFromFile() noexcept
 {
-	// if (!_file.is_open())
-	// 	return false;
 	std::string line;
 	while (getline(_file ,line)) {
-		std::cout << "lol " << line << std::endl;
 		auto playerName = line.substr(0, line.find(":"));
 		auto scoreCount = line.substr(line.find(":") + 1, line.length() - 1);
-		std::cout << "lol " << playerName << "--" << scoreCount << std::endl;
 		_scoresList.push_back(
 			(ScoreEntry) {playerName, std::stoi(scoreCount)});
 	}
