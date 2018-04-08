@@ -42,6 +42,7 @@ arc::NCursesDisplay::NCursesDisplay()
 	raw();
 	noecho();
 	keypad(_window, true);
+	start_color();
 	_step = 1;
 	_pendingEvent = NO_EVENT;
 }
@@ -79,10 +80,10 @@ void arc::NCursesDisplay::putItem(const arc::Item &item)
 		pairColor = getPairColor(currSprite.color);
 		init_pair(pairColor, pairColor, COLOR_BLACK);
 		attron(COLOR_PAIR(pairColor));
-		mvwaddch(_window, item.x / _step, item.y / _step, currSprite.substitute);
+		mvwaddch(_window, item.y / _step, item.x / _step, currSprite.substitute);
 		attroff(COLOR_PAIR(pairColor));
 	} else {
-		mvwaddch(_window, item.x / _step, item.y / _step, '?');
+		mvwaddch(_window, item.y / _step, item.x / _step, '?');
 	}
 }
 
