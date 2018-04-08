@@ -81,10 +81,10 @@ void arc::NCursesDisplay::putItem(const arc::Item &item)
 		pairColor = getPairColor(currSprite.color);
 		init_pair(pairColor, pairColor, COLOR_BLACK);
 		attron(COLOR_PAIR(pairColor));
-		mvwaddch(_window, item.y / _step, item.x / _step, currSprite.substitute);
+		mvwprintw(_window, item.y / _step, item.x / _step, "%c", currSprite.substitute);
 		attroff(COLOR_PAIR(pairColor));
 	} else {
-		mvwaddch(_window, item.y / _step, item.x / _step, '?');
+		mvwprintw(_window, item.y / _step, item.x / _step, "?");
 	}
 }
 
@@ -96,7 +96,7 @@ void arc::NCursesDisplay::waitEvent()
 
 void arc::NCursesDisplay::refresh()
 {
-	wrefresh(_window);
+	// wrefresh(_window);
 }
 
 void arc::NCursesDisplay::setStep(uint step)
@@ -108,7 +108,7 @@ arc::InteractionList arc::NCursesDisplay::getInteractions()
 {
 	InteractionList input;
 
-	wtimeout(_window, 50);
+	wtimeout(_window, 0);
 	_pendingEvent = wgetch(_window);
 	if (KEYMAP.find(_pendingEvent) != KEYMAP.end())
 		input.push(KEYMAP.find(_pendingEvent)->second);
