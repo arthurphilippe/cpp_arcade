@@ -60,7 +60,6 @@ public:
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 	using ItemRef = Item *;
 	void createItems();
-
 	class Bullet {
 	public:
 		Bullet(Interaction direction, ItemRef bullet)

@@ -152,6 +152,7 @@ void arc::Game::processInteraction(Interaction &interact) noexcept
 				shoot(PLAYER_ITEM);
 				break;
 			default:
+
 				break;
 		}
 	}
