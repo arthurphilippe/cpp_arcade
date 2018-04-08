@@ -42,6 +42,7 @@ namespace arc {
 		std::string name;
 		std::string path;
 		arc::Color color;
+		arc::Color backgroundColor;
 	};
 	using SpriteList = std::vector<Sprite>;
 
