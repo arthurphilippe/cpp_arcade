@@ -39,6 +39,7 @@ private:
 	DynamicObject<IDisplay>		_displayEntry;
 	std::unique_ptr<IGame>		_currGame;
 	std::unique_ptr<IDisplay>	_currDisplay;
+	const Startup			&_startup;
 
 	void _processWraperInter(Interaction &iter);
 	void _processInteractions();
@@ -46,6 +47,7 @@ private:
 	void _waitCycle(unsigned int fps);
 	void _displaySwitch(int mod);
 	void _gameSwitch(int mod);
+	void _addScore();
 
 	std::chrono::high_resolution_clock::time_point _startTime;
 	bool _running;

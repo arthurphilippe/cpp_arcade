@@ -40,10 +40,9 @@
 		"__config": "cpp",
 		"__nullptr": "cpp",
 		"cmath": "cpp",
-		"atomic": "cpp",
-		"iterator": "cpp",
-		"memory_resource": "cpp",
-		"random": "cpp",
-		"unordered_map": "cpp"
-	},
+		"hash_map": "cpp",
+		"condition_variable": "cpp",
+		"mutex": "cpp",
+		"sstream": "cpp"
+	}
 }

@@ -219,19 +219,19 @@ void arc::Game::_setFever()
 {
 	_startFever = std::chrono::high_resolution_clock::now();
 	_fever = true;
+	_setBlueGhost(true);
 }
 
 void arc::Game::_manageFever()
 {
-	if (!_fever) {
-		_setBlueGhost(false);
+	if (!_fever)
 		return;
-	}
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _startFever;
-	_setBlueGhost(true);
-	if (elapsed.count() > 10000)
+	if (elapsed.count() > 10000) {
+		_setBlueGhost(false);
 		_fever = false;
+	}
 }
 
 void arc::Game::_makeGhostRed(SpriteList &list)

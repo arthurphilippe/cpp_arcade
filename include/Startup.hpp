@@ -33,10 +33,10 @@ private:
 	bool _checkGfxLib(std::string);
 	void _parseArguments();
 	void setLibs(const std::string &path, libArray &list);
-	void dumpScores();
 	void dumpLibs() const;
 	bool checkExtension(char *filename);
 	void askUserName();
+	void _displayScores() const noexcept;
 	int _ac;
 	char **_av;
 	std::string _startupLib;
