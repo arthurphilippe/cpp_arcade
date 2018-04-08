@@ -20,6 +20,7 @@ public:
 	~ItemParser() = delete;
 	using AttributeMap = std::unordered_map<std::string, arc::Attribute>;
 	using MapColor = std::unordered_map<std::string, arc::Color>;
+	using secondAttr = std::unordered_map<std::string, arc::Heading>;
 	static const std::string getFlag();
 	static std::string _line;
 	static arc::Item createItem();
@@ -27,6 +28,7 @@ public:
 	static Sprite createSprite();
 	static arc::Item createItem(const std::string &path, int x, int y);
 private:
+	static arc::Heading setSecondAttr(std::string &name);
 	static int getIndex(const std::string &what);
 	static std::string getInfo(const std::string &what);
 	static arc::Attribute setAttribute();

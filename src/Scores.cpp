@@ -59,7 +59,5 @@ void arc::Scores::_dumpToFile()
 	for (auto it = _scoresList.begin(); it != _scoresList.end(); it++) {
 		file << it->se_playerName << ":" << it->se_scoreCount;
 		file << std::endl;
-		std::cout << it->se_playerName << ":" << it->se_scoreCount;
-		std::cout << std::endl;
 	}
 }

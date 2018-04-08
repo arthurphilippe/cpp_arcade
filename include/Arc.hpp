@@ -29,6 +29,7 @@ namespace arc {
 		PLAYER,
 		BLOCK,
 		FOE,
+		MUNITION,
 		MOVE,
 		DROP,
 		UNK,

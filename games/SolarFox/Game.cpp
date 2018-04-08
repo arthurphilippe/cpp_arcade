@@ -13,13 +13,31 @@
 #include "Game.hpp"
 
 arc::Game::Game()
-	: _name("SolarFox"), _keystate(MOVE_LEFT), _info({GRID_H, GRID_L, GRID_STEP, FPS})
+	: _name("Pacman"),
+	_keystate(MOVE_LEFT),
+	_info({GRID_H, GRID_L, GRID_STEP, FPS}),
+	_isOver(false),
+	_score(0)
 {
-	setItems("tests/SpriteConfigurationFiles/Wall.conf");
-	setItems("tests/SpriteConfigurationFiles/SealConfigurationFile.conf");
-	setItems("sprite/FruitConf.conf");
-	setItems("sprite/Pacgum.conf");
-	setItems("sprite/Foe.conf");
+	srandom(time(NULL) * getpid());
+	setItems("sprite/solarfox/Wall.conf");
+	setItems("sprite/solarfox/Player.conf");
+	setItems("sprite/solarfox/Mine.conf");
+	setItems("sprite/solarfox/Mine2.conf");
+	setItems("sprite/solarfox/Foe.conf");
+	_foe = std::chrono::high_resolution_clock::now();
+}
+
+void arc::Game::_nextLevel()
+{
+	_items.clear();
+	setItems("sprite/solarfox/Wall.conf");
+	setItems("sprite/solarfox/Player.conf");
+	setItems("sprite/solarfox/Mine.conf");
+	setItems("sprite/solarfox/Mine2.conf");
+	setItems("sprite/solarfox/Foe.conf");
+	_isOver = false;
+	_info.fps += 1;
 }
 
 void arc::Game::setItems(const std::string &path)
@@ -27,7 +45,6 @@ void arc::Game::setItems(const std::string &path)
 	std::ifstream s(path);
 	std::string tmp;
 
-	srandom(time(NULL) * getpid());
 	if (s.is_open()) {
 		while (getline(s, ItemParser::_line))
 			createItems();
@@ -70,7 +87,11 @@ void arc::Game::_dumpItems() const noexcept
 	for (auto it = _items.begin(); it != _items.end(); ++it) {
 		std::cout << "Item: " << it->name << " -- Sprite count:";
 		std::cout << it->sprites.size() << " -- Pos: " << it->x;
-		std::cout << ", " << it->y << std::endl;
+		std::cout << ", " << it->y;
+		std::cout << " -- SpritePath: " << it->spritesPath
+		<< " -- Attribute: " << it->attribute
+		<< " -- SecondAttribute: " << it->secondattribute
+		<< " -- currSpriteIDX: " << it->currSpriteIdx << std::endl;
 	}
 }
 
@@ -108,21 +129,22 @@ void arc::Game::_itemMove(const std::string &name, Vectori mod)
 	}
 }
 
-void arc::Game::_itemMove(Item &item, Vectori mod)
+bool arc::Game::_itemMove(Item &item, Vectori mod)
 {
 	Vectori newPos {item.x + mod.v_x, item.y + mod.v_y};
 
 	if (_itemBlock(item, newPos) != BLOCK) {
 		item.x = newPos.v_x;
 		item.y = newPos.v_y;
-	}
+		return true;
+	} else
+		return false;
 }
 
 void arc::Game::processInteraction(Interaction &interact) noexcept
 {
 	auto move = MOVE_BINDS.find(interact);
 	if (move != MOVE_BINDS.end()) {
-//		_itemMove(PLAYER_ITEM, move->second);
 		_keystate = interact;
 	} else {
 		switch (interact) {
@@ -130,15 +152,40 @@ void arc::Game::processInteraction(Interaction &interact) noexcept
 				shoot(PLAYER_ITEM);
 				break;
 			default:
+
 				break;
 		}
+	}
+}
+
+void arc::Game::_shootOffSet(int &x, int &y)
+{
+
+	switch (_keystate) {
+		case MOVE_LEFT:
+			x -= 20;
+			break;
+		case MOVE_RIGHT:
+			x += 20;
+			break;
+		case MOVE_UP:
+			y -= 20;
+			break;
+		case MOVE_DOWN:
+			y += 20;
+			break;
+		default:
+			break;
 	}
 }
 
 void arc::Game::shoot(const std::string &name)
 {
 	auto item = getItemFromName(name);
-	_items.push_back(ItemParser::createItem(DEF_BULLETCONF, item.x, item.y));
+	int x = item.x;
+	int y = item.y;
+	_shootOffSet(x, y);
+	_items.push_back(ItemParser::createItem(DEF_BULLETCONF, x, y));
 	switch (_keystate) {
 		case MOVE_LEFT:
 			_items[_items.size() -1].secondattribute = arc::LEFT;
@@ -193,6 +240,24 @@ arc::SpriteList &arc::Game::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
+bool arc::Game::_checkMissile(Item &missile)
+{
+	Vectori pos {missile.x, missile.y};
+
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->name != missile.name
+			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
+			if (it->attribute == DROP || it->name == "FoeMissile") {
+				_items.erase(it);
+				it = _items.begin();
+				_score += 1;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 bool arc::Game::_checkPlayerContact(Item &player)
 {
 	Vectori pos {player.x, player.y};
@@ -201,12 +266,8 @@ bool arc::Game::_checkPlayerContact(Item &player)
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != player.name
 			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
-			if (it->attribute == DROP) {
-				_items.erase(it);
-				it = _items.begin();
-				restart = true;
-			} else if (it->attribute == FOE) {
-				exit(10);
+			if (it->name == "FoeMissile") {
+				_isOver = true;
 			}
 		}
 	}
@@ -219,6 +280,10 @@ void arc::Game::_checkItemsContact()
 		if (it->attribute == PLAYER) {
 			if (_checkPlayerContact(*it))
 				it = _items.begin();
+		} else if (it->name == "Bullet") {
+			if (_checkMissile(*it)) {
+				it = _items.begin();
+			}
 		}
 	}
 }
@@ -227,18 +292,25 @@ void arc::Game::_updateBullets() noexcept
 {
 	for (auto i = _items.begin(); i != _items.end(); i++) {
 		if (i->name == "Bullet") {
+			if (i->x < 0 + (24 + MAX_PLACE)
+				|| i->x > (906 - 24 - MAX_PLACE)
+				|| i->y > (906 - 24 - MAX_PLACE)
+				|| i->y < 0 + (24 + MAX_PLACE)) {
+					_items.erase(i);
+					i = _items.begin();
+				}
 			switch (i->secondattribute) {
 			case LEFT:
-				i->x -= 1;
+				i->x -= 3;
 				break;
 			case RIGHT:
-				i->x += 1;
+				i->x += 3;
 				break;
 			case DOWN:
-				i->y += 1;
+				i->y += 3;
 				break;
 			case UP:
-				i->y -= 1;
+				i->y -= 3;
 				break;
 			default:
 				break;
@@ -260,16 +332,16 @@ void arc::Game::_updateRotateMain()
 		if (i->name == PLAYER_ITEM) {
 			switch (_keystate) {
 			case MOVE_LEFT:
-				_updateRotation(*i, 270);
-				break;
-			case MOVE_RIGHT:
-				_updateRotation(*i, 90);
-				break;
-			case MOVE_DOWN:
 				_updateRotation(*i, 180);
 				break;
-			case MOVE_UP:
+			case MOVE_RIGHT:
 				_updateRotation(*i, 0);
+				break;
+			case MOVE_DOWN:
+				_updateRotation(*i, 90);
+				break;
+			case MOVE_UP:
+				_updateRotation(*i, -90);
 				break;
 			default:
 				break;
@@ -289,29 +361,183 @@ void arc::Game::_updateAutoMoveMain()
 	}
 }
 
-void arc::Game::_updateFoe()
+
+void arc::Game::_dirFoe(Item &item) noexcept
 {
-	int u = 0;
-	int x = 1;
-	int y = 1;
+	switch (item.secondattribute) {
+		case RIGHT:
+			item.secondattribute = LEFT;
+			break;
+		case LEFT:
+			item.secondattribute = RIGHT;
+			break;
+		case UP:
+			item.secondattribute = DOWN;
+			break;
+		case DOWN:
+			item.secondattribute = UP;
+			break;
+		default:
+			break;
+	}
+}
+
+void arc::Game::_moveFoe() noexcept
+{
+	bool move = true;
 	for (auto i = _items.begin(); i != _items.end(); i++) {
-		u = random() % 2;
-		if (u)
-			x = x * (-1);
-		u = random() % 2;
-			y = y * (-1);
 		if (i->attribute == FOE) {
-			_itemMove(*i, (Vectori) {x, y});
+			switch (i->secondattribute) {
+				case LEFT:
+					move = _itemMove(*i, Vectori {-1, 0});
+					break;
+				case RIGHT:
+					move = _itemMove(*i, Vectori {1, 0});
+					break;
+				case UP:
+					move = _itemMove(*i, Vectori {0, -1});
+					break;
+				case DOWN:
+					move = _itemMove(*i, Vectori {0, 1});
+					break;
+				default:
+				break;
+			}
+			if (!move)
+				_dirFoe(*i);
 		}
+		move = true;
 	}
 }
 
 void arc::Game::envUpdate() noexcept
 {
+	_foeShoot();
+	_foeMoveShoot();
+	_moveFoe();
+	_edgeTeleport();
 	_updateRotateMain();
 	_updateAutoMoveMain();
 	_updateSprite();
 	_updateBullets();
-	_updateFoe();
 	_checkItemsContact();
+	if (_isCleared())
+		_nextLevel();
+}
+
+void arc::Game::_foeMoveShoot()
+{
+	for (auto i = _items.begin(); i != _items.end(); i ++) {
+		if (i->name == "FoeMissile") {
+			if (i->x < 0 + (24 + MAX_PLACE)
+				|| i->x > (906 - 24 - MAX_PLACE)
+				|| i->y > (906 - 24 - MAX_PLACE)
+				|| i->y < 0 + (24 + MAX_PLACE)) {
+					_items.erase(i);
+					i = _items.begin();
+				}
+			switch (i->secondattribute) {
+			case LEFT:
+				i->x -= 3;
+				break;
+			case RIGHT:
+				i->x += 3;
+				break;
+			case DOWN:
+				i->y += 3;
+				break;
+			case UP:
+				i->y -= 3;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
+
+void arc::Game::_foeDirShoot(Item &item)
+{
+	static int i = 0;
+	auto finish = std::chrono::high_resolution_clock::now();
+	millisec elapsed = finish - _foe;
+	if (elapsed.count() < 4000)
+		return;
+	switch (item.sprites[0].rotation) {
+		case 90:
+			_items.push_back(ItemParser::createItem(FOE_MUNITION, item.x, item.y + MAX_PLACE));
+			_items[_items.size() - 1].sprites[0].rotation = 180;
+			_items[_items.size() - 1].secondattribute = DOWN;
+			break;
+		case 0:
+			_items.push_back(ItemParser::createItem(FOE_MUNITION, item.x + MAX_PLACE, item.y));
+			_items[_items.size() - 1].sprites[0].rotation = 90;
+			_items[_items.size() - 1].secondattribute = RIGHT;
+			break;
+		case -90:
+			_items.push_back(ItemParser::createItem(FOE_MUNITION, item.x, item.y - MAX_PLACE));
+			_items[_items.size() - 1].sprites[0].rotation = 0;
+			_items[_items.size() - 1].secondattribute = UP;
+			break;
+		case 180:
+			_items.push_back(ItemParser::createItem(FOE_MUNITION, item.x - MAX_PLACE, item.y));
+			_items[_items.size() - 1].sprites[0].rotation = -90;
+			_items[_items.size() - 1].secondattribute = LEFT;
+			break;
+		default:
+			break;
+
+	}
+	i += 1;
+	if (i >= 4)
+	{
+		i = 0;
+		_foe = std::chrono::high_resolution_clock::now();
+	}
+}
+
+void arc::Game::_foeShoot()
+{
+	auto foe1 = getItemFromName("Foe1");
+	auto foe2 = getItemFromName("Foe2");
+	auto foe3 = getItemFromName("Foe3");
+	auto foe4 = getItemFromName("Foe4");
+	_foeDirShoot(foe1);
+	_foeDirShoot(foe2);
+	_foeDirShoot(foe3);
+	_foeDirShoot(foe4);
+}
+
+void arc::Game::_edgeTeleport(Item &item)
+{
+	if (_vectorIsCollided((Vectori) {item.x, item.y},
+		(Vectori) {-24, 416}))
+		item.x = 906;
+	else if (_vectorIsCollided((Vectori) {item.x, item.y},
+			(Vectori) {906 + 48, 416}))
+		item.x = 24;
+
+}
+
+void arc::Game::_edgeTeleport()
+{
+	uint count = 0;
+
+	for (auto it = _items.begin(); it != _items.end() && count < 5; it++) {
+		if (it->attribute == FOE || it->attribute == PLAYER) {
+			_edgeTeleport(*it);
+			count += 1;
+		}
+	}
+}
+
+bool arc::Game::_isCleared()
+{
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->attribute == DROP) {
+			return false;
+		}
+	}
+	return true;
 }

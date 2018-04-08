@@ -37,7 +37,6 @@
                 "${workspaceRoot}/include",
                 "${workspaceRoot}/games/DefaultGame/include",
                 "${workspaceRoot}/lib/CacaDisplay/include",
-                "${workspaceRoot}/games/Pacman/include",
                 "${workspaceRoot}/lib/SfmlDisplay/include",
                 "${workspaceRoot}/games/SolarFox/include"
             ],

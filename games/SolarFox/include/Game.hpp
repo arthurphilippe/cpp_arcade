@@ -17,17 +17,19 @@
 	#include "IGame.hpp"
 	#include "Error.hpp"
 	#include "ItemParser.hpp"
-	#define PLAYER_ITEM "Pacman"
+	#define PLAYER_ITEM "Shooter"
 
 namespace arc {
 	class Game;
 	constexpr auto GRID_H = 42;
 	constexpr auto GRID_L = 42;
 	constexpr auto GRID_STEP = 48;
-	constexpr auto FPS = 56;
+	constexpr auto FPS = 55;
 	constexpr auto W_HEIGHT = 1200;
 	constexpr auto W_WIDTH = 1550;
 	const std::string DEF_BULLETCONF = "tests/SpriteConfigurationFiles/Bullets.conf";
+	constexpr auto FOE_MUNITION = "sprite/solarfox/FoeMissile.conf";
+	constexpr auto MAX_PLACE = 49 * 1;
 }
 
 class arc::Game : public arc::IGame {
@@ -46,6 +48,14 @@ public:
 	}
 	void processInteraction(Interaction &) noexcept;
 	void envUpdate() noexcept;
+	bool isOver() const noexcept
+	{
+		return _isOver;
+	}
+	int getScore() const noexcept
+	{
+		return _score;
+	}
 	void shoot(const std::string &name);
 	const std::vector<struct Position> &getBulletPos() {return _bulletpos;}
 	using ItemRef = Item *;
@@ -63,6 +73,7 @@ public:
 		ItemRef _bullet;
 		Interaction _direction;
 	};
+
 private:
 	std::vector<struct Position> _bulletpos;
 	std::string	_name;
@@ -77,8 +88,11 @@ private:
 	void _dumpItems() const noexcept;
 	SpriteList &getSpriteListFromName(const std::string &name);
 
+	void _nextLevel();
+
 	//update for Foe
-	void _updateFoe();
+	void _moveFoe() noexcept;
+	void _dirFoe(Item &) noexcept;
 
 	//update
 	void _updateBullets() noexcept;
@@ -88,9 +102,10 @@ private:
 	void _updateRotation(Item &item, int rotation);
 
 	std::chrono::high_resolution_clock::time_point _startTime;
+	std::chrono::high_resolution_clock::time_point _foe;
 	// Item Moves
 	void _itemMove(const std::string &, Vectori);
-	void _itemMove(Item &, Vectori);
+	bool _itemMove(Item &, Vectori);
 	std::vector<class Bullet> _bulletlist;
 	bool _vectorIsCollided(Vectori, Vectori);
 	bool _itemBlock(Item &, Vectori);
@@ -98,7 +113,21 @@ private:
 	// Item Collisions on update
 	bool _playerActionContact(Item &drop);
 	bool _checkPlayerContact(Item &player);
+	bool _checkMissile(Item &);
 	void _checkItemsContact();
+	void _edgeTeleport();
+	void _edgeTeleport(Item &);
+
+	//shoot
+	void _shootOffSet(int &x, int &y);
+	void _foeShoot();
+	void _foeDirShoot(Item &);
+	void _foeMoveShoot();
+
+	// Game status
+	bool _isCleared();
+	bool _isOver;
+	int _score;
 };
 
 #endif /* !SOLARFOX_HPP_ */
