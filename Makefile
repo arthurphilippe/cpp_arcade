@@ -74,14 +74,14 @@ $(TEST): $(OBJS_TEST)
 
 games:
 	@$(MAKE) -C games/Pacman/
-	@ln -sf games/Pacman/libPacman.so lib_arcade_pacman.so
-#	@$(MAKE) -C games/SolarFox/
-#	@ln -sf games/SolarFox/libSolarFox.so lib_arcade_solarfox.so
+	@ln -sf Pacman/libPacman.so games/lib_arcade_pacman.so
+	@$(MAKE) -C games/SolarFox/
+	@ln -sf SolarFox/libSolarFox.so games/lib_arcade_solarfox.so
 
 
 graphicals:
 	@$(MAKE) -C lib/CacaDisplay
-	@ln -sf lib/CacaDisplay/libcaca.so lib_arcade_caca.so
+	@ln -sf CacaDisplay/libcaca.so lib/lib_arcade_caca.so
 	@$(MAKE) -C lib/SfmlDisplay
 	@ln -sf lib/SfmlDisplay/libsfml.so lib_arcade_sfml.so
 	@$(MAKE) -C lib/NCursesDisplay

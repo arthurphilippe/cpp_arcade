@@ -20,6 +20,14 @@ static const arc::ItemParser::AttributeMap _attributeMap = {
 	{"DROP", arc::Attribute::DROP},
 	{"MOVE", arc::Attribute::MOVE},
 	{"PLAYER", arc::Attribute::PLAYER},
+	{"MUNITION", arc::Attribute::MUNITION},
+};
+
+static const arc::ItemParser::secondAttr _mapSAtr = {
+	{"Foe1", arc::RIGHT},
+	{"Foe2", arc::DOWN},
+	{"Foe3", arc::LEFT},
+	{"Foe4", arc::UP},
 };
 
 static const arc::ItemParser::MapColor _mapColor = {
@@ -47,6 +55,16 @@ static const std::unordered_map<std::string, int> COREMAP = {
 	{"Path", 8},
 };
 
+arc::Heading arc::ItemParser::setSecondAttr(std::string &name)
+{
+	for (auto i = _mapSAtr.begin(); i != _mapSAtr.end(); i ++) {
+		if (i->first == name) {
+			return i->second;
+		}
+	}
+	return NONE;
+}
+
 arc::Item arc::ItemParser::createItem()
 {
 	arc::Item tmp;
@@ -57,7 +75,7 @@ arc::Item arc::ItemParser::createItem()
 	tmp.x = std::stoi(getInfo("X"));
 	tmp.y = std::stoi(getInfo("Y"));
 	tmp.currSpriteIdx = 0;
-	tmp.secondattribute = NONE;
+	tmp.secondattribute = setSecondAttr(tmp.name);
 	return tmp;
 }
 
@@ -75,7 +93,7 @@ arc::Item arc::ItemParser::createItem(const std::string &path, int x, int y)
 	tmp.spritesPath = setPath();
 	tmp.x = x;
 	tmp.y = y;
-	tmp.secondattribute = NONE;
+	tmp.secondattribute = setSecondAttr(tmp.name);
 	tmp.attribute = setAttribute();
 	tmp.currSpriteIdx = 0;
 	return tmp;
