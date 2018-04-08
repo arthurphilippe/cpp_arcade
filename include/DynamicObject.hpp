@@ -46,13 +46,15 @@ namespace arc {
 			if (dl.length() == 0)
 				throw std::runtime_error("No lib available");
 			_handle = dlopen(dl.c_str(), RTLD_LAZY);
-			if (!_handle)
+			if (!_handle) {
 				throw std::runtime_error(dlerror());
+			}
 			dlerror();
 			call = (T *(*)()) dlsym(_handle, sym.c_str());
 			const char *dlsym_error(dlerror());
-			if (dlsym_error)
+			if (dlsym_error) {
 				throw std::runtime_error(dlsym_error);
+			}
 		}
 	};
 }

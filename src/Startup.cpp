@@ -37,7 +37,6 @@ void arc::Startup::_parseArguments()
 		if (_startupLib[0] != '.' && _startupLib[0] != '/')
 			_startupLib = "./" + _startupLib;
 		_gfxLibs.insert(_gfxLibs.begin(), _startupLib);
-		std::cout << _startupLib << std::endl;
 	}
 }
 

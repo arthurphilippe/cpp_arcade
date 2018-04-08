@@ -134,10 +134,10 @@ void arc::GameWraper::_gameSwitch(int mod)
 	_addScore();
 	if (mod >= 0) {
 		_currGameIdx += mod;
-		if (_currGameIdx >= _libs.size())
+		if (_currGameIdx >= _games.size())
 			_currGameIdx = 0;
 	} else if (_currGameIdx == 0) {
-		_currGameIdx = _libs.size() - 1;
+		_currGameIdx = _games.size() - 1;
 	} else {
 		_currGameIdx += mod;
 	}
