@@ -33,10 +33,13 @@ void arc::Startup::_parseArguments()
 	if (_ac != 2) {
 		_valid = false;
 	} else {
-		_gfxLibs.insert(_gfxLibs.begin(), _av[1]);
 		_startupLib = _av[1];
-		_startupLib = _startupLib.substr(
-			_startupLib.find_last_of('_') + 1 , _startupLib.length());
+		if (_startupLib[0] != '.' && _startupLib[0] != '/')
+			_startupLib = "./" + _startupLib;
+		_gfxLibs.insert(_gfxLibs.begin(), _startupLib);
+		// _startupLib = _startupLib.substr(
+		// 	_startupLib.find_last_of("lib") + 3,
+		// 					_startupLib.length());
 		std::cout << _startupLib << std::endl;
 	}
 }
@@ -81,11 +84,8 @@ arc::libArray arc::Startup::getGameLibs() const
 
 bool arc::Startup::_checkGfxLib(std::string infolder)
 {
-	infolder = infolder.substr(3, infolder.length());
-	if (infolder == _startupLib) {
-		_gfxLibs.erase(_gfxLibs.begin());
-	}
-	return true;
+	auto tmp = _startupLib.substr(_startupLib.find_last_of('/') + 1);
+	return (infolder == tmp);
 }
 
 void arc::Startup::setLibs(const std::string &path, libArray &list)
@@ -97,11 +97,9 @@ void arc::Startup::setLibs(const std::string &path, libArray &list)
 	if (gameDir == NULL)
 		throw arc::StartupError(ERR_GAME_PATH + path);
 	while ((entry = readdir(gameDir)) != NULL) {
-		// if (entry->d_type == DT_DIR && entry->d_name[0] != '.')
-		// 	setLibs(path + entry->d_name + "/", list);
 		if (entry->d_type != DT_DIR
-				&& checkExtension(entry->d_name)
-				&& _checkGfxLib(entry->d_name))
+			&& checkExtension(entry->d_name)
+			&& !_checkGfxLib(entry->d_name))
 			list.push_back(path + entry->d_name);
 	}
 	free(entry);
@@ -115,7 +113,7 @@ void arc::Startup::dumpLibs() const
 		std::cout << '\t' << *i << std::endl;
 	}
 	std::cout << "Game Libraries found:" << std::endl;
-		for (auto i = _gameLibs.begin(); i != _gameLibs.end(); i++) {
+	for (auto i = _gameLibs.begin(); i != _gameLibs.end(); i++) {
 		std::cout << '\t' << *i << std::endl;
 	}
 }
