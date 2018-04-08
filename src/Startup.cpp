@@ -97,9 +97,9 @@ void arc::Startup::setLibs(const std::string &path, libArray &list)
 	if (gameDir == NULL)
 		throw arc::StartupError(ERR_GAME_PATH + path);
 	while ((entry = readdir(gameDir)) != NULL) {
-		if (entry->d_type == DT_DIR && entry->d_name[0] != '.')
-			setLibs(path + entry->d_name + "/", list);
-		else if (entry->d_type != DT_DIR
+		// if (entry->d_type == DT_DIR && entry->d_name[0] != '.')
+		// 	setLibs(path + entry->d_name + "/", list);
+		if (entry->d_type != DT_DIR
 				&& checkExtension(entry->d_name)
 				&& _checkGfxLib(entry->d_name))
 			list.push_back(path + entry->d_name);

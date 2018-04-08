@@ -9,7 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/arcade",
-			"args": ["lib_arcade_caca.so"],
+			"args": ["./lib/lib_arcade_caca.so"],
 			// "preLaunchTask": "build debug",
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
