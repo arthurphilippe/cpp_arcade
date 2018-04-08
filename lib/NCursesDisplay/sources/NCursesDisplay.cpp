@@ -6,6 +6,7 @@
 */
 
 #include <ncurses.h>
+#include <linux/input-event-codes.h>
 #include "NCursesDisplay.hpp"
 #include "GfxException.hpp"
 
@@ -18,7 +19,7 @@ static const arc::NCursesDisplay::KeyMap KEYMAP = {
 	{KEY_NPAGE, arc::GAME_PREV},
 	{'p', arc::LIB_NEXT},
 	{'o', arc::LIB_PREV},
-	{KEY_EXIT, arc::QUIT},
+	{27, arc::QUIT},
 	{' ', arc::ACTION_1}
 };
 
