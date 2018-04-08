@@ -38,7 +38,8 @@
                 "${workspaceRoot}/games/DefaultGame/include",
                 "${workspaceRoot}/lib/CacaDisplay/include",
                 "${workspaceRoot}/lib/SfmlDisplay/include",
-                "${workspaceRoot}/games/SolarFox/include"
+                "${workspaceRoot}/games/SolarFox/include",
+                "${workspaceFolder}/lib/NCursesDisplay/include"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",

@@ -42,6 +42,7 @@ arc::NCursesDisplay::NCursesDisplay()
 		throw GfxException(GFX_ERR_INIT);
 	raw();
 	noecho();
+	curs_set(0);
 	keypad(_window, true);
 	start_color();
 	_step = 1;
@@ -96,7 +97,7 @@ void arc::NCursesDisplay::waitEvent()
 
 void arc::NCursesDisplay::refresh()
 {
-	// wrefresh(_window);
+	wrefresh(_window);
 }
 
 void arc::NCursesDisplay::setStep(uint step)
