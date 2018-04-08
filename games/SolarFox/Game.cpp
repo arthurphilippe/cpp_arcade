@@ -240,6 +240,24 @@ arc::SpriteList &arc::Game::getSpriteListFromName(const std::string &name)
 	return _items[0].sprites;
 }
 
+bool arc::Game::_checkMissile(Item &missile)
+{
+	Vectori pos {missile.x, missile.y};
+
+	for (auto it = _items.begin(); it != _items.end(); it++) {
+		if (it->name != missile.name
+			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
+			if (it->attribute == DROP || it->name == "FoeMissile") {
+				_items.erase(it);
+				it = _items.begin();
+				_score += 1;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 bool arc::Game::_checkPlayerContact(Item &player)
 {
 	Vectori pos {player.x, player.y};
@@ -248,12 +266,7 @@ bool arc::Game::_checkPlayerContact(Item &player)
 	for (auto it = _items.begin(); it != _items.end(); it++) {
 		if (it->name != player.name
 			&& _vectorIsCollided(pos, (Vectori) {it->x, it->y})) {
-			if (it->attribute == DROP) {
-				_items.erase(it);
-				it = _items.begin();
-				restart = true;
-				_score += 1;
-			} else if (it->attribute == FOE) {
+			if (it->name == "FoeMissile") {
 				_isOver = true;
 			}
 		}
@@ -267,6 +280,10 @@ void arc::Game::_checkItemsContact()
 		if (it->attribute == PLAYER) {
 			if (_checkPlayerContact(*it))
 				it = _items.begin();
+		} else if (it->name == "Bullet") {
+			if (_checkMissile(*it)) {
+				it = _items.begin();
+			}
 		}
 	}
 }
@@ -445,7 +462,7 @@ void arc::Game::_foeDirShoot(Item &item)
 	static int i = 0;
 	auto finish = std::chrono::high_resolution_clock::now();
 	millisec elapsed = finish - _foe;
-	if (elapsed.count() < 1500)
+	if (elapsed.count() < 4000)
 		return;
 	switch (item.sprites[0].rotation) {
 		case 90:

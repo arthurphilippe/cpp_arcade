@@ -113,6 +113,7 @@ private:
 	// Item Collisions on update
 	bool _playerActionContact(Item &drop);
 	bool _checkPlayerContact(Item &player);
+	bool _checkMissile(Item &);
 	void _checkItemsContact();
 	void _edgeTeleport();
 	void _edgeTeleport(Item &);
