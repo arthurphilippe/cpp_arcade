@@ -10,6 +10,8 @@
 #include "Scores.hpp"
 #include "Error.hpp"
 #include "Startup.hpp"
+#include "DynamicObject.hpp"
+#include "IDisplay.hpp"
 
 arc::Startup::Startup(int ac, char **av,
 			const std::string &gamepath, const std::string &gfxpath)
@@ -65,6 +67,7 @@ void arc::Startup::startGame()
 	std::cout << "Welcome to arcade!" << std::endl << std::endl;
 	dumpLibs();
 	_displayScores();
+	DynamicObject<IDisplay>	displayTest(*_gfxLibs.begin());
 	askUserName();
 }
 

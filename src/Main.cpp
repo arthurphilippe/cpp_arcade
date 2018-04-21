@@ -16,18 +16,17 @@
 
 int main(int ac, char **av)
 {
-	arc::Startup start(ac, av);
-	if (!start.isValid()) {
-		std::cout << "There is to few or not enough arguements.";
-		std::cout << std::endl;
-	} else {
-		try {
-			arc::GameWraper toto(start);
-			toto.loop();
-		} catch (std::exception &err) {
-			std::cout << err.what() << std::endl;
-			return 84;
+	try {
+		arc::Startup start(ac, av);
+		if (!start.isValid()) {
+			std::cout << "There is to few or not enough arguements.";
+			std::cout << std::endl;
 		}
+		arc::GameWraper toto(start);
+		toto.loop();
+	} catch (std::exception &err) {
+		std::cout << err.what() << std::endl;
+		return 84;
 	}
 	return 0;
 }
